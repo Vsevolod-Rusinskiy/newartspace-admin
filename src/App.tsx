@@ -6,8 +6,7 @@ import {PaintingShow} from "../components/PaintingShow/PaintingShow";
 import {PaintingCreate} from "../components/PaintingCreate/PaintingCreate";
 import PaintingEdit from "../components/PaintingEdit/PaintingEdit";
 
-const apiUrl = import.meta.env.VITE_APP_API_URL
-console.log('ApiUrl:', apiUrl);
+
 
 export const App = () =>
 

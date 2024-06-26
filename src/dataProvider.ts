@@ -2,7 +2,10 @@ import {DataProvider} from 'react-admin';
 import {stringify} from 'query-string';
 import axios from 'axios';
 
-const apiUrl = 'http://localhost:3000';
+// const apiUrl = 'http://localhost:3000';
+
+const apiUrl = import.meta.env.VITE_APP_API_URL
+console.log('ApiUrldata:', apiUrl);
 
 export default {
   getList: async (resource, params) => {

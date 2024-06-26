@@ -1,0 +1,14 @@
+version: '3.3'
+
+services:
+  admin:
+    image: newspace-admin
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: admin
+    ports:
+      - "3002:4173"
+    env_file:
+      - .env
+    command: ["yarn", "serve"]
