@@ -1,6 +1,6 @@
 # admin
 
-## Installation
+## Installation:
 
 Install the application dependencies by running:
 
