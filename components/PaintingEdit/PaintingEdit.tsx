@@ -20,7 +20,7 @@ const PaintingEdit = () => (
 
       <TextInput source='author' label='Автор картины' />
       <TextInput
-        source='name'
+        source='title'
         label='Название картины'
         validate={requiredValidation}
       />

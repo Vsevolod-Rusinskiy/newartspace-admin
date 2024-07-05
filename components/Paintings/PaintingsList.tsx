@@ -15,7 +15,7 @@ export const PaintingList = () => {
         <CloneButton />
         <ImageField source='paintingUrl' label='Картина' />
         <NumberField source='id' sortable />
-        <TextField source='name' label='Название картины' />
+        <TextField source='title' label='Название картины' />
         <TextField source='artType' label='Вид искусства' />
       </Datagrid>
     </List>
