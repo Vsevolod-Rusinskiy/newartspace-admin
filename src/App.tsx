@@ -6,6 +6,8 @@ import { PaintingShow } from '../components/PaintingShow/PaintingShow'
 import { PaintingCreate } from '../components/PaintingCreate/PaintingCreate'
 import PaintingEdit from '../components/PaintingEdit/PaintingEdit'
 
+// test flag
+
 export const App = () => (
   <Admin authProvider={authProvider} dataProvider={dataProvider}>
     <Resource
