@@ -2,12 +2,34 @@ import { DataProvider } from 'react-admin'
 import { stringify } from 'query-string'
 import axios from 'axios'
 
-// const apiUrl = 'http://localhost:3000';
-
 const apiUrl = import.meta.env.VITE_APP_API_URL
-console.log('ApiUrldata:', apiUrl)
+console.log('ApiUrl:', apiUrl)
 
 export default {
+  create: async (resource, params) => {
+    const imageFile = params.data.pictures.rawFile
+    const file = new FormData()
+
+    file.append('file', imageFile, imageFile.name)
+
+    const image = await axios({
+      method: 'post',
+      url: `${apiUrl}/${resource}/upload`,
+      data: file,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+
+    const updatedData = {
+      ...params.data,
+      paintingUrl: image.data.paintingUrl,
+    }
+
+    const { data } = await axios.post(`${apiUrl}/${resource}`, updatedData)
+    return { data: data }
+  },
+
   getList: async (resource, params) => {
     const { page, perPage } = params.pagination
     const { field, order } = params.sort
@@ -18,7 +40,6 @@ export default {
     }
 
     const url = `${apiUrl}/${resource}?${stringify(query)}`
-    console.log(url, 'url')
 
     const { data } = await axios.get(url)
 
@@ -66,30 +87,6 @@ export default {
     }
   },
 
-  create: async (resource, params) => {
-    const imageFile = params.data.pictures.rawFile
-    const file = new FormData()
-
-    file.append('file', imageFile, imageFile.name)
-
-    const image = await axios({
-      method: 'post',
-      url: `${apiUrl}/${resource}/upload`,
-      data: file,
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    })
-
-    const updatedData = {
-      ...params.data,
-      paintingUrl: `${apiUrl}/${image.data.path}`,
-    }
-
-    const { data } = await axios.post(`${apiUrl}/${resource}`, updatedData)
-    return { data: data }
-  },
-
   update: async (resource, params) => {
     if (params.data.pictures && params.data.pictures.rawFile) {
       const imageFile = params.data.pictures.rawFile
@@ -105,8 +102,7 @@ export default {
         },
       })
 
-      // Обновление данных с новым URL изображения !
-      params.data.paintingUrl = `${apiUrl}/${image.data.path}`
+      params.data.paintingUrl = image.data.paintingUrl
       params.data.prevPaintingUrl = params.previousData.paintingUrl
     }
 
@@ -126,15 +122,14 @@ export default {
 
   delete: async (resource, params) => {
     const url = `${apiUrl}/${resource}/${params.id}`
-
     const { data } = await axios.delete(url)
-
     return {
       data: data,
     }
   },
 
   deleteMany: async (resource, params) => {
+    console.log(params)
     const url = `${apiUrl}/${resource}/deleteMany/${JSON.stringify(params.ids)}`
     await axios.delete(url)
 
