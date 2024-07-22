@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: admin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: admin
+  template:
+    metadata:
+      labels:
+        app: admin
+    spec:
+      containers:
+        - name: admin
+          image: newspace-admin:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 4173
+          env:
+            - name: VITE_APP_PROTOCOL
+              valueFrom:
+                configMapKeyRef:
+                  name: admin-config
+                  key: VITE_APP_PROTOCOL
+            - name: VITE_APP_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: admin-config
+                  key: VITE_APP_HOST
+            - name: VITE_APP_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: admin-config
+                  key: VITE_APP_PORT
+            - name: VITE_APP_API_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: admin-config
+                  key: VITE_APP_API_URL
