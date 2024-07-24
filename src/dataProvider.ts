@@ -5,6 +5,7 @@ import axios from 'axios'
 const apiUrl = import.meta.env.VITE_APP_API_URL
 console.log('ApiUrl:', apiUrl)
 
+// todo add try catch
 export default {
   create: async (resource, params) => {
     const imageFile = params.data.pictures.rawFile
@@ -89,8 +90,6 @@ export default {
 
   update: async (resource, params) => {
     try {
-      console.log(params.data)
-      console.log(params.data.pictures)
       if (params.data.pictures && params.data.pictures.rawFile) {
         const imageFile = params.data.pictures.rawFile
         const file = new FormData()
@@ -106,17 +105,15 @@ export default {
         })
 
         params.data.paintingUrl = image.data.paintingUrl
-        params.data.prevPaintingUrl = params.previousData.paintingUrl
+      } else {
+        // Если картинка не предоставлена, сохраняем предыдущий URL
+        params.data.paintingUrl = params.previousData.paintingUrl
+        params.data.pictures = null
       }
 
       const url = `${apiUrl}/${resource}/${params.id}`
 
-      // Логирование данных перед отправкой запроса
-      console.log('Sending data to server:', params.data)
-
       const { data } = await axios.patch(url, params.data)
-
-      console.log('Response from server:', data)
 
       return { data: data[1][0] }
     } catch (error) {
@@ -124,7 +121,7 @@ export default {
       throw error
     }
   },
-
+  /** don't use so far */
   // updateMany: async (resource, params) => {
   //   const query = {
   //     filter: JSON.stringify({ id: params.ids }),
