@@ -88,37 +88,51 @@ export default {
   },
 
   update: async (resource, params) => {
-    if (params.data.pictures && params.data.pictures.rawFile) {
-      const imageFile = params.data.pictures.rawFile
-      const file = new FormData()
-      file.append('file', imageFile, imageFile.name)
+    try {
+      console.log(params.data)
+      console.log(params.data.pictures)
+      if (params.data.pictures && params.data.pictures.rawFile) {
+        const imageFile = params.data.pictures.rawFile
+        const file = new FormData()
+        file.append('file', imageFile, imageFile.name)
 
-      const image = await axios({
-        method: 'post',
-        url: `${apiUrl}/${resource}/upload`,
-        data: file,
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
+        const image = await axios({
+          method: 'post',
+          url: `${apiUrl}/${resource}/upload`,
+          data: file,
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
 
-      params.data.paintingUrl = image.data.paintingUrl
-      params.data.prevPaintingUrl = params.previousData.paintingUrl
+        params.data.paintingUrl = image.data.paintingUrl
+        params.data.prevPaintingUrl = params.previousData.paintingUrl
+      }
+
+      const url = `${apiUrl}/${resource}/${params.id}`
+
+      // Логирование данных перед отправкой запроса
+      console.log('Sending data to server:', params.data)
+
+      const { data } = await axios.patch(url, params.data)
+
+      console.log('Response from server:', data)
+
+      return { data: data[1][0] }
+    } catch (error) {
+      console.error('Error in update method:', error.message)
+      throw error
     }
-
-    const url = `${apiUrl}/${resource}/${params.id}`
-    const { data } = await axios.patch(url, params.data)
-    return { data: data[1][0] }
   },
 
-  updateMany: async (resource, params) => {
-    const query = {
-      filter: JSON.stringify({ id: params.ids }),
-    }
-    const url = `${apiUrl}/${resource}?${stringify(query)}`
-    const { data } = await axios.delete(url)
-    return { data: data }
-  },
+  // updateMany: async (resource, params) => {
+  //   const query = {
+  //     filter: JSON.stringify({ id: params.ids }),
+  //   }
+  //   const url = `${apiUrl}/${resource}?${stringify(query)}`
+  //   const { data } = await axios.delete(url)
+  //   return { data: data }
+  // },
 
   delete: async (resource, params) => {
     const url = `${apiUrl}/${resource}/${params.id}`
