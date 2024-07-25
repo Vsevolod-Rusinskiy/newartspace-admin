@@ -5,30 +5,39 @@ import axios from 'axios'
 const apiUrl = import.meta.env.VITE_APP_API_URL
 console.log('ApiUrl:', apiUrl)
 
-// todo add try catch
 export default {
   create: async (resource, params) => {
     const imageFile = params.data.pictures.rawFile
     const file = new FormData()
-
     file.append('file', imageFile, imageFile.name)
 
-    const image = await axios({
-      method: 'post',
-      url: `${apiUrl}/${resource}/upload`,
-      data: file,
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    })
+    let image
+    try {
+      image = await axios({
+        method: 'post',
+        url: `${apiUrl}/${resource}/upload`,
+        data: file,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+    } catch (error) {
+      console.error(`Error uploading image: ${error.message}`)
+      return { error: `Error uploading image: ${error.message}` }
+    }
 
     const updatedData = {
       ...params.data,
       paintingUrl: image.data.paintingUrl,
     }
 
-    const { data } = await axios.post(`${apiUrl}/${resource}`, updatedData)
-    return { data: data }
+    try {
+      const { data } = await axios.post(`${apiUrl}/${resource}`, updatedData)
+      return { data: data }
+    } catch (error) {
+      console.error(`Error creating resource: ${error.message}`)
+      return { error: `Error creating resource: ${error.message}` }
+    }
   },
 
   getList: async (resource, params) => {
@@ -42,21 +51,30 @@ export default {
 
     const url = `${apiUrl}/${resource}?${stringify(query)}`
 
-    const { data } = await axios.get(url)
+    try {
+      const { data } = await axios.get(url)
 
-    return {
-      data: data.data,
-      total: data.length,
+      return {
+        data: data.data,
+        total: data.length,
+      }
+    } catch (error) {
+      console.error(`Failed to fetch data: ${error.message}`)
+      return { error: `Failed to fetch data: ${error.message}` }
     }
   },
 
   getOne: async (resource, params) => {
     const url = `${apiUrl}/${resource}/${params.id}`
 
-    const { data } = await axios.get(url)
-
-    return {
-      data: data,
+    try {
+      const { data } = await axios.get(url)
+      return {
+        data: data,
+      }
+    } catch (error) {
+      console.error(`Failed to fetch resource: ${error.message}`)
+      return { error: `Failed to fetch resource: ${error.message}` }
     }
   },
 
@@ -65,8 +83,14 @@ export default {
       filter: JSON.stringify({ ids: params.ids }),
     }
     const url = `${apiUrl}/${resource}?${stringify(query)}`
-    const { data } = await axios.get(url)
-    return { data: data }
+
+    try {
+      const { data } = await axios.get(url)
+      return { data: data }
+    } catch (error) {
+      console.error(`Failed to fetch multiple resources: ${error.message}`)
+      return { error: `Failed to fetch multiple resources: ${error.message}` }
+    }
   },
 
   getManyReference: async (resource, params) => {
@@ -81,10 +105,16 @@ export default {
       }),
     }
     const url = `${apiUrl}/${resource}?${stringify(query)}`
-    const { data, headers } = await axios.get(url)
-    return {
-      data: data,
-      total: parseInt(headers['content-range'].split('/').pop(), 10),
+
+    try {
+      const { data, headers } = await axios.get(url)
+      return {
+        data: data,
+        total: parseInt(headers['content-range'].split('/').pop(), 10),
+      }
+    } catch (error) {
+      console.error(`Failed to fetch reference data: ${error.message}`)
+      return { error: `Failed to fetch reference data: ${error.message}` }
     }
   },
 
@@ -118,9 +148,10 @@ export default {
       return { data: data[1][0] }
     } catch (error) {
       console.error('Error in update method:', error.message)
-      throw error
+      return { error: `Error in update method: ${error.message}` }
     }
   },
+
   /** don't use so far */
   // updateMany: async (resource, params) => {
   //   const query = {
@@ -133,19 +164,29 @@ export default {
 
   delete: async (resource, params) => {
     const url = `${apiUrl}/${resource}/${params.id}`
-    const { data } = await axios.delete(url)
-    return {
-      data: data,
+
+    try {
+      const { data } = await axios.delete(url)
+      return {
+        data: data,
+      }
+    } catch (error) {
+      console.error(`Failed to delete resource: ${error.message}`)
+      return { error: `Failed to delete resource: ${error.message}` }
     }
   },
 
   deleteMany: async (resource, params) => {
-    console.log(params)
     const url = `${apiUrl}/${resource}/deleteMany/${JSON.stringify(params.ids)}`
-    await axios.delete(url)
 
-    return {
-      data: [],
+    try {
+      await axios.delete(url)
+      return {
+        data: [],
+      }
+    } catch (error) {
+      console.error(`Failed to delete multiple resources: ${error.message}`)
+      return { error: `Failed to delete multiple resources: ${error.message}` }
     }
   },
 } as DataProvider
