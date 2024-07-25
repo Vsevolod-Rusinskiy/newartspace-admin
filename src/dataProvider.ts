@@ -15,7 +15,7 @@ export default {
     try {
       image = await axios({
         method: 'post',
-        url: `${apiUrl}/${resource}/upload`,
+        url: `${apiUrl}/${resource}/upload-image`,
         data: file,
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -36,6 +36,16 @@ export default {
       return { data: data }
     } catch (error) {
       console.error(`Error creating resource: ${error.message}`)
+      //  удаляем картинку если карточка не создалась
+      try {
+        await axios({
+          method: 'delete',
+          url: `${apiUrl}/${resource}/delete-image`,
+          data: { fileName: image.data.paintingUrl.split('/').pop() },
+        })
+      } catch (deleteError) {
+        console.error(`Error deleting image: ${deleteError.message}`)
+      }
       return { error: `Error creating resource: ${error.message}` }
     }
   },
@@ -119,15 +129,16 @@ export default {
   },
 
   update: async (resource, params) => {
+    let image
     try {
       if (params.data.pictures && params.data.pictures.rawFile) {
         const imageFile = params.data.pictures.rawFile
         const file = new FormData()
         file.append('file', imageFile, imageFile.name)
 
-        const image = await axios({
+        image = await axios({
           method: 'post',
-          url: `${apiUrl}/${resource}/upload`,
+          url: `${apiUrl}/${resource}/upload-image`,
           data: file,
           headers: {
             'Content-Type': 'multipart/form-data',
@@ -144,10 +155,22 @@ export default {
       const url = `${apiUrl}/${resource}/${params.id}`
 
       const { data } = await axios.patch(url, params.data)
-
       return { data: data[1][0] }
     } catch (error) {
       console.error('Error in update method:', error.message)
+
+      // Если ошибка при обновлении ресурса и изображение было загружено, удаляем изображение
+      if (image) {
+        try {
+          await axios({
+            method: 'delete',
+            url: `${apiUrl}/${resource}/delete-image`,
+            data: { fileName: image.data.paintingUrl.split('/').pop() },
+          })
+        } catch (deleteError) {
+          console.error(`Error deleting image: ${deleteError.message}`)
+        }
+      }
       return { error: `Error in update method: ${error.message}` }
     }
   },
