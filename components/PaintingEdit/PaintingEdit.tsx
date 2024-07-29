@@ -7,6 +7,13 @@ import {
   ImageInput,
   required,
 } from 'react-admin'
+import GenericSelect from '../selects/GenericSelect'
+import artTypesList from '../../data/artTypesList.json'
+import themesList from '../../data/themesList.json'
+import stylesList from '../../data/stylesList.json'
+import materialsList from '../../data/materialsList.json'
+import formatList from '../../data/formatList.json'
+import colorList from '../../data/colorList.json'
 
 const requiredValidation = required('Это обязательное поле')
 const PaintingEdit = () => (
@@ -24,16 +31,24 @@ const PaintingEdit = () => (
         label='Название картины'
         validate={requiredValidation}
       />
-      <TextInput source='artType' label='Вид искусства' />
-      <TextInput source='theme' label='Тематика' />
-      <TextInput source='style' label='Стиль' />
+      <GenericSelect
+        source='artType'
+        choices={artTypesList}
+        label='Вид искусства'
+      />
+      <GenericSelect source='theme' choices={themesList} label='Тематика' />
+      <GenericSelect source='style' choices={stylesList} label='Стиль' />
       <TextInput source='base' label='Основа' />
-      <TextInput source='materials' label='Материалы' />
+      <GenericSelect
+        source='materials'
+        choices={materialsList}
+        label='Материалы'
+      />
       <NumberInput source='height' label='Высота' />
       <NumberInput source='width' label='Ширина' />
       <NumberInput source='yearOfCreation' label='Год создания' />
-      <TextInput source='format' label='Формат' />
-      <TextInput source='color' label='Цвет' />
+      <GenericSelect source='format' choices={formatList} label='Формат' />
+      <GenericSelect source='color' choices={colorList} label='Цвет' />
       <NumberInput source='price' label='Цена' validate={requiredValidation} />
     </SimpleForm>
   </Edit>
