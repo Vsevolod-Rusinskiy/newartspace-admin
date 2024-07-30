@@ -5,7 +5,7 @@ interface ChoiceType {
   value: string | number
 }
 
-export interface GenericSelectProps extends FieldProps {
+export interface SelectInputPropTypes extends FieldProps {
   source: string
   choices: ChoiceType[]
   label?: string

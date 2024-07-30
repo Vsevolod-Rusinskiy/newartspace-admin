@@ -1,8 +1,8 @@
 import React from 'react'
 import { SelectInput } from 'react-admin'
-import { GenericSelectProps } from '../../types/propTypes/GenericSelectPropTypes'
+import { SelectInputPropTypes } from '../../types/propTypes'
 
-const GenericSelect: React.FC<GenericSelectProps> = React.memo(
+const SelectInputComponent: React.FC<SelectInputPropTypes> = React.memo(
   ({ source, choices, label, validate }) => {
     const processedChoice = choices.map((choice) => ({
       id: choice.id,
@@ -19,6 +19,6 @@ const GenericSelect: React.FC<GenericSelectProps> = React.memo(
     )
   }
 )
-GenericSelect.displayName = 'GenericSelect'
+SelectInputComponent.displayName = 'SelectInputComponent'
 
-export default GenericSelect
+export default SelectInputComponent

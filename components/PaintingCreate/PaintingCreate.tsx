@@ -2,12 +2,11 @@ import {
   Create,
   NumberInput,
   SimpleForm,
-  TextInput,
   required,
   ImageInput,
   ImageField,
 } from 'react-admin'
-import GenericSelect from '../selects/GenericSelect'
+import { SelectInputComponent, TextInputComponent } from '../inputs'
 import { sortedSelectList } from '../../constants'
 
 const {
@@ -26,21 +25,25 @@ export const PaintingCreate = () => (
       <ImageInput source='pictures' label='Related pictures'>
         <ImageField source='src' title='title' />
       </ImageInput>
-      <TextInput source='author' label='Автор картины' />
-      <TextInput
+      <TextInputComponent source='author' label='Автор картины' />
+      <TextInputComponent
         source='title'
         label='Название картины'
         validate={requiredValidation}
       />
-      <GenericSelect
+      <SelectInputComponent
         source='artType'
         choices={artTypesList}
         label='Вид искусства'
       />
-      <GenericSelect source='theme' choices={themesList} label='Тематика' />
-      <GenericSelect source='style' choices={stylesList} label='Стиль' />
-      <TextInput source='base' label='Основа' />
-      <GenericSelect
+      <SelectInputComponent
+        source='theme'
+        choices={themesList}
+        label='Тематика'
+      />
+      <SelectInputComponent source='style' choices={stylesList} label='Стиль' />
+      <TextInputComponent source='base' label='Основа' />
+      <SelectInputComponent
         source='materials'
         choices={materialsList}
         label='Материалы'
@@ -48,8 +51,12 @@ export const PaintingCreate = () => (
       <NumberInput source='height' label='Высота' />
       <NumberInput source='width' label='Ширина' />
       <NumberInput source='yearOfCreation' label='Год создания' />
-      <GenericSelect source='format' choices={formatsList} label='Формат' />
-      <GenericSelect source='color' choices={colorsList} label='Цвет' />
+      <SelectInputComponent
+        source='format'
+        choices={formatsList}
+        label='Формат'
+      />
+      <SelectInputComponent source='color' choices={colorsList} label='Цвет' />
       <NumberInput source='price' label='Цена' validate={requiredValidation} />
     </SimpleForm>
   </Create>
