@@ -8,12 +8,6 @@ import {
   required,
 } from 'react-admin'
 import GenericSelect from '../selects/GenericSelect'
-import artTypesList from '../../data/artTypesList.json'
-import themesList from '../../data/themesList.json'
-import stylesList from '../../data/stylesList.json'
-import materialsList from '../../data/materialsList.json'
-import formatList from '../../data/formatList.json'
-import colorList from '../../data/colorList.json'
 
 const requiredValidation = required('Это обязательное поле')
 const PaintingEdit = () => (

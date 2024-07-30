@@ -2,7 +2,7 @@ import { FieldProps, Validator } from 'react-admin'
 
 interface ChoiceType {
   id: string
-  name: string
+  value: string
 }
 
 export interface GenericSelectProps extends FieldProps {
