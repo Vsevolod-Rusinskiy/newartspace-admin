@@ -47,7 +47,6 @@ export const PaintingCreate = () => (
         label='Тематика'
       />
       <SelectInputComponent source='style' choices={stylesList} label='Стиль' />
-      <TextInputComponent source='base' label='Основа' />
       <SelectInputComponent
         source='materials'
         choices={materialsList}

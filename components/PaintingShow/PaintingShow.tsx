@@ -23,7 +23,6 @@ export const PaintingShow = () => {
         <TextField source='artType' label='Вид искусства' />
         <TextField source='theme' label='Тематика' />
         <TextField source='style' label='Стиль' />
-        <TextField source='base' label='Основа' />
         <TextField source='materials' label='Материалы' />
         <TextField source='dimensions' label='Размеры' />
         <TextField source='yearOfCreation' label='Год создания' />
