@@ -11,6 +11,7 @@ import { sortedSelectList } from '../../constants'
 
 const {
   artTypesList,
+  authorsList,
   colorsList,
   formatsList,
   materialsList,
@@ -28,7 +29,12 @@ const PaintingEdit = () => (
         <ImageField source='src' title='title' />
       </ImageInput>
 
-      <TextInputComponent source='author' label='Автор картины' />
+      <SelectInputComponent
+        source='author'
+        choices={authorsList}
+        label='Автор картины'
+      />
+
       <TextInputComponent
         source='title'
         label='Название картины'
