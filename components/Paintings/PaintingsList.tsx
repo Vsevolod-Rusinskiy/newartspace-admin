@@ -8,9 +8,9 @@ import {
 import { ImageField } from 'react-admin'
 import './index.css'
 
-export const PaintingList = () => {
+export const PaintingList = (props) => {
   return (
-    <List>
+    <List {...props}>
       <Datagrid rowClick='show'>
         <CloneButton />
         <ImageField source='paintingUrl' label='Картина' />
