@@ -51,11 +51,12 @@ export default {
   },
 
   getList: async (resource, params) => {
-    const { page, perPage } = params.pagination
+    const { page, perPage: limit } = params.pagination
     const { field, order } = params.sort
     const query = {
       sort: JSON.stringify([field, order]),
-      range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
+      limit: limit,
+      page: page,
       filter: JSON.stringify(params.filter),
     }
 
@@ -66,7 +67,7 @@ export default {
 
       return {
         data: data.data,
-        total: data.length,
+        total: data.total,
       }
     } catch (error) {
       console.error(`Failed to fetch data: ${error.message}`)
