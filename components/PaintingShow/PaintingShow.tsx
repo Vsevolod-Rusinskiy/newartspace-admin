@@ -2,12 +2,13 @@ import {
   DeleteButton,
   ImageField,
   NumberField,
+  RichTextField,
   Show,
   SimpleShowLayout,
   TextField,
   TopToolbar,
 } from 'react-admin'
-import './index.css'
+import '../../styles/customStyles.css'
 
 export const PaintingShow = () => {
   return (
@@ -29,6 +30,11 @@ export const PaintingShow = () => {
         <TextField source='format' label='Формат' />
         <TextField source='color' label='Цвет' />
         <NumberField source='price' label='Цена' />
+        <RichTextField
+          source='description'
+          label='Описание картины'
+          className='custom-richtext-text'
+        />
       </SimpleShowLayout>
     </Show>
   )

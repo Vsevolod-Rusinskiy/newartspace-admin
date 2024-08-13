@@ -8,6 +8,8 @@ import {
 } from 'react-admin'
 import { SelectInputComponent, TextInputComponent } from '../inputs'
 import { sortedSelectList } from '../../constants'
+import { RichTextInput } from 'ra-input-rich-text'
+import '../../styles/customStyles.css'
 
 const {
   artTypesList,
@@ -66,6 +68,11 @@ const PaintingEdit = () => (
       />
       <SelectInputComponent source='color' choices={colorsList} label='Цвет' />
       <NumberInput source='price' label='Цена' validate={requiredValidation} />
+      <RichTextInput
+        source='description'
+        label='Описание картины'
+        className='custom-richtext-input'
+      />
     </SimpleForm>
   </Edit>
 )
