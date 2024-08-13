@@ -375,6 +375,10 @@ const selectLists = {
     { id: 108, value: 'Модерн' },
     { id: 109, value: 'Ню' },
     { id: 110, value: 'Поп-арт' },
+    { id: 111, value: 'Сказки' },
+    { id: 112, value: 'Игры' },
+    { id: 113, value: 'Игрушки' },
+    { id: 114, value: 'Традиции' },
   ],
 }
 
