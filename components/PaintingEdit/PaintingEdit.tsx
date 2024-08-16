@@ -10,6 +10,7 @@ import { SelectInputComponent, TextInputComponent } from '../inputs'
 import { sortedSelectList } from '../../constants'
 import { RichTextInput } from 'ra-input-rich-text'
 import '../../styles/customStyles.css'
+import { validateFileSize } from '../../src/utils/common'
 
 const {
   artTypesList,
@@ -27,7 +28,11 @@ const PaintingEdit = () => (
     <SimpleForm>
       <ImageField source='paintingUrl' label='Картина' />
 
-      <ImageInput source='pictures' label='Загрузить новую картину'>
+      <ImageInput
+        source='pictures'
+        label='Загрузить новую картину'
+        validate={validateFileSize}
+      >
         <ImageField source='src' title='title' />
       </ImageInput>
 

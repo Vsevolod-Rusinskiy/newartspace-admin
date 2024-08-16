@@ -10,6 +10,7 @@ import { RichTextInput } from 'ra-input-rich-text'
 import { SelectInputComponent, TextInputComponent } from '../inputs'
 import { sortedSelectList } from '../../constants'
 import '../../styles/customStyles.css'
+import { validateFileSize } from '../../src/utils/common'
 
 const {
   artTypesList,
@@ -25,7 +26,11 @@ const requiredValidation = required('Это обязательное поле')
 export const PaintingCreate = () => (
   <Create mutationMode='pessimistic'>
     <SimpleForm>
-      <ImageInput source='pictures' label='Related pictures'>
+      <ImageInput
+        source='pictures'
+        label='Изображение картины'
+        validate={validateFileSize}
+      >
         <ImageField source='src' title='title' />
       </ImageInput>
       <SelectInputComponent

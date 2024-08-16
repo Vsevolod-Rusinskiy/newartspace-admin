@@ -3055,6 +3055,22 @@ ra-core@^4.16.15:
     react-is "^17.0.2"
     react-query "^3.32.1"
 
+ra-core@^4.16.2:
+  version "4.16.20"
+  resolved "https://registry.yarnpkg.com/ra-core/-/ra-core-4.16.20.tgz#ad11785c706f8256ec0e9d371be2e13c8ca40e80"
+  integrity sha512-+xJSVBD3zTG9Zxy042SpAWsozuIKCNvN/cZeUr5lINHY3/zOcZ2bbJ+Ce7IMcKnlvxS4g3tvqq4HuTQpItFEcg==
+  dependencies:
+    clsx "^1.1.1"
+    date-fns "^2.19.0"
+    eventemitter3 "^4.0.7"
+    inflection "~1.12.0"
+    jsonexport "^3.2.0"
+    lodash "~4.17.5"
+    prop-types "^15.6.1"
+    query-string "^7.1.1"
+    react-is "^17.0.2"
+    react-query "^3.32.1"
+
 ra-i18n-polyglot@^4.16.15:
   version "4.16.15"
   resolved "https://registry.yarnpkg.com/ra-i18n-polyglot/-/ra-i18n-polyglot-4.16.15.tgz#f19f4d0dc071495df41bdce6437c217cdeba6760"
@@ -3088,6 +3104,13 @@ ra-language-english@^4.16.15:
   integrity sha512-eMaEMOstlqDtcpwBFc8w1JXQ3a0BKt8whji7Ef0X5KSUYoSl1z6HZsOLILzDojW8BbgGPGFGRi+X3XUb/Z1Zbw==
   dependencies:
     ra-core "^4.16.15"
+
+ra-language-russian@^4.14.2:
+  version "4.14.2"
+  resolved "https://registry.yarnpkg.com/ra-language-russian/-/ra-language-russian-4.14.2.tgz#eb90dc31b5990a05d246d3ee1d8acb79474ae137"
+  integrity sha512-Z9N6Ox5Py913SeW6bifMnpAf/2Y2qLH7umRFxNZNK+DhHLbdp8MBnYSkwqTVe9bAXP1xUV8O3s+PDS2n24WIgA==
+  dependencies:
+    ra-core "^4.16.2"
 
 ra-ui-materialui@^4.16.15:
   version "4.16.15"
