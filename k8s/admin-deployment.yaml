@@ -14,8 +14,8 @@ spec:
     spec:
       containers:
         - name: admin
-          image: newspace-admin:latest
-          imagePullPolicy: IfNotPresent
+          image: ghcr.io/vsevolod-rusinskiy/newartspace-admin:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 4173
           env:
@@ -39,3 +39,5 @@ spec:
                 configMapKeyRef:
                   name: admin-config
                   key: VITE_APP_API_URL
+      imagePullSecrets:
+        - name: ghcr-io-secret
