@@ -28,8 +28,30 @@ jobs:
       - name: Run Lint check
         run: yarn lint
 
-  deploy:
+  build-and-push-image:
     needs: prettier-lint-check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GH_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ghcr.io/vsevolod-rusinskiy/newartspace-admin:latest
+
+  deploy:
+    needs: build-and-push-image
     runs-on: ubuntu-latest
 
     steps:
