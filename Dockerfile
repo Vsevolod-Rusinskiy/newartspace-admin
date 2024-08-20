@@ -27,7 +27,8 @@ COPY --from=builder /app/package.json /app/yarn.lock ./
 COPY --from=builder /app/dist ./dist
 
 # Устанавливаем только production-зависимости
-RUN yarn install --frozen-lockfile --production
+# RUN yarn install --frozen-lockfile --production
+RUN yarn install --frozen-lockfile
 
 # Указываем команду для запуска приложения
 CMD ["yarn", "serve"]
