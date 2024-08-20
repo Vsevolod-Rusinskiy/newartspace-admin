@@ -11,5 +11,5 @@ services:
       - "3002:4173"
     env_file:
       - .env
-    command: ["yarn", "serve"]
+    command: ["http-server", "./dist", "-p", "4173"]
     restart: unless-stopped
