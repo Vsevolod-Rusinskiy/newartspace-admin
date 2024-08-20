@@ -25,14 +25,15 @@ WORKDIR /app
 # Копируем только необходимые файлы из builder-а
 COPY --from=builder /app/package.json /app/yarn.lock ./
 COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/vite.config.ts ./
 
 # Устанавливаем только production-зависимости
-# RUN yarn install --frozen-lockfile --production
-RUN yarn install --frozen-lockfile
+RUN yarn install --frozen-lockfile --production
 
 # Указываем команду для запуска приложения
 # CMD ["yarn", "serve"]
-CMD ["vite", "preview", "--host"]
+#CMD ["vite", "preview", "--host"]
+CMD ["http-server", "./dist", "-p", "4173"]
 
 # Указываем, что контейнер будет слушать порт 4173
 EXPOSE 4173
