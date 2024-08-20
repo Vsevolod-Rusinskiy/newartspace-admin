@@ -31,7 +31,8 @@ COPY --from=builder /app/dist ./dist
 RUN yarn install --frozen-lockfile
 
 # Указываем команду для запуска приложения
-CMD ["yarn", "serve"]
+# CMD ["yarn", "serve"]
+CMD ["vite", "preview", "--host"]
 
 # Указываем, что контейнер будет слушать порт 4173
 EXPOSE 4173
