@@ -18,6 +18,7 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 4173
+          command: ["./node_modules/.bin/http-server", "./dist", "-p", "4173"]
           env:
             - name: VITE_APP_PROTOCOL
               valueFrom:
