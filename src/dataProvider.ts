@@ -2,7 +2,9 @@ import { DataProvider } from 'react-admin'
 import { stringify } from 'query-string'
 import axios from 'axios'
 
+// const apiUrl1 = process.env.VITE_APP_API_URL
 const apiUrl = import.meta.env.VITE_APP_API_URL
+// console.log("apiUrl1:", apiUrl1);
 console.log('ApiUrl:', apiUrl)
 // test flag = true
 

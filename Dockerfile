@@ -13,6 +13,7 @@ RUN yarn install --frozen-lockfile
 # Копируем остальные файлы проекта
 COPY . .
 
+
 # Компилируем TypeScript код
 RUN yarn build
 
@@ -26,14 +27,13 @@ WORKDIR /app
 COPY --from=builder /app/package.json /app/yarn.lock ./
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/vite.config.ts ./
+COPY --from=builder /app/.env .env
 
 # Устанавливаем только production-зависимости
 RUN yarn install --frozen-lockfile --production
 
 # Указываем команду для запуска приложения
-# CMD ["yarn", "serve"]
-#CMD ["vite", "preview", "--host"]
-CMD ["http-server", "./dist", "-p", "4173"]
+CMD ["node_modules/.bin/http-server", "./dist", "-p", "4173"]
 
 # Указываем, что контейнер будет слушать порт 4173
 EXPOSE 4173
