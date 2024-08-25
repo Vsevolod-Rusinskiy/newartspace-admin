@@ -27,7 +27,6 @@ WORKDIR /app
 COPY --from=builder /app/package.json /app/yarn.lock ./
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/vite.config.ts ./
-COPY --from=builder /app/.env .env
 
 # Устанавливаем только production-зависимости
 RUN yarn install --frozen-lockfile --production
