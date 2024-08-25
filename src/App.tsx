@@ -10,7 +10,7 @@ import polyglotI18nProvider from 'ra-i18n-polyglot'
 
 const i18nProvider = polyglotI18nProvider(() => russianMessages, 'ru')
 
-// test flag
+// test flag = true
 
 export const App = () => (
   <Admin
