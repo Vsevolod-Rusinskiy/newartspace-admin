@@ -2,7 +2,7 @@ import { DataProvider } from 'react-admin'
 import { stringify } from 'query-string'
 import axios from 'axios'
 
-const apiUrl = import.meta.env.VITE_APP_API_URL
+const apiUrl = import.meta.env.VITE_APP_API_URL || 'https://back.newartspace.ru'
 console.log('ApiUrl:', apiUrl)
 // test flag = false
 
