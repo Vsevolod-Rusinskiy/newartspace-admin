@@ -12,7 +12,6 @@ export default defineConfig(({ mode }) => {
     },
     define: {
       // Передаем переменные окружения в код
-      'process.env': process.env,
       'import.meta.env.VITE_APP_API_URL': JSON.stringify(env.VITE_APP_API_URL),
     },
     base: './',

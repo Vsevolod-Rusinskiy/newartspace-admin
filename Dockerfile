@@ -4,6 +4,9 @@ FROM node:20.9.0-alpine AS builder
 # Создаем рабочую директорию
 WORKDIR /app
 
+# Добавляем поддержку аргументов сборки
+ARG VITE_APP_API_URL
+
 # Копируем только необходимые файлы для установки зависимостей
 COPY package.json yarn.lock ./
 
@@ -13,9 +16,9 @@ RUN yarn install --frozen-lockfile
 # Копируем остальные файлы проекта
 COPY . .
 
-
 # Компилируем TypeScript код
-RUN yarn build
+#RUN yarn build
+RUN VITE_APP_API_URL=$VITE_APP_API_URL yarn build
 
 # Этап 2: Продакшн
 FROM node:20.9.0-alpine AS production
