@@ -49,6 +49,8 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ghcr.io/vsevolod-rusinskiy/newartspace-admin:latest
+          build-args: |
+            VITE_APP_API_URL=${{ secrets.VITE_APP_API_URL }}
 
   deploy:
     needs: build-and-push-image
