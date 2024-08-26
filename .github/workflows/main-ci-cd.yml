@@ -54,7 +54,8 @@ jobs:
           push: true
           tags: ghcr.io/vsevolod-rusinskiy/newartspace-admin:latest
           build-args: |
-            VITE_APP_API_URL=${{ secrets.VITE_APP_API_URL }}
+            VITE_APP_API_URL="https://back.newartspace.ru"
+          no-cache: true
 
   deploy:
     needs: build-and-push-image
@@ -76,5 +77,5 @@ jobs:
             docker-compose down
             git restore .
             git pull origin master
-            docker-compose build
+            docker-compose build --no-cache
             docker-compose up -d
