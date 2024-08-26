@@ -7,6 +7,9 @@ WORKDIR /app
 # Добавляем поддержку аргументов сборки
 ARG VITE_APP_API_URL
 
+# Выводим значение переменной для отладки
+RUN echo "VITE_APP_API_URL is set to $VITE_APP_API_URL"
+
 # Копируем только необходимые файлы для установки зависимостей
 COPY package.json yarn.lock ./
 
@@ -17,7 +20,7 @@ RUN yarn install --frozen-lockfile
 COPY . .
 
 # Компилируем TypeScript код
-#RUN yarn build
+#RUN #yarn build
 RUN VITE_APP_API_URL=$VITE_APP_API_URL yarn build
 
 # Этап 2: Продакшн
