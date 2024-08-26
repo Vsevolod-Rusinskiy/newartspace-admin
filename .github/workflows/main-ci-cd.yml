@@ -42,10 +42,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GH_TOKEN }}
 
-      - name: Echo VITE_APP_API_URL
-        run: echo "VITE_APP_API_URL is set to ${{ secrets.VITE_APP_API_URL }}"
-
-
       - name: Build and push Docker image
         uses: docker/build-push-action@v3
         with:
@@ -53,8 +49,6 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ghcr.io/vsevolod-rusinskiy/newartspace-admin:latest
-          build-args: |
-            VITE_APP_API_URL="https://back.newartspace.ru"
           no-cache: true
 
   deploy:
