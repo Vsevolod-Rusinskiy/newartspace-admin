@@ -4,7 +4,7 @@ import axios from 'axios'
 
 const apiUrl = import.meta.env.VITE_APP_API_URL
 console.log('ApiUrl:', apiUrl)
-// test flag = true
+// test flag = false
 
 export default {
   create: async (resource, params) => {
