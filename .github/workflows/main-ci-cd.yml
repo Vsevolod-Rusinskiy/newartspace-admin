@@ -107,6 +107,12 @@ jobs:
       - name: Display kubeconfig content
         run: cat ~/.kube/config
 
+      - name: List kubectl contexts
+        env:
+          KUBECONFIG: ~/.kube/config
+        run: |
+          kubectl config get-contexts
+
       - name: Set kubectl context
         env:
           KUBECONFIG: ~/.kube/config
