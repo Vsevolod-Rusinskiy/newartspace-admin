@@ -116,7 +116,14 @@ jobs:
           echo "${{ secrets.KUBECONFIG_CERTIFICATE }}" > ~/.kube/certificate.crt
           chmod 600 ~/.kube/client.crt ~/.kube/client.key ~/.kube/certificate.crt
 
-      - name: Verify kubectl connection with manual parameters  # Пробуем с явными параметрами
+      - name: Verify certificate files
+        run: |
+          ls -l ~/.kube/
+          cat ~/.kube/client.crt
+          cat ~/.kube/client.key
+          cat ~/.kube/certificate.crt
+
+      - name: Verify kubectl connection with manual parameters
         run: |
           kubectl --certificate-authority=~/.kube/certificate.crt \
                   --client-certificate=~/.kube/client.crt \
