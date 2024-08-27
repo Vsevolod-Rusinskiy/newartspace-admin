@@ -52,7 +52,7 @@ jobs:
 #          no-cache: true
 
   deploy:
-    needs: build-and-push-image
+#    needs: build-and-push-image
     runs-on: ubuntu-latest
 
     steps:
@@ -108,6 +108,13 @@ jobs:
 
       - name: Display kubeconfig content
         run: cat ~/.kube/config
+
+      - name: Copy certificates
+        run: |
+          echo "${{ secrets.KUBECONFIG_CLIENT_CERT }}" > ~/.kube/client.crt
+          echo "${{ secrets.KUBECONFIG_CLIENT_KEY }}" > ~/.kube/client.key
+          echo "${{ secrets.KUBECONFIG_CERTIFICATE }}" > ~/.kube/certificate.crt
+          chmod 600 ~/.kube/client.crt ~/.kube/client.key ~/.kube/certificate.crt
 
       - name: Verify kubectl connection with manual parameters  # Пробуем с явными параметрами
         run: |
