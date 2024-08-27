@@ -107,7 +107,13 @@ jobs:
       - name: Display kubeconfig content
         run: cat ~/.kube/config
 
-      - name: Verify kubectl connection  # Добавляем этот шаг
+      - name: Set kubectl context
+        env:
+          KUBECONFIG: ~/.kube/config
+        run: |
+          kubectl config use-context kubernetes-admin@kubernetes
+
+      - name: Verify kubectl connection
         env:
           KUBECONFIG: ~/.kube/config
         run: |
