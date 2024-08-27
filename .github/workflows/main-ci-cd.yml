@@ -84,5 +84,3 @@ jobs:
           script: |
             kubectl rollout restart deployment admin
             kubectl get pods -n default
-
-
