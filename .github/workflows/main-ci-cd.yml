@@ -82,30 +82,38 @@ jobs:
       - name: Set up kubeconfig
         run: |
           mkdir -p ~/.kube
-          echo "apiVersion: v1" > ~/.kube/config
-          echo "clusters:" >> ~/.kube/config
-          echo "- cluster:" >> ~/.kube/config
-          echo "    certificate-authority: ~/.kube/certificate.crt" >> ~/.kube/config
-          echo "    server: https://193.108.113.149:6443" >> ~/.kube/config
-          echo "  name: kubernetes" >> ~/.kube/config
-          echo "contexts:" >> ~/.kube/config
-          echo "- context:" >> ~/.kube/config
-          echo "    cluster: kubernetes" >> ~/.kube/config
-          echo "    user: kubernetes-admin" >> ~/.kube/config
-          echo "  name: kubernetes-admin@kubernetes" >> ~/.kube/config
-          echo "current-context: kubernetes-admin@kubernetes" >> ~/.kube/config
-          echo "kind: Config" >> ~/.kube/config
-          echo "preferences: {}" >> ~/.kube/config
-          echo "users:" >> ~/.kube/config
-          echo "- name: kubernetes-admin" >> ~/.kube/config
-          echo "  user:" >> ~/.kube/config
-          echo "    client-certificate: ~/.kube/client.crt" >> ~/.kube/config
-          echo "    client-key: ~/.kube/client.key" >> ~/.kube/config
+          cat <<EOF > ~/.kube/config
+          apiVersion: v1
+          kind: Config
+          clusters:
+          - cluster:
+              certificate-authority: ~/.kube/certificate.crt
+              server: https://193.108.113.149:6443
+            name: kubernetes
+          contexts:
+          - context:
+              cluster: kubernetes
+              user: kubernetes-admin
+            name: kubernetes-admin@kubernetes
+          current-context: kubernetes-admin@kubernetes
+          users:
+          - name: kubernetes-admin
+            user:
+              client-certificate: ~/.kube/client.crt
+              client-key: ~/.kube/client.key
+          preferences: {}
+          EOF
 
           chmod 600 ~/.kube/config
 
       - name: Display kubeconfig content
         run: cat ~/.kube/config
+
+      - name: List kubectl contexts
+        env:
+          KUBECONFIG: ~/.kube/config
+        run: |
+          kubectl config get-contexts
 
       - name: Set kubectl context
         env:
