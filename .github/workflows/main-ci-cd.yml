@@ -6,53 +6,53 @@ on:
       - master
 
 jobs:
-#  prettier-lint-check:
-#    runs-on: ubuntu-latest
-#
-#    steps:
-#      - name: Checkout code
-#        uses: actions/checkout@v2
-#
-#      - name: Set up Node.js
-#        uses: actions/setup-node@v3
-#        with:
-#          node-version: '20.9.0'
-#          cache: 'yarn'
-#
-#      - name: Install dependencies
-#        run: yarn install
-#
-#      - name: Run Prettier check
-#        run: yarn prettier-check
-#
-#      - name: Run Lint check
-#        run: yarn lint
+  prettier-lint-check:
+    runs-on: ubuntu-latest
 
-#  build-and-push-image:
-#    needs: prettier-lint-check
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Checkout code
-#        uses: actions/checkout@v2
-#
-#      - name: Log in to GitHub Container Registry
-#        uses: docker/login-action@v2
-#        with:
-#          registry: ghcr.io
-#          username: ${{ github.actor }}
-#          password: ${{ secrets.GH_TOKEN }}
-#
-#      - name: Build and push Docker image
-#        uses: docker/build-push-action@v3
-#        with:
-#          context: .
-#          file: ./Dockerfile
-#          push: true
-#          tags: ghcr.io/vsevolod-rusinskiy/newartspace-admin:latest
-#          no-cache: true
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.9.0'
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Run Prettier check
+        run: yarn prettier-check
+
+      - name: Run Lint check
+        run: yarn lint
+
+  build-and-push-image:
+    needs: prettier-lint-check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GH_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ghcr.io/vsevolod-rusinskiy/newartspace-admin:latest
+          no-cache: true
 
   deploy:
-#    needs: build-and-push-image
+    needs: build-and-push-image
     runs-on: ubuntu-latest
 
     steps:
@@ -74,79 +74,13 @@ jobs:
       #       docker-compose build --no-cache
       #       docker-compose up -d
 
-      - name: Setup kubectl
-        uses: azure/setup-kubectl@v1
+      - name: Deploy to Kubernetes via SSH
+        uses: appleboy/ssh-action@master
         with:
-          version: 'v1.28.13'
-
-      - name: Set up kubeconfig
-        run: |
-          mkdir -p ~/.kube
-          cat <<EOF > ~/.kube/config
-          apiVersion: v1
-          kind: Config
-          clusters:
-          - cluster:
-              certificate-authority: ~/.kube/certificate.crt
-              server: https://193.108.113.149:6443
-            name: kubernetes
-          contexts:
-          - context:
-              cluster: kubernetes
-              user: kubernetes-admin
-            name: kubernetes-admin@kubernetes
-          current-context: kubernetes-admin@kubernetes
-          users:
-          - name: kubernetes-admin
-            user:
-              client-certificate: ~/.kube/client.crt
-              client-key: ~/.kube/client.key
-          preferences: {}
-          EOF
-
-          chmod 600 ~/.kube/config
-
-      - name: Display kubeconfig content
-        run: cat ~/.kube/config
-
-      - name: Copy certificates
-        run: |
-          echo "${{ secrets.KUBECONFIG_CLIENT_CERT }}" > ~/.kube/client.crt
-          echo "${{ secrets.KUBECONFIG_CLIENT_KEY }}" > ~/.kube/client.key
-          echo "${{ secrets.KUBECONFIG_CERTIFICATE }}" > ~/.kube/certificate.crt
-          chmod 600 ~/.kube/client.crt ~/.kube/client.key ~/.kube/certificate.crt
-
-      - name: Verify directory contents
-        run: ls -la ~/.kube/
-
-      - name: Check client certificate content
-        run: cat ~/.kube/client.crt
-
-      - name: Check client key content
-        run: cat ~/.kube/client.key
-
-      - name: Check CA certificate content
-        run: cat ~/.kube/certificate.crt
-
-      - name: Verify certificate files
-        run: |
-          ls -l ~/.kube/
-          cat ~/.kube/client.crt
-          cat ~/.kube/client.key
-          cat ~/.kube/certificate.crt
-
-      - name: Verify kubectl connection with manual parameters
-        run: |
-          kubectl --certificate-authority=~/.kube/certificate.crt \
-                  --client-certificate=~/.kube/client.crt \
-                  --client-key=~/.kube/client.key \
-                  --server=https://193.108.113.149:6443 get nodes
-
-      - name: Check KUBECONFIG environment variable
-        run: echo $KUBECONFIG
-
-      - name: Kubernetes Rollout Restart
-        env:
-          KUBECONFIG: ~/.kube/config
-        run: |
-          kubectl rollout restart deployment admin
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          command_timeout: 360m
+          script: |
+            kubectl rollout restart deployment admin
+            kubectl get pods -n default
