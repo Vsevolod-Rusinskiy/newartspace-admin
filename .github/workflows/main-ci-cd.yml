@@ -104,6 +104,9 @@ jobs:
 
           chmod 600 ~/.kube/config
 
+      - name: Display kubeconfig content
+        run: cat ~/.kube/config
+
       - name: Verify kubectl connection  # Добавляем этот шаг
         env:
           KUBECONFIG: ~/.kube/config
