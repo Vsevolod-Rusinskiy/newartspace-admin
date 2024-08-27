@@ -59,17 +59,33 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Deploy to Server
-        uses: appleboy/ssh-action@master
+    # - name: Deploy to Server
+    #   uses: appleboy/ssh-action@master
+    #   with:
+    #     host: ${{ secrets.SSH_HOST }}
+    #     username: ${{ secrets.SSH_USERNAME }}
+    #     key: ${{ secrets.SSH_PRIVATE_KEY }}
+    #     command_timeout: 360m
+    #     script: |
+    #       cd /var/www/newartspace/admin
+    #       docker-compose down
+    #       git restore .
+    #       git pull origin master
+    #       docker-compose build --no-cache
+    #       docker-compose up -d
+
+      - name: Setup kubectl
+        uses: azure/setup-kubectl@v1
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          command_timeout: 360m
-          script: |
-            cd /var/www/newartspace/admin
-            docker-compose down
-            git restore .
-            git pull origin master
-            docker-compose build --no-cache
-            docker-compose up -d
+          version: 'v1.28.13'
+
+      - name: Set up kubeconfig
+        run: |
+          echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
+          chmod 600 ~/.kube/config
+
+      - name: Kubernetes Rollout Restart
+        env:
+          KUBECONFIG: ${{ secrets.KUBECONFIG }}
+        run: |
+          kubectl rollout restart deployment admin
