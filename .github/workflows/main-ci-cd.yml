@@ -104,6 +104,12 @@ jobs:
 
           chmod 600 ~/.kube/config
 
+      - name: Verify kubectl connection  # Добавляем этот шаг
+        env:
+          KUBECONFIG: ~/.kube/config
+        run: |
+          kubectl get nodes
+
       - name: Kubernetes Rollout Restart
         env:
           KUBECONFIG: ~/.kube/config
