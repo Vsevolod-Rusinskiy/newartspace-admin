@@ -82,11 +82,36 @@ jobs:
       - name: Set up kubeconfig
         run: |
           mkdir -p ~/.kube
-          echo "${{ secrets.KUBECONFIG }}" | base64 --decode > ~/.kube/config
+          echo "${{ secrets.KUBECONFIG_CERTIFICATE }}" | base64 --decode > ~/.kube/certificate.crt
+          echo "${{ secrets.KUBECONFIG_CLIENT_CERT }}" | base64 --decode > ~/.kube/client.crt
+          echo "${{ secrets.KUBECONFIG_CLIENT_KEY }}" | base64 --decode > ~/.kube/client.key
+
+          cat <<EOF > ~/.kube/config
+          apiVersion: v1
+          clusters:
+          - cluster:
+           certificate-authority: ~/.kube/certificate.crt
+           server: https://193.108.113.149:6443
+          name: kubernetes
+          contexts:
+          - context:
+           cluster: kubernetes
+           user: kubernetes-admin
+          name: kubernetes-admin@kubernetes
+          current-context: kubernetes-admin@kubernetes
+          kind: Config
+          preferences: {}
+          users:
+          - name: kubernetes-admin
+          user:
+           client-certificate: ~/.kube/client.crt
+           client-key: ~/.kube/client.key
+          EOF
+
           chmod 600 ~/.kube/config
 
-      - name: Kubernetes Rollout Restart
-        env:
-          KUBECONFIG: ${{ secrets.KUBECONFIG }}
-        run: |
-          kubectl rollout restart deployment admin
+          - name: Kubernetes Rollout Restart
+            env:
+              KUBECONFIG: ~/.kube/config
+            run: |
+              kubectl rollout restart deployment admin
