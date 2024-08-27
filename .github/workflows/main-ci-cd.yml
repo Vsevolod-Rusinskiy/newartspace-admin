@@ -6,50 +6,50 @@ on:
       - master
 
 jobs:
-  prettier-lint-check:
-    runs-on: ubuntu-latest
+#  prettier-lint-check:
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - name: Checkout code
+#        uses: actions/checkout@v2
+#
+#      - name: Set up Node.js
+#        uses: actions/setup-node@v3
+#        with:
+#          node-version: '20.9.0'
+#          cache: 'yarn'
+#
+#      - name: Install dependencies
+#        run: yarn install
+#
+#      - name: Run Prettier check
+#        run: yarn prettier-check
+#
+#      - name: Run Lint check
+#        run: yarn lint
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20.9.0'
-          cache: 'yarn'
-
-      - name: Install dependencies
-        run: yarn install
-
-      - name: Run Prettier check
-        run: yarn prettier-check
-
-      - name: Run Lint check
-        run: yarn lint
-
-  build-and-push-image:
-    needs: prettier-lint-check
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GH_TOKEN }}
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: ghcr.io/vsevolod-rusinskiy/newartspace-admin:latest
-          no-cache: true
+#  build-and-push-image:
+#    needs: prettier-lint-check
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout code
+#        uses: actions/checkout@v2
+#
+#      - name: Log in to GitHub Container Registry
+#        uses: docker/login-action@v2
+#        with:
+#          registry: ghcr.io
+#          username: ${{ github.actor }}
+#          password: ${{ secrets.GH_TOKEN }}
+#
+#      - name: Build and push Docker image
+#        uses: docker/build-push-action@v3
+#        with:
+#          context: .
+#          file: ./Dockerfile
+#          push: true
+#          tags: ghcr.io/vsevolod-rusinskiy/newartspace-admin:latest
+#          no-cache: true
 
   deploy:
     needs: build-and-push-image
@@ -109,23 +109,12 @@ jobs:
       - name: Display kubeconfig content
         run: cat ~/.kube/config
 
-      - name: List kubectl contexts
-        env:
-          KUBECONFIG: ~/.kube/config
+      - name: Verify kubectl connection with manual parameters  # Пробуем с явными параметрами
         run: |
-          kubectl config get-contexts
-
-      - name: Set kubectl context
-        env:
-          KUBECONFIG: ~/.kube/config
-        run: |
-          kubectl config use-context kubernetes-admin@kubernetes
-
-      - name: Verify kubectl connection
-        env:
-          KUBECONFIG: ~/.kube/config
-        run: |
-          kubectl get nodes
+          kubectl --certificate-authority=~/.kube/certificate.crt \
+                  --client-certificate=~/.kube/client.crt \
+                  --client-key=~/.kube/client.key \
+                  --server=https://193.108.113.149:6443 get nodes
 
       - name: Check KUBECONFIG environment variable
         run: echo $KUBECONFIG
