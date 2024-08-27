@@ -116,6 +116,18 @@ jobs:
           echo "${{ secrets.KUBECONFIG_CERTIFICATE }}" > ~/.kube/certificate.crt
           chmod 600 ~/.kube/client.crt ~/.kube/client.key ~/.kube/certificate.crt
 
+      - name: Verify directory contents
+        run: ls -la ~/.kube/
+
+      - name: Check client certificate content
+        run: cat ~/.kube/client.crt
+
+      - name: Check client key content
+        run: cat ~/.kube/client.key
+
+      - name: Check CA certificate content
+        run: cat ~/.kube/certificate.crt
+
       - name: Verify certificate files
         run: |
           ls -l ~/.kube/
