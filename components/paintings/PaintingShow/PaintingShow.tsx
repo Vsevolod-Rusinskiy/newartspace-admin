@@ -8,7 +8,7 @@ import {
   TextField,
   TopToolbar,
 } from 'react-admin'
-import '../../styles/customStyles.css'
+import '../../../styles/customStyles.css'
 
 export const PaintingShow = () => {
   return (

@@ -6,7 +6,6 @@ import {
   TextField,
 } from 'react-admin'
 import { ImageField } from 'react-admin'
-import './index.css'
 
 export const PaintingList = (props) => {
   return (
