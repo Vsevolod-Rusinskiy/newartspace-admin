@@ -8,6 +8,7 @@ import {
 import { TextInputComponent } from '../../inputs'
 import '../../../styles/customStyles.css'
 import { validateFileSize } from '../../../src/utils/common'
+import { RichTextInput } from 'ra-input-rich-text'
 
 const requiredValidation = required('Это обязательное поле')
 
@@ -21,17 +22,17 @@ export const ArtistCreate = () => (
       >
         <ImageField source='src' title='title' />
       </ImageInput>
+      <TextInputComponent source='priority' label='Приоритет' />
       <TextInputComponent
         source='artistName'
         label='Имя художника'
         validate={requiredValidation}
       />
-      <TextInputComponent
+      <RichTextInput
         source='artistDescription'
         label='Описание художника'
+        className='custom-richtext-input'
       />
-
-      <TextInputComponent source='priority' label='Приоритет' />
     </SimpleForm>
   </Create>
 )

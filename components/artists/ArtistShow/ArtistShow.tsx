@@ -15,7 +15,7 @@ export const ArtistShow = () => {
         <TopToolbar>
           <DeleteButton label='Удалить' />
         </TopToolbar>
-        <ImageField source='artistUrl' label='Изображение художника' />
+        <ImageField source='imgUrl' label='Изображение художника' />
         <TextField source='artistName' label='Имя художника' />
         <TextField source='artistDescription' label='Описание художника' />
         <TextField source='priority' label='Приоритет' />

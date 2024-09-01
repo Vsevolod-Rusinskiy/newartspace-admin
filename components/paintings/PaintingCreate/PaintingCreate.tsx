@@ -33,6 +33,7 @@ export const PaintingCreate = () => (
       >
         <ImageField source='src' title='title' />
       </ImageInput>
+      <TextInputComponent source='priority' label='Приоритет' />
       <SelectInputComponent
         source='author'
         choices={authorsList}
