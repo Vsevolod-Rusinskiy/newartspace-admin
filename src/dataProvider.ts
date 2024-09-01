@@ -27,12 +27,15 @@ export default {
       return { error: `Error uploading image: ${error.message}` }
     }
 
+    console.log(image, 111)
     const updatedData = {
       ...params.data,
-      paintingUrl: image.data.paintingUrl,
+      imgUrl: image.data.imgUrl,
     }
 
+    console.log(updatedData, 222)
     try {
+      console.log(resource, 333)
       const { data } = await axios.post(`${apiUrl}/${resource}`, updatedData)
       return { data: data }
     } catch (error) {
@@ -42,7 +45,7 @@ export default {
         await axios({
           method: 'delete',
           url: `${apiUrl}/${resource}/delete-image`,
-          data: { fileName: image.data.paintingUrl.split('/').pop() },
+          data: { fileName: image.data.imgUrl.split('/').pop() },
         })
       } catch (deleteError) {
         console.error(`Error deleting image: ${deleteError.message}`)
@@ -147,10 +150,10 @@ export default {
           },
         })
 
-        params.data.paintingUrl = image.data.paintingUrl
+        params.data.imgUrl = image.data.imgUrl
       } else {
         // Если картинка не предоставлена, сохраняем предыдущий URL
-        params.data.paintingUrl = params.previousData.paintingUrl
+        params.data.imgUrl = params.previousData.imgUrl
         params.data.pictures = null
       }
 
@@ -167,7 +170,7 @@ export default {
           await axios({
             method: 'delete',
             url: `${apiUrl}/${resource}/delete-image`,
-            data: { fileName: image.data.paintingUrl.split('/').pop() },
+            data: { fileName: image.data.imgUrl.split('/').pop() },
           })
         } catch (deleteError) {
           console.error(`Error deleting image: ${deleteError.message}`)

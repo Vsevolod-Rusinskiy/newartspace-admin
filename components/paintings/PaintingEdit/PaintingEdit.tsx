@@ -6,11 +6,11 @@ import {
   ImageInput,
   required,
 } from 'react-admin'
-import { SelectInputComponent, TextInputComponent } from '../inputs'
-import { sortedSelectList } from '../../constants'
+import { SelectInputComponent, TextInputComponent } from '../../inputs'
+import { sortedSelectList } from '../../../constants'
 import { RichTextInput } from 'ra-input-rich-text'
-import '../../styles/customStyles.css'
-import { validateFileSize } from '../../src/utils/common'
+import '../../../styles/customStyles.css'
+import { validateFileSize } from '../../../src/utils/common'
 
 const {
   artTypesList,
@@ -23,10 +23,10 @@ const {
 } = sortedSelectList
 
 const requiredValidation = required('Это обязательное поле')
-const PaintingEdit = () => (
+export const PaintingEdit = () => (
   <Edit>
     <SimpleForm>
-      <ImageField source='paintingUrl' label='Картина' />
+      <ImageField source='imgUrl' label='Картина' />
 
       <ImageInput
         source='pictures'
@@ -35,7 +35,7 @@ const PaintingEdit = () => (
       >
         <ImageField source='src' title='title' />
       </ImageInput>
-
+      <TextInputComponent source='priority' label='Приоритет' />
       <SelectInputComponent
         source='author'
         choices={authorsList}
@@ -81,5 +81,3 @@ const PaintingEdit = () => (
     </SimpleForm>
   </Edit>
 )
-
-export default PaintingEdit

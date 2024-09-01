@@ -8,7 +8,7 @@ import {
   TextField,
   TopToolbar,
 } from 'react-admin'
-import '../../styles/customStyles.css'
+import '../../../styles/customStyles.css'
 
 export const PaintingShow = () => {
   return (
@@ -17,7 +17,7 @@ export const PaintingShow = () => {
         <TopToolbar>
           <DeleteButton label='УДАЛИТЬ' />
         </TopToolbar>
-        <ImageField source='paintingUrl' label='Картина' />
+        <ImageField source='imgUrl' label='Картина' />
         <NumberField source='id' />
         <TextField source='author' label='Автор картины' />
         <TextField source='title' label='Название картины' />
