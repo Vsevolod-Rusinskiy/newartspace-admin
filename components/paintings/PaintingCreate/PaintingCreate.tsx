@@ -7,10 +7,10 @@ import {
   ImageField,
 } from 'react-admin'
 import { RichTextInput } from 'ra-input-rich-text'
-import { SelectInputComponent, TextInputComponent } from '../inputs'
-import { sortedSelectList } from '../../constants'
-import '../../styles/customStyles.css'
-import { validateFileSize } from '../../src/utils/common'
+import { SelectInputComponent, TextInputComponent } from '../../inputs'
+import { sortedSelectList } from '../../../constants'
+import '../../../styles/customStyles.css'
+import { validateFileSize } from '../../../src/utils/common'
 
 const {
   artTypesList,
@@ -33,6 +33,7 @@ export const PaintingCreate = () => (
       >
         <ImageField source='src' title='title' />
       </ImageInput>
+      <TextInputComponent source='priority' label='Приоритет' />
       <SelectInputComponent
         source='author'
         choices={authorsList}
