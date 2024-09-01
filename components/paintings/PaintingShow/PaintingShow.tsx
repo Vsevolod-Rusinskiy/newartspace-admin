@@ -17,7 +17,7 @@ export const PaintingShow = () => {
         <TopToolbar>
           <DeleteButton label='УДАЛИТЬ' />
         </TopToolbar>
-        <ImageField source='paintingUrl' label='Картина' />
+        <ImageField source='imgUrl' label='Картина' />
         <NumberField source='id' />
         <TextField source='author' label='Автор картины' />
         <TextField source='title' label='Название картины' />

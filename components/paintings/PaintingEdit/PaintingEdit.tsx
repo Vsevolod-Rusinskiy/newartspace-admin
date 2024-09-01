@@ -26,7 +26,7 @@ const requiredValidation = required('Это обязательное поле')
 export const PaintingEdit = () => (
   <Edit>
     <SimpleForm>
-      <ImageField source='paintingUrl' label='Картина' />
+      <ImageField source='imgUrl' label='Картина' />
 
       <ImageInput
         source='pictures'
