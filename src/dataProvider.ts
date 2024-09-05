@@ -36,6 +36,7 @@ export default {
     console.log(updatedData, 'Updating data...')
     try {
       const { data } = await axios.post(`${apiUrl}/${resource}`, updatedData)
+      console.log(data, 'response')
       return { data: data }
     } catch (error) {
       console.error(`Error creating resource: ${error.message}`)
@@ -67,6 +68,7 @@ export default {
 
     try {
       const { data } = await axios.get(url)
+      console.log(data, 'response')
 
       return {
         data: data.data,
@@ -83,6 +85,7 @@ export default {
 
     try {
       const { data } = await axios.get(url)
+      console.log(data, 'response')
       return {
         data: data,
       }
