@@ -27,16 +27,13 @@ export default {
       return { error: `Error uploading image: ${error.message}` }
     }
 
-    console.log(image, 'image...')
     const updatedData = {
       ...params.data,
       imgUrl: image.data.imgUrl,
     }
 
-    console.log(updatedData, 'Updating data...')
     try {
       const { data } = await axios.post(`${apiUrl}/${resource}`, updatedData)
-      console.log(data, 'response')
       return { data: data }
     } catch (error) {
       console.error(`Error creating resource: ${error.message}`)
@@ -68,7 +65,6 @@ export default {
 
     try {
       const { data } = await axios.get(url)
-      console.log(data, 'response')
 
       return {
         data: data.data,
@@ -85,7 +81,6 @@ export default {
 
     try {
       const { data } = await axios.get(url)
-      console.log(data, 'response')
       return {
         data: data,
       }
@@ -160,9 +155,10 @@ export default {
       }
 
       const url = `${apiUrl}/${resource}/${params.id}`
+      delete params.data.artist
 
       const { data } = await axios.patch(url, params.data)
-      return { data: data[1][0] }
+      return { data: data }
     } catch (error) {
       console.error('Error in update method:', error.message)
 
