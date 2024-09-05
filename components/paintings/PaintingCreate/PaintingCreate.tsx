@@ -31,9 +31,9 @@ export const PaintingCreate = () => {
 
   useEffect(() => {
     axios
-      .get(`${apiUrl}/artists`) // Заменить на реальный URL API авторов
+      .get(`${apiUrl}/artists`)
       .then((response) => {
-        setAuthors(response.data.data) // Предполагаем, что авторы находятся в response.data.data
+        setAuthors(response.data.data)
       })
       .catch((error) => {
         console.error('Ошибка при получении списка авторов:', error)
@@ -54,8 +54,8 @@ export const PaintingCreate = () => {
         <SelectInputComponent
           source='artistId'
           choices={authors.map((author) => ({
-            id: author.id, // ID автора
-            value: author.artistName, // Имя автора
+            id: author.id,
+            value: author.artistName,
           }))}
           optionValue='id'
           label='Автор картины'
