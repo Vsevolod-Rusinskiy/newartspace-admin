@@ -3,7 +3,7 @@ import { SelectInput } from 'react-admin'
 import { SelectInputPropTypes } from '../../types/propTypes'
 
 const SelectInputComponent: React.FC<SelectInputPropTypes> = React.memo(
-  ({ source, choices, label, validate }) => {
+  ({ source, choices, label, validate, optionValue = 'name' }) => {
     const processedChoice = choices.map((choice) => ({
       id: choice.id,
       name: choice.value,
@@ -14,7 +14,7 @@ const SelectInputComponent: React.FC<SelectInputPropTypes> = React.memo(
         choices={processedChoice}
         label={label}
         validate={validate}
-        optionValue='name'
+        optionValue={optionValue}
       />
     )
   }

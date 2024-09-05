@@ -27,15 +27,14 @@ export default {
       return { error: `Error uploading image: ${error.message}` }
     }
 
-    console.log(image, 111)
+    console.log(image, 'image...')
     const updatedData = {
       ...params.data,
       imgUrl: image.data.imgUrl,
     }
 
-    console.log(updatedData, 222)
+    console.log(updatedData, 'Updating data...')
     try {
-      console.log(resource, 333)
       const { data } = await axios.post(`${apiUrl}/${resource}`, updatedData)
       return { data: data }
     } catch (error) {

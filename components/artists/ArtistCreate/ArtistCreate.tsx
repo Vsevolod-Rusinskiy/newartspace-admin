@@ -5,13 +5,10 @@ import {
   ImageInput,
   ImageField,
 } from 'react-admin'
-import { TextInputComponent, SelectInputComponent } from '../../inputs'
-import { sortedSelectList } from '../../../constants'
+import { TextInputComponent } from '../../inputs'
 import { validateFileSize } from '../../../src/utils/common'
 import { RichTextInput } from 'ra-input-rich-text'
 import '../../../styles/customStyles.css'
-
-const { authorsList } = sortedSelectList
 
 const requiredValidation = required('Это обязательное поле')
 
@@ -26,9 +23,8 @@ export const ArtistCreate = () => (
         <ImageField source='src' title='title' />
       </ImageInput>
       <TextInputComponent source='priority' label='Приоритет' />
-      <SelectInputComponent
+      <TextInputComponent
         source='artistName'
-        choices={authorsList}
         label='Имя художника'
         validate={requiredValidation}
       />
