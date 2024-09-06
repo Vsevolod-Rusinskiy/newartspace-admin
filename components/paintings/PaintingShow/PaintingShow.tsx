@@ -19,7 +19,7 @@ export const PaintingShow = () => {
         </TopToolbar>
         <ImageField source='imgUrl' label='Картина' />
         <NumberField source='id' />
-        <TextField source='author' label='Автор картины' />
+        <TextField source='artist.artistName' label='Автор картины' />
         <TextField source='title' label='Название картины' />
         <TextField source='artType' label='Вид искусства' />
         <TextField source='theme' label='Тематика' />

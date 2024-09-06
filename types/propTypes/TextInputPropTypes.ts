@@ -4,4 +4,5 @@ export interface TextInputPropTypes extends FieldProps {
   source: string
   label?: string
   validate?: Validator | Validator[]
+  optionValue?
 }

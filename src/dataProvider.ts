@@ -27,15 +27,12 @@ export default {
       return { error: `Error uploading image: ${error.message}` }
     }
 
-    console.log(image, 111)
     const updatedData = {
       ...params.data,
       imgUrl: image.data.imgUrl,
     }
 
-    console.log(updatedData, 222)
     try {
-      console.log(resource, 333)
       const { data } = await axios.post(`${apiUrl}/${resource}`, updatedData)
       return { data: data }
     } catch (error) {
@@ -158,9 +155,10 @@ export default {
       }
 
       const url = `${apiUrl}/${resource}/${params.id}`
+      delete params.data.artist
 
       const { data } = await axios.patch(url, params.data)
-      return { data: data[1][0] }
+      return { data: data }
     } catch (error) {
       console.error('Error in update method:', error.message)
 
