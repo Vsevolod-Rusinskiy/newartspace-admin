@@ -6,9 +6,9 @@ import {
   ImageField,
 } from 'react-admin'
 import { TextInputComponent } from '../../inputs'
-import '../../../styles/customStyles.css'
 import { validateFileSize } from '../../../src/utils/common'
 import { RichTextInput } from 'ra-input-rich-text'
+import '../../../styles/customStyles.css'
 
 const requiredValidation = required('Это обязательное поле')
 
