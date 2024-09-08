@@ -32,6 +32,8 @@ export default {
       imgUrl: image.data.imgUrl,
     }
 
+    delete updatedData.artist
+
     try {
       const { data } = await axios.post(`${apiUrl}/${resource}`, updatedData)
       return { data: data }
