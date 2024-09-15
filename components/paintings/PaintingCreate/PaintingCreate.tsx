@@ -31,7 +31,7 @@ export const PaintingCreate = () => {
 
   useEffect(() => {
     axios
-      .get(`${apiUrl}/artists`)
+      .get(`${apiUrl}/artists?limit=1000`)
       .then((response) => {
         setAuthors(response.data.data)
       })
@@ -85,8 +85,8 @@ export const PaintingCreate = () => {
           choices={materialsList}
           label='Материалы'
         />
-        <NumberInput source='height' label='Высота' />
         <NumberInput source='width' label='Ширина' />
+        <NumberInput source='height' label='Высота' />
         <NumberInput source='yearOfCreation' label='Год создания' />
         <SelectInputComponent
           source='format'
