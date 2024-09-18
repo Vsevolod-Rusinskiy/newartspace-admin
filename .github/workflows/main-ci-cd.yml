@@ -85,4 +85,5 @@ jobs:
           command_timeout: 360m
           script: |
             kubectl rollout restart deployment admin
+            kubectl rollout status deployment admin
             kubectl get pods -n default
