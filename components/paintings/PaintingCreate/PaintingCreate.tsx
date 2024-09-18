@@ -21,6 +21,7 @@ const {
   materialsList,
   stylesList,
   themesList,
+  techniquesList,
 } = sortedSelectList
 const requiredValidation = required('Это обязательное поле')
 
@@ -84,6 +85,11 @@ export const PaintingCreate = () => {
           source='materials'
           choices={materialsList}
           label='Материалы'
+        />
+        <SelectInputComponent
+          source='techniques'
+          choices={techniquesList}
+          label='Техника'
         />
         <NumberInput source='width' label='Ширина' />
         <NumberInput source='height' label='Высота' />

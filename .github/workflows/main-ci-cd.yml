@@ -51,6 +51,7 @@ jobs:
           push: true
           tags: ghcr.io/vsevolod-rusinskiy/newartspace-admin:latest
           no-cache: true
+          buildx: true
 
   deploy:
     needs: build-and-push-image
@@ -84,4 +85,5 @@ jobs:
           command_timeout: 360m
           script: |
             kubectl rollout restart deployment admin
+            kubectl rollout status deployment admin
             kubectl get pods -n default

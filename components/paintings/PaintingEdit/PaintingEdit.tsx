@@ -21,6 +21,7 @@ const {
   materialsList,
   stylesList,
   themesList,
+  techniquesList,
 } = sortedSelectList
 
 const apiUrl = import.meta.env.VITE_APP_API_URL || 'https://back.newartspace.ru'
@@ -86,6 +87,11 @@ export const PaintingEdit = () => {
           source='materials'
           choices={materialsList}
           label='Материалы'
+        />
+        <SelectInputComponent
+          source='techniques'
+          choices={techniquesList}
+          label='Техника'
         />
         <NumberInput source='width' label='Ширина' />
         <NumberInput source='height' label='Высота' />
