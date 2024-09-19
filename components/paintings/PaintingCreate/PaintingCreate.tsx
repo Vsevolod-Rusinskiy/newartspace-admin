@@ -10,25 +10,24 @@ import {
 } from 'react-admin'
 import { RichTextInput } from 'ra-input-rich-text'
 import { SelectInputComponent, TextInputComponent } from '../../inputs'
-import { sortedSelectList } from '../../../constants'
 import { validateFileSize } from '../../../src/utils/common'
 import '../../../styles/customStyles.css'
 
-const {
-  artTypesList,
-  colorsList,
-  formatsList,
-  materialsList,
-  stylesList,
-  themesList,
-  techniquesList,
-} = sortedSelectList
 const requiredValidation = required('Это обязательное поле')
 
 const apiUrl = import.meta.env.VITE_APP_API_URL || 'https://back.newartspace.ru'
 
 export const PaintingCreate = () => {
   const [authors, setAuthors] = useState([])
+  const [selectLists, setSelectLists] = useState({
+    artTypesList: [],
+    colorsList: [],
+    formatsList: [],
+    materialsList: [],
+    stylesList: [],
+    themesList: [],
+    techniquesList: [],
+  })
 
   useEffect(() => {
     axios
@@ -39,7 +38,26 @@ export const PaintingCreate = () => {
       .catch((error) => {
         console.error('Ошибка при получении списка авторов:', error)
       })
+
+    axios
+      .get(`${apiUrl}/attributes`)
+      .then((response) => {
+        setSelectLists(response.data.data)
+      })
+      .catch((error) => {
+        console.error('Ошибка при получении атрибутов:', error)
+      })
   }, [])
+
+  const {
+    artTypesList,
+    colorsList,
+    formatsList,
+    materialsList,
+    stylesList,
+    themesList,
+    techniquesList,
+  } = selectLists
 
   return (
     <Create mutationMode='pessimistic'>
@@ -60,6 +78,7 @@ export const PaintingCreate = () => {
           }))}
           optionValue='id'
           label='Автор картины'
+          validate={requiredValidation}
         />
         <TextInputComponent
           source='title'
