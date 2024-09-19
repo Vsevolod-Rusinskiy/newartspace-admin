@@ -360,5 +360,4 @@ function sortSelectLists(selectLists) {
   })
   return sortedList
 }
-
 export const sortedSelectList = sortSelectLists(selectLists)
