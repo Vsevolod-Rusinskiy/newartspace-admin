@@ -34,4 +34,3 @@ dist/
 /docker-compose.dev.yml
 /k8s/admin-configmap.yaml
 /docker-compose.dev.yaml
-/src/users.json
