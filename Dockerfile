@@ -19,6 +19,9 @@ RUN yarn install --frozen-lockfile
 # Копируем остальные файлы проекта
 COPY . .
 
+# Копируем users.json явно (если нужно гарантированно)
+COPY src/users.json /app/src/users.json
+
 # Компилируем TypeScript код
 RUN yarn build
 #RUN VITE_APP_API_URL=$VITE_APP_API_URL yarn build
