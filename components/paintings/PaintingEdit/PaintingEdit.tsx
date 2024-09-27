@@ -111,9 +111,9 @@ export const PaintingEdit = () => {
           choices={techniquesList}
           label='Техника'
         />
-        <NumberInput source='width' label='Ширина' />
-        <NumberInput source='height' label='Высота' />
-        <NumberInput source='yearOfCreation' label='Год создания' />
+        <NumberInput source='width' label='Ширина' step={1} />
+        <NumberInput source='height' label='Высота' step={1} />
+        <NumberInput source='yearOfCreation' label='Год создания' step={1} />
         <SelectInputComponent
           source='format'
           choices={formatsList}
@@ -127,6 +127,7 @@ export const PaintingEdit = () => {
         <NumberInput
           source='price'
           label='Цена'
+          step={1}
           validate={requiredValidation}
         />
         <RichTextInput

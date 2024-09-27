@@ -4,7 +4,7 @@ import axios from 'axios'
 
 const apiUrl = import.meta.env.VITE_APP_API_URL || 'https://back.newartspace.ru'
 console.log('ApiUrl:', apiUrl)
-// test flag = false
+// test flag = true
 
 export default {
   create: async (resource, params) => {
