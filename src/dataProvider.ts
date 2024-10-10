@@ -139,7 +139,6 @@ export default {
         const imageFile = params.data.pictures.rawFile
         const file = new FormData()
         file.append('file', imageFile, imageFile.name)
-
         image = await axios({
           method: 'post',
           url: `${apiUrl}/${resource}/upload-image`,
@@ -180,15 +179,10 @@ export default {
     }
   },
 
-  /** don't use so far */
-  // updateMany: async (resource, params) => {
-  //   const query = {
-  //     filter: JSON.stringify({ id: params.ids }),
-  //   }
-  //   const url = `${apiUrl}/${resource}?${stringify(query)}`
-  //   const { data } = await axios.delete(url)
-  //   return { data: data }
-  // },
+  updateMany: async (_, params) => {
+    console.log(params)
+    return { data: [] }
+  },
 
   delete: async (resource, params) => {
     const url = `${apiUrl}/${resource}/${params.id}`
