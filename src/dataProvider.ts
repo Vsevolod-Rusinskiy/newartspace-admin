@@ -67,7 +67,7 @@ export default {
 
     try {
       const { data } = await axios.get(url)
-
+      console.log(data, 'data')
       return {
         data: data.data,
         total: data.total,
