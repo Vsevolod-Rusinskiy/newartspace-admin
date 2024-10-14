@@ -10,4 +10,5 @@ export interface SelectInputPropTypes extends FieldProps {
   choices: ChoiceType[]
   label?: string
   validate?: Validator | Validator[]
+  optionValue?: string
 }
