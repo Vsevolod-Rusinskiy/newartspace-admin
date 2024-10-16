@@ -13,7 +13,7 @@ export const PaintingList = (props) => {
       <Datagrid rowClick='show'>
         <CloneButton />
         <NumberField source='priority' label='Приоритет' />
-        <ImageField source='imgUrl' label='Картина' />
+        <ImageField source='imgUrl' label='Картина' sortable={false} />
         <NumberField source='id' sortable />
         <TextField source='title' label='Название картины' />
         <TextField source='artist.artistName' label='Автор картины' />

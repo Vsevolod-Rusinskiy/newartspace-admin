@@ -62,7 +62,7 @@ export default {
       page: page,
       filter: JSON.stringify(params.filter),
     }
-
+    console.log(query, 'query')
     const url = `${apiUrl}/${resource}?${stringify(query)}`
 
     try {
@@ -110,6 +110,7 @@ export default {
   getManyReference: async (resource, params) => {
     const { page, perPage } = params.pagination
     const { field, order } = params.sort
+    console.log(field, order, 'field, order')
     const query = {
       sort: JSON.stringify([field, order]),
       range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
