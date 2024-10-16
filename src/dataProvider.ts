@@ -62,7 +62,6 @@ export default {
       page: page,
       filter: JSON.stringify(params.filter),
     }
-    console.log(query, 'query')
     const url = `${apiUrl}/${resource}?${stringify(query)}`
 
     try {
