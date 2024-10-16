@@ -62,12 +62,11 @@ export default {
       page: page,
       filter: JSON.stringify(params.filter),
     }
-
     const url = `${apiUrl}/${resource}?${stringify(query)}`
 
     try {
       const { data } = await axios.get(url)
-
+      console.log(data, 'data')
       return {
         data: data.data,
         total: data.total,
@@ -110,6 +109,7 @@ export default {
   getManyReference: async (resource, params) => {
     const { page, perPage } = params.pagination
     const { field, order } = params.sort
+    console.log(field, order, 'field, order')
     const query = {
       sort: JSON.stringify([field, order]),
       range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
@@ -139,7 +139,6 @@ export default {
         const imageFile = params.data.pictures.rawFile
         const file = new FormData()
         file.append('file', imageFile, imageFile.name)
-
         image = await axios({
           method: 'post',
           url: `${apiUrl}/${resource}/upload-image`,
@@ -180,15 +179,10 @@ export default {
     }
   },
 
-  /** don't use so far */
-  // updateMany: async (resource, params) => {
-  //   const query = {
-  //     filter: JSON.stringify({ id: params.ids }),
-  //   }
-  //   const url = `${apiUrl}/${resource}?${stringify(query)}`
-  //   const { data } = await axios.delete(url)
-  //   return { data: data }
-  // },
+  updateMany: async (_, params) => {
+    console.log(params)
+    return { data: [] }
+  },
 
   delete: async (resource, params) => {
     const url = `${apiUrl}/${resource}/${params.id}`
