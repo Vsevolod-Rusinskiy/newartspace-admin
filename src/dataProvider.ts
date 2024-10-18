@@ -30,9 +30,15 @@ export default {
     const updatedData = {
       ...params.data,
       imgUrl: image.data.imgUrl,
+      price: Number(params.data.price),
+      width: Number(params.data.width),
+      height: Number(params.data.height),
+      yearOfCreation: Number(params.data.yearOfCreation),
     }
 
     delete updatedData.artist
+
+    console.log(updatedData, 'updatedData')
 
     try {
       const { data } = await axios.post(`${apiUrl}/${resource}`, updatedData)
@@ -66,7 +72,6 @@ export default {
 
     try {
       const { data } = await axios.get(url)
-      console.log(data, 'data')
       return {
         data: data.data,
         total: data.total,
@@ -158,7 +163,17 @@ export default {
       const url = `${apiUrl}/${resource}/${params.id}`
       delete params.data.artist
 
-      const { data } = await axios.patch(url, params.data)
+      const updatedData = {
+        ...params.data,
+        price: Number(params.data.price),
+        width: Number(params.data.width),
+        height: Number(params.data.height),
+        yearOfCreation: Number(params.data.yearOfCreation),
+      }
+
+      console.log(updatedData, 'updatedData')
+
+      const { data } = await axios.patch(url, updatedData)
       return { data: data }
     } catch (error) {
       console.error('Error in update method:', error.message)

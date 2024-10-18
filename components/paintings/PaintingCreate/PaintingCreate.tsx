@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import {
   Create,
-  NumberInput,
   SimpleForm,
   required,
   ImageInput,
@@ -110,9 +109,9 @@ export const PaintingCreate = () => {
           choices={techniquesList}
           label='Техника'
         />
-        <NumberInput source='width' label='Ширина' step={1} />
-        <NumberInput source='height' label='Высота' step={1} />
-        <NumberInput source='yearOfCreation' label='Год создания' step={1} />
+        <TextInputComponent source='width' label='Ширина' />
+        <TextInputComponent source='height' label='Высота' />
+        <TextInputComponent source='yearOfCreation' label='Год создания' />
         <SelectInputComponent
           source='format'
           choices={formatsList}
@@ -123,10 +122,9 @@ export const PaintingCreate = () => {
           choices={colorsList}
           label='Цвет'
         />
-        <NumberInput
+        <TextInputComponent
           source='price'
           label='Цена'
-          step={1}
           validate={requiredValidation}
         />
         <RichTextInput
