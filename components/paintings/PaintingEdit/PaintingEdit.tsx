@@ -1,13 +1,6 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-import {
-  Edit,
-  SimpleForm,
-  NumberInput,
-  ImageField,
-  ImageInput,
-  required,
-} from 'react-admin'
+import { Edit, SimpleForm, ImageField, ImageInput, required } from 'react-admin'
 import { SelectInputComponent, TextInputComponent } from '../../inputs'
 import { RichTextInput } from 'ra-input-rich-text'
 import '../../../styles/customStyles.css'
@@ -111,9 +104,9 @@ export const PaintingEdit = () => {
           choices={techniquesList}
           label='Техника'
         />
-        <NumberInput source='width' label='Ширина' step={1} />
-        <NumberInput source='height' label='Высота' step={1} />
-        <NumberInput source='yearOfCreation' label='Год создания' step={1} />
+        <TextInputComponent source='width' label='Ширина' />
+        <TextInputComponent source='height' label='Высота' />
+        <TextInputComponent source='yearOfCreation' label='Год создания' />
         <SelectInputComponent
           source='format'
           choices={formatsList}
@@ -124,10 +117,9 @@ export const PaintingEdit = () => {
           choices={colorsList}
           label='Цвет'
         />
-        <NumberInput
+        <TextInputComponent
           source='price'
           label='Цена'
-          step={1}
           validate={requiredValidation}
         />
         <RichTextInput
