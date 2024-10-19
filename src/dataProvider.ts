@@ -30,15 +30,18 @@ export default {
     const updatedData = {
       ...params.data,
       imgUrl: image.data.imgUrl,
-      price: Number(params.data.price),
-      width: Number(params.data.width),
-      height: Number(params.data.height),
-      yearOfCreation: Number(params.data.yearOfCreation),
+      // обновляем поля только если resource равен 'paintings'
+      ...(resource === 'paintings'
+        ? {
+            price: Number(params.data.price),
+            width: Number(params.data.width),
+            height: Number(params.data.height),
+            yearOfCreation: Number(params.data.yearOfCreation),
+          }
+        : {}),
     }
 
     delete updatedData.artist
-
-    console.log(updatedData, 'updatedData')
 
     try {
       const { data } = await axios.post(`${apiUrl}/${resource}`, updatedData)
@@ -165,13 +168,17 @@ export default {
 
       const updatedData = {
         ...params.data,
-        price: Number(params.data.price),
-        width: Number(params.data.width),
-        height: Number(params.data.height),
-        yearOfCreation: Number(params.data.yearOfCreation),
-      }
 
-      console.log(updatedData, 'updatedData')
+        // обновляем поля только если resource равен 'paintings'
+        ...(resource === 'paintings'
+          ? {
+              price: Number(params.data.price),
+              width: Number(params.data.width),
+              height: Number(params.data.height),
+              yearOfCreation: Number(params.data.yearOfCreation),
+            }
+          : {}),
+      }
 
       const { data } = await axios.patch(url, updatedData)
       return { data: data }
