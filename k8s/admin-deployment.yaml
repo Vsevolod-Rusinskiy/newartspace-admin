@@ -40,7 +40,7 @@ spec:
                 configMapKeyRef:
                   name: admin-config
                   key: VITE_APP_API_URL
-          resources: # Добавляем секцию resources
+          resources:
             requests:
               memory: '50Mi' # Минимум 50 МБ
               cpu: '100m' # Минимум 100 мК
