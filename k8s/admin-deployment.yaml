@@ -42,10 +42,10 @@ spec:
                   key: VITE_APP_API_URL
           resources:
             requests:
-              memory: '50Mi' # Минимум 50 МБ
-              cpu: '100m' # Минимум 100 мК
+              memory: '50Mi'
+              cpu: '100m'
             limits:
-              memory: '100Mi' # Максимум 100 МБ
-              cpu: '200m' # Максимум 200 мК
+              memory: '100Mi'
+              cpu: '200m'
       imagePullSecrets:
         - name: ghcr-io-secret
