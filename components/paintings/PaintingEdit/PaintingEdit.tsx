@@ -1,6 +1,13 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-import { Edit, SimpleForm, ImageField, ImageInput, required } from 'react-admin'
+import {
+  Edit,
+  SimpleForm,
+  ImageField,
+  ImageInput,
+  required,
+  RadioButtonGroupInput,
+} from 'react-admin'
 import { SelectInputComponent, TextInputComponent } from '../../inputs'
 import { RichTextInput } from 'ra-input-rich-text'
 import '../../../styles/customStyles.css'
@@ -62,6 +69,14 @@ export const PaintingEdit = () => {
         >
           <ImageField source='src' title='title' />
         </ImageInput>
+        <RadioButtonGroupInput
+          source='artStyle'
+          choices={[
+            { id: 'Классика', name: 'Классика' },
+            { id: 'Современность', name: 'Современность' },
+          ]}
+          label='Стиль искусства'
+        />
         <TextInputComponent source='priority' label='Приоритет' />
         <SelectInputComponent
           source='artistId'

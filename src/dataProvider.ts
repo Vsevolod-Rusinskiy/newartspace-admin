@@ -44,7 +44,9 @@ export default {
     delete updatedData.artist
 
     try {
+      console.log(updatedData, 'send data', 1111)
       const { data } = await axios.post(`${apiUrl}/${resource}`, updatedData)
+      console.log(data, 'recieved data', 2222)
       return { data: data }
     } catch (error) {
       console.error(`Error creating resource: ${error.message}`)
