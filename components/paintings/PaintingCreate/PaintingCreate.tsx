@@ -6,6 +6,7 @@ import {
   required,
   ImageInput,
   ImageField,
+  RadioButtonGroupInput,
 } from 'react-admin'
 import { RichTextInput } from 'ra-input-rich-text'
 import { SelectInputComponent, TextInputComponent } from '../../inputs'
@@ -68,6 +69,15 @@ export const PaintingCreate = () => {
         >
           <ImageField source='src' title='title' />
         </ImageInput>
+        <RadioButtonGroupInput
+          source='artStyle'
+          choices={[
+            { id: 'Классика', name: 'Классика' },
+            { id: 'Современность', name: 'Современность' },
+          ]}
+          label='Стиль искусства'
+          defaultValue='Классика'
+        />
         <TextInputComponent source='priority' label='Приоритет' />
         <SelectInputComponent
           source='artistId'

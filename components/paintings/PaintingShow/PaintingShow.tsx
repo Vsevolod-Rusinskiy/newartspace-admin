@@ -20,6 +20,7 @@ export const PaintingShow = () => {
         <ImageField source='imgUrl' label='Картина' />
         <NumberField source='id' />
         <TextField source='artist.artistName' label='Автор картины' />
+        <TextField source='artStyle' label='Стиль искусства' />
         <TextField source='title' label='Название картины' />
         <TextField source='artType' label='Вид искусства' />
         <TextField source='theme' label='Тематика' />
