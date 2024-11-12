@@ -41,6 +41,8 @@ export default {
         : {}),
     }
 
+    console.log('Данные, отправляемые на сервер:', updatedData)
+
     delete updatedData.artist
 
     try {
@@ -181,7 +183,6 @@ export default {
             }
           : {}),
       }
-
       const { data } = await axios.patch(url, updatedData)
       return { data: data }
     } catch (error) {

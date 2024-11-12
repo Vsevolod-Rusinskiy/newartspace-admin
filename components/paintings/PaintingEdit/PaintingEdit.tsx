@@ -7,6 +7,7 @@ import {
   ImageInput,
   required,
   RadioButtonGroupInput,
+  SelectArrayInput,
 } from 'react-admin'
 import { SelectInputComponent, TextInputComponent } from '../../inputs'
 import { RichTextInput } from 'ra-input-rich-text'
@@ -109,7 +110,7 @@ export const PaintingEdit = () => {
           choices={stylesList}
           label='Стиль'
         />
-        <SelectInputComponent
+        <SelectArrayInput
           source='materials'
           choices={materialsList}
           label='Материалы'

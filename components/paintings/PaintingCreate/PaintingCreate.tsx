@@ -7,6 +7,7 @@ import {
   ImageInput,
   ImageField,
   RadioButtonGroupInput,
+  SelectArrayInput,
 } from 'react-admin'
 import { RichTextInput } from 'ra-input-rich-text'
 import { SelectInputComponent, TextInputComponent } from '../../inputs'
@@ -43,6 +44,7 @@ export const PaintingCreate = () => {
       .get(`${apiUrl}/attributes`)
       .then((response) => {
         setSelectLists(response.data.data)
+        // console.log('Полученные атрибуты:', response.data.data)
       })
       .catch((error) => {
         console.error('Ошибка при получении атрибутов:', error)
@@ -109,9 +111,12 @@ export const PaintingCreate = () => {
           choices={stylesList}
           label='Стиль'
         />
-        <SelectInputComponent
+        <SelectArrayInput
           source='materials'
-          choices={materialsList}
+          choices={materialsList.map((material) => ({
+            id: material.id,
+            name: material.value,
+          }))}
           label='Материалы'
         />
         <SelectInputComponent
