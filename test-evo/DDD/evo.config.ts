@@ -1,3 +1,3 @@
-export const testDDD = () => {
-  'testDDD'
+const pageIndexTemplate = function () {
+  return null
 }
