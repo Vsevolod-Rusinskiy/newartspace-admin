@@ -101,14 +101,18 @@ export const PaintingEdit = () => {
           label='Вид искусства'
         />
         <SelectInputComponent
-          source='theme'
-          choices={themesList}
-          label='Тематика'
-        />
-        <SelectInputComponent
           source='style'
           choices={stylesList}
           label='Стиль'
+        />
+        <SelectArrayInput
+          source='themes'
+          choices={themesList.map((theme) => ({
+            id: theme.id,
+            name: theme.value,
+          }))}
+          label='Тематика'
+          defaultValue={[]}
         />
         <SelectArrayInput
           source='materials'
@@ -117,11 +121,16 @@ export const PaintingEdit = () => {
             name: material.value,
           }))}
           label='Материалы'
+          defaultValue={[]}
         />
-        <SelectInputComponent
+        <SelectArrayInput
           source='techniques'
-          choices={techniquesList}
+          choices={techniquesList.map((technique) => ({
+            id: technique.id,
+            name: technique.value,
+          }))}
           label='Техника'
+          defaultValue={[]}
         />
         <TextInputComponent source='width' label='Ширина' />
         <TextInputComponent source='height' label='Высота' />

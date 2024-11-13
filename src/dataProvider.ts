@@ -183,8 +183,9 @@ export default {
             }
           : {}),
       }
+      console.log(updatedData, 'updatedData отправили на сервер', 4444)
       const { data } = await axios.patch(url, updatedData)
-      console.log(data, 'data', 3333)
+      console.log(data, 'data получили от сервера', 3333)
       return { data: data }
     } catch (error) {
       console.error('Error in update method:', error.message)
