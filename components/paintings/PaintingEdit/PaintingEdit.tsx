@@ -112,7 +112,10 @@ export const PaintingEdit = () => {
         />
         <SelectArrayInput
           source='materials'
-          choices={materialsList}
+          choices={materialsList.map((material) => ({
+            id: material.id,
+            name: material.value,
+          }))}
           label='Материалы'
         />
         <SelectInputComponent
