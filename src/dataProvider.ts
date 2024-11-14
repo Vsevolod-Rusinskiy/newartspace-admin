@@ -94,6 +94,7 @@ export default {
 
     try {
       const { data } = await axios.get(url)
+      console.log(data, 'data получили от сервера', 3333)
       return {
         data: data,
       }

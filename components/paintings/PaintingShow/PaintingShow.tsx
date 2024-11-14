@@ -7,6 +7,7 @@ import {
   SimpleShowLayout,
   TextField,
   TopToolbar,
+  ArrayField,
 } from 'react-admin'
 import '../../../styles/customStyles.css'
 
@@ -23,8 +24,8 @@ export const PaintingShow = () => {
         <TextField source='artStyle' label='Стиль искусства' />
         <TextField source='title' label='Название картины' />
         <TextField source='artType' label='Вид искусства' />
-        <TextField source='theme' label='Тематика' />
         <TextField source='style' label='Стиль' />
+        <TextField source='themes' label='Тематика' />
         <TextField source='materials' label='Материалы' />
         <TextField source='techniques' label='Техника' />
         <NumberField source='width' label='Ширина' />
