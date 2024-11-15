@@ -8,7 +8,7 @@ import {
   required,
   RadioButtonGroupInput,
   SelectArrayInput,
-  TextField,
+  useShowController,
 } from 'react-admin'
 import { SelectInputComponent, TextInputComponent } from '../../inputs'
 import { RichTextInput } from 'ra-input-rich-text'
@@ -18,7 +18,10 @@ import { validateFileSize } from '../../../src/utils/common'
 const apiUrl = import.meta.env.VITE_APP_API_URL || 'https://back.newartspace.ru'
 
 const requiredValidation = required('Это обязательное поле')
+
 export const PaintingEdit = () => {
+  const { record } = useShowController()
+
   const [authors, setAuthors] = useState([])
   const [selectLists, setSelectLists] = useState({
     artTypesList: [],
@@ -58,6 +61,45 @@ export const PaintingEdit = () => {
     themesList,
     techniquesList,
   } = selectLists
+
+  // Извлекаем существующие атрибуты
+  const existingAttributes = {
+    materials:
+      record?.attributes
+        ?.filter((attr) => attr.type === 'materialsList')
+        .map((attr) => attr.value) || [],
+    themes:
+      record?.attributes
+        ?.filter((attr) => attr.type === 'themesList')
+        .map((attr) => attr.value) || [],
+    techniques:
+      record?.attributes
+        ?.filter((attr) => attr.type === 'techniquesList')
+        .map((attr) => attr.value) || [],
+  }
+
+  // Логируем значения по умолчанию
+  console.log('Тематика:', existingAttributes.themes)
+  console.log('Материалы:', existingAttributes.materials)
+  console.log('Техника:', existingAttributes.techniques)
+  // Преобразуйте значения в идентификаторы, если это необходимо
+  const selectedThemes = themesList
+    .filter((theme) => existingAttributes.themes.includes(theme.value)) // Измените на theme.value
+    .map((theme) => theme.id)
+
+  const selectedMaterials = materialsList
+    .filter((material) => existingAttributes.materials.includes(material.value)) // Измените на material.value
+    .map((material) => material.id)
+
+  const selectedTechniques = techniquesList
+    .filter((technique) =>
+      existingAttributes.techniques.includes(technique.value)
+    ) // Измените на technique.value
+    .map((technique) => technique.id)
+
+  console.log('selectedThemes', selectedThemes)
+  console.log('selectedMaterials', selectedMaterials)
+  console.log('selectedTechniques', selectedTechniques)
 
   return (
     <Edit>
@@ -106,7 +148,6 @@ export const PaintingEdit = () => {
           choices={stylesList}
           label='Стиль'
         />
-        {/* <TextField source='themes' label='Тематика' /> */}
         <SelectArrayInput
           source='themes'
           choices={themesList.map((theme) => ({
@@ -114,9 +155,9 @@ export const PaintingEdit = () => {
             name: theme.value,
           }))}
           label='Тематика'
-          defaultValue={[]}
+          // defaultValue={existingAttributes.themes}
+          defaultValue={selectedThemes}
         />
-        {/* <TextField source='materials' label='Материалы' /> */}
         <SelectArrayInput
           source='materials'
           choices={materialsList.map((material) => ({
@@ -124,9 +165,9 @@ export const PaintingEdit = () => {
             name: material.value,
           }))}
           label='Материалы'
-          defaultValue={[]}
+          // defaultValue={existingAttributes.materials}
+          defaultValue={selectedMaterials}
         />
-        {/* <TextField source='techniques' label='Техника' /> */}
         <SelectArrayInput
           source='techniques'
           choices={techniquesList.map((technique) => ({
@@ -134,7 +175,8 @@ export const PaintingEdit = () => {
             name: technique.value,
           }))}
           label='Техника'
-          defaultValue={[]}
+          // defaultValue={existingAttributes.techniques}
+          defaultValue={selectedTechniques}
         />
         <TextInputComponent source='width' label='Ширина' />
         <TextInputComponent source='height' label='Высота' />
