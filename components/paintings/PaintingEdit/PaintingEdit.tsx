@@ -8,6 +8,7 @@ import {
   required,
   RadioButtonGroupInput,
   SelectArrayInput,
+  TextField,
 } from 'react-admin'
 import { SelectInputComponent, TextInputComponent } from '../../inputs'
 import { RichTextInput } from 'ra-input-rich-text'
@@ -105,6 +106,7 @@ export const PaintingEdit = () => {
           choices={stylesList}
           label='Стиль'
         />
+        {/* <TextField source='themes' label='Тематика' /> */}
         <SelectArrayInput
           source='themes'
           choices={themesList.map((theme) => ({
@@ -114,6 +116,7 @@ export const PaintingEdit = () => {
           label='Тематика'
           defaultValue={[]}
         />
+        {/* <TextField source='materials' label='Материалы' /> */}
         <SelectArrayInput
           source='materials'
           choices={materialsList.map((material) => ({
@@ -123,6 +126,7 @@ export const PaintingEdit = () => {
           label='Материалы'
           defaultValue={[]}
         />
+        {/* <TextField source='techniques' label='Техника' /> */}
         <SelectArrayInput
           source='techniques'
           choices={techniquesList.map((technique) => ({
