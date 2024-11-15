@@ -7,7 +7,6 @@ import {
   SimpleShowLayout,
   TextField,
   TopToolbar,
-  ArrayField,
 } from 'react-admin'
 import '../../../styles/customStyles.css'
 
