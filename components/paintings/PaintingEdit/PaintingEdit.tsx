@@ -62,40 +62,47 @@ export const PaintingEdit = () => {
     techniquesList,
   } = selectLists
 
+  // Вспомогательная функция для извлечения атрибутов
+  const extractAttributes = (type: string) => {
+    return (
+      record?.attributes
+        ?.filter((attr) => attr.type === type)
+        .map((attr) => attr.value) || []
+    )
+  }
+
   // Извлекаем существующие атрибуты
   const existingAttributes = {
-    materials:
-      record?.attributes
-        ?.filter((attr) => attr.type === 'materialsList')
-        .map((attr) => attr.value) || [],
-    themes:
-      record?.attributes
-        ?.filter((attr) => attr.type === 'themesList')
-        .map((attr) => attr.value) || [],
-    techniques:
-      record?.attributes
-        ?.filter((attr) => attr.type === 'techniquesList')
-        .map((attr) => attr.value) || [],
+    materials: extractAttributes('materialsList'),
+    themes: extractAttributes('themesList'),
+    techniques: extractAttributes('techniquesList'),
   }
 
   // Логируем значения по умолчанию
   console.log('Тематика:', existingAttributes.themes)
   console.log('Материалы:', existingAttributes.materials)
   console.log('Техника:', existingAttributes.techniques)
-  // Преобразуйте значения в идентификаторы, если это необходимо
-  const selectedThemes = themesList
-    .filter((theme) => existingAttributes.themes.includes(theme.value)) // Измените на theme.value
-    .map((theme) => theme.id)
 
-  const selectedMaterials = materialsList
-    .filter((material) => existingAttributes.materials.includes(material.value)) // Измените на material.value
-    .map((material) => material.id)
+  // Вспомогательная функция для получения идентификаторов
+  const getSelectedIds = (
+    list: Array<{ id: number; value: string }>,
+    existingValues: string[]
+  ) => {
+    return list
+      .filter((item) => existingValues.includes(item.value))
+      .map((item) => item.id)
+  }
 
-  const selectedTechniques = techniquesList
-    .filter((technique) =>
-      existingAttributes.techniques.includes(technique.value)
-    ) // Измените на technique.value
-    .map((technique) => technique.id)
+  // Получаем идентификаторы
+  const selectedThemes = getSelectedIds(themesList, existingAttributes.themes)
+  const selectedMaterials = getSelectedIds(
+    materialsList,
+    existingAttributes.materials
+  )
+  const selectedTechniques = getSelectedIds(
+    techniquesList,
+    existingAttributes.techniques
+  )
 
   console.log('selectedThemes', selectedThemes)
   console.log('selectedMaterials', selectedMaterials)
@@ -155,7 +162,6 @@ export const PaintingEdit = () => {
             name: theme.value,
           }))}
           label='Тематика'
-          // defaultValue={existingAttributes.themes}
           defaultValue={selectedThemes}
         />
         <SelectArrayInput
@@ -165,7 +171,6 @@ export const PaintingEdit = () => {
             name: material.value,
           }))}
           label='Материалы'
-          // defaultValue={existingAttributes.materials}
           defaultValue={selectedMaterials}
         />
         <SelectArrayInput
@@ -175,7 +180,6 @@ export const PaintingEdit = () => {
             name: technique.value,
           }))}
           label='Техника'
-          // defaultValue={existingAttributes.techniques}
           defaultValue={selectedTechniques}
         />
         <TextInputComponent source='width' label='Ширина' />
