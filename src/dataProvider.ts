@@ -96,31 +96,8 @@ export default {
       const { data } = await axios.get(url)
       console.log(data, 'data получили от сервера гет ван', 2222)
 
-      // Создаем новые поля на основе attributes
-      // const materials = data.attributes
-      //   .filter(attr => attr.type === 'materialsList')
-      //   .map(attr => attr.value)
-      //   .join(', ')
-
-      // const themes = data.attributes
-      //   .filter(attr => attr.type === 'themesList')
-      //   .map(attr => attr.value)
-      //   .join(', ')
-
-      // const techniques = data.attributes
-      //   .filter(attr => attr.type === 'techniquesList')
-      //   .map(attr => attr.value)
-      //   .join(', ')
-
-      // Добавляем новые поля в data
       return {
         data: data,
-        // data: {
-        //   ...data,
-        //   materials,
-        //   themes,
-        //   techniques,
-        // },
       }
     } catch (error) {
       console.error(`Failed to fetch resource: ${error.message}`)
@@ -208,8 +185,6 @@ export default {
             }
           : {}),
       }
-
-      // delete updatedData.attributes
 
       console.log(updatedData, 'updatedData отправили на сервер', 4444)
       const { data } = await axios.patch(url, updatedData)

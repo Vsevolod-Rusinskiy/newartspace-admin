@@ -13,7 +13,11 @@ import {
 import { SelectInputComponent, TextInputComponent } from '../../inputs'
 import { RichTextInput } from 'ra-input-rich-text'
 import '../../../styles/customStyles.css'
-import { validateFileSize } from '../../../src/utils/common'
+import {
+  validateFileSize,
+  extractAttributes,
+  getSelectedIds,
+} from '../../../src/utils/common'
 
 const apiUrl = import.meta.env.VITE_APP_API_URL || 'https://back.newartspace.ru'
 
@@ -21,7 +25,6 @@ const requiredValidation = required('Это обязательное поле')
 
 export const PaintingEdit = () => {
   const { record } = useShowController()
-
   const [authors, setAuthors] = useState([])
   const [selectLists, setSelectLists] = useState({
     artTypesList: [],
@@ -62,35 +65,11 @@ export const PaintingEdit = () => {
     techniquesList,
   } = selectLists
 
-  // Вспомогательная функция для извлечения атрибутов
-  const extractAttributes = (type: string) => {
-    return (
-      record?.attributes
-        ?.filter((attr) => attr.type === type)
-        .map((attr) => attr.value) || []
-    )
-  }
-
   // Извлекаем существующие атрибуты
   const existingAttributes = {
-    materials: extractAttributes('materialsList'),
-    themes: extractAttributes('themesList'),
-    techniques: extractAttributes('techniquesList'),
-  }
-
-  // Логируем значения по умолчанию
-  console.log('Тематика:', existingAttributes.themes)
-  console.log('Материалы:', existingAttributes.materials)
-  console.log('Техника:', existingAttributes.techniques)
-
-  // Вспомогательная функция для получения идентификаторов
-  const getSelectedIds = (
-    list: Array<{ id: number; value: string }>,
-    existingValues: string[]
-  ) => {
-    return list
-      .filter((item) => existingValues.includes(item.value))
-      .map((item) => item.id)
+    materials: extractAttributes(record, 'materialsList'),
+    themes: extractAttributes(record, 'themesList'),
+    techniques: extractAttributes(record, 'techniquesList'),
   }
 
   // Получаем идентификаторы
@@ -103,10 +82,6 @@ export const PaintingEdit = () => {
     techniquesList,
     existingAttributes.techniques
   )
-
-  console.log('selectedThemes', selectedThemes)
-  console.log('selectedMaterials', selectedMaterials)
-  console.log('selectedTechniques', selectedTechniques)
 
   return (
     <Edit>
