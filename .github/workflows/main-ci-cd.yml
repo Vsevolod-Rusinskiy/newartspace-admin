@@ -109,4 +109,4 @@ jobs:
             cd /var/www/newartspace/admin
 
             echo "Running the application container..."
-            docker run --env-file .env -d --name admin --restart unless-stopped -p 4001:4000 ghcr.io/vsevolod-rusinskiy/newartspace-admin:latest
+            docker run --env-file .env -d --name admin --restart unless-stopped -p 3002:4173 ghcr.io/vsevolod-rusinskiy/newartspace-admin:latest
