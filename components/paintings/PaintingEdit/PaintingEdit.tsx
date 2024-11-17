@@ -7,16 +7,24 @@ import {
   ImageInput,
   required,
   RadioButtonGroupInput,
+  SelectArrayInput,
+  useShowController,
 } from 'react-admin'
 import { SelectInputComponent, TextInputComponent } from '../../inputs'
 import { RichTextInput } from 'ra-input-rich-text'
 import '../../../styles/customStyles.css'
-import { validateFileSize } from '../../../src/utils/common'
+import {
+  validateFileSize,
+  extractAttributes,
+  getSelectedIds,
+} from '../../../src/utils/common'
 
 const apiUrl = import.meta.env.VITE_APP_API_URL || 'https://back.newartspace.ru'
 
 const requiredValidation = required('Это обязательное поле')
+
 export const PaintingEdit = () => {
+  const { record } = useShowController()
   const [authors, setAuthors] = useState([])
   const [selectLists, setSelectLists] = useState({
     artTypesList: [],
@@ -56,6 +64,24 @@ export const PaintingEdit = () => {
     themesList,
     techniquesList,
   } = selectLists
+
+  // Извлекаем существующие атрибуты
+  const existingAttributes = {
+    materials: extractAttributes(record, 'materialsList'),
+    themes: extractAttributes(record, 'themesList'),
+    techniques: extractAttributes(record, 'techniquesList'),
+  }
+
+  // Получаем идентификаторы
+  const selectedThemes = getSelectedIds(themesList, existingAttributes.themes)
+  const selectedMaterials = getSelectedIds(
+    materialsList,
+    existingAttributes.materials
+  )
+  const selectedTechniques = getSelectedIds(
+    techniquesList,
+    existingAttributes.techniques
+  )
 
   return (
     <Edit>
@@ -100,24 +126,36 @@ export const PaintingEdit = () => {
           label='Вид искусства'
         />
         <SelectInputComponent
-          source='theme'
-          choices={themesList}
-          label='Тематика'
-        />
-        <SelectInputComponent
           source='style'
           choices={stylesList}
           label='Стиль'
         />
-        <SelectInputComponent
-          source='materials'
-          choices={materialsList}
-          label='Материалы'
+        <SelectArrayInput
+          source='themes'
+          choices={themesList.map((theme) => ({
+            id: theme.id,
+            name: theme.value,
+          }))}
+          label='Тематика'
+          defaultValue={selectedThemes}
         />
-        <SelectInputComponent
+        <SelectArrayInput
+          source='materials'
+          choices={materialsList.map((material) => ({
+            id: material.id,
+            name: material.value,
+          }))}
+          label='Материалы'
+          defaultValue={selectedMaterials}
+        />
+        <SelectArrayInput
           source='techniques'
-          choices={techniquesList}
+          choices={techniquesList.map((technique) => ({
+            id: technique.id,
+            name: technique.value,
+          }))}
           label='Техника'
+          defaultValue={selectedTechniques}
         />
         <TextInputComponent source='width' label='Ширина' />
         <TextInputComponent source='height' label='Высота' />

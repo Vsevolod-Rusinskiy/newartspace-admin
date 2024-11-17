@@ -7,6 +7,7 @@ import {
   ImageInput,
   ImageField,
   RadioButtonGroupInput,
+  SelectArrayInput,
 } from 'react-admin'
 import { RichTextInput } from 'ra-input-rich-text'
 import { SelectInputComponent, TextInputComponent } from '../../inputs'
@@ -43,6 +44,7 @@ export const PaintingCreate = () => {
       .get(`${apiUrl}/attributes`)
       .then((response) => {
         setSelectLists(response.data.data)
+        // console.log('Полученные атрибуты:', response.data.data)
       })
       .catch((error) => {
         console.error('Ошибка при получении атрибутов:', error)
@@ -100,24 +102,37 @@ export const PaintingCreate = () => {
           label='Вид искусства'
         />
         <SelectInputComponent
-          source='theme'
-          choices={themesList}
-          label='Тематика'
-        />
-        <SelectInputComponent
           source='style'
           choices={stylesList}
           label='Стиль'
         />
-        <SelectInputComponent
-          source='materials'
-          choices={materialsList}
-          label='Материалы'
+        <SelectArrayInput
+          source='themes'
+          choices={themesList.map((theme) => ({
+            id: theme.id,
+            name: theme.value,
+          }))}
+          label='Тематика'
+          defaultValue={[]}
         />
-        <SelectInputComponent
+
+        <SelectArrayInput
+          source='materials'
+          choices={materialsList.map((material) => ({
+            id: material.id,
+            name: material.value,
+          }))}
+          label='Материалы'
+          defaultValue={[]}
+        />
+        <SelectArrayInput
           source='techniques'
-          choices={techniquesList}
+          choices={techniquesList.map((technique) => ({
+            id: technique.id,
+            name: technique.value,
+          }))}
           label='Техника'
+          defaultValue={[]}
         />
         <TextInputComponent source='width' label='Ширина' />
         <TextInputComponent source='height' label='Высота' />

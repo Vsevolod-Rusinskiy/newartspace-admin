@@ -32,6 +32,7 @@ export const ArtistCreate = () => (
         source='artistDescription'
         label='Описание художника'
         className='custom-richtext-input'
+        defaultValue=''
       />
     </SimpleForm>
   </Create>

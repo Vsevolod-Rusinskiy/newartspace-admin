@@ -16,6 +16,7 @@ const SelectInputComponent: React.FC<SelectInputPropTypes> = React.memo(
         validate={validate}
         optionValue={optionValue}
         emptyValue={''}
+        defaultValue={null}
       />
     )
   }
