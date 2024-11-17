@@ -73,7 +73,7 @@ jobs:
             git restore .
             git pull origin master
 
-      - name: Deploy to Kubernetes via SSH
+      - name: Stop and remove existing container
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -81,6 +81,32 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           command_timeout: 360m
           script: |
-            kubectl rollout restart deployment admin
-            kubectl rollout status deployment admin
-            kubectl get pods -n default
+            if [ $(docker ps -q -f name=admin) ]; then
+              echo "Stopping existing container..."
+              docker stop admin
+              while [ $(docker ps -q -f name=admin) ]; do
+                sleep 1
+              done
+            fi
+
+            if [ $(docker ps -aq -f status=exited -f name=admin) ]; then
+              echo "Removing existing container..."
+              docker rm admin
+              while [ $(docker ps -aq -f name=admin) ]; do
+                sleep 1
+              done
+            fi
+
+      - name: Run new container
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          command_timeout: 360m
+          script: |
+            echo "Switching to application directory..."
+            cd /var/www/newartspace/admin
+
+            echo "Running the application container..."
+            docker run --env-file .env -d --name admin --restart unless-stopped -p 4001:4000 ghcr.io/vsevolod-rusinskiy/newartspace-admin:latest

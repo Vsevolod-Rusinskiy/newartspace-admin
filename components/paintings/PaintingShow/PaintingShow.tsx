@@ -1,3 +1,4 @@
+import React from 'react'
 import {
   DeleteButton,
   ImageField,
@@ -7,10 +8,22 @@ import {
   SimpleShowLayout,
   TextField,
   TopToolbar,
+  useShowController,
 } from 'react-admin'
 import '../../../styles/customStyles.css'
 
+const AttributeField = ({ attributes, type }) => {
+  if (!attributes) return null
+  const filteredValues = attributes
+    .filter((attr) => attr.type === type)
+    .map((attr) => attr.value)
+    .join(', ')
+  return <span style={{ fontSize: '14px' }}>{filteredValues}</span>
+}
+
 export const PaintingShow = () => {
+  const { record } = useShowController()
+
   return (
     <Show>
       <SimpleShowLayout>
@@ -23,10 +36,25 @@ export const PaintingShow = () => {
         <TextField source='artStyle' label='Стиль искусства' />
         <TextField source='title' label='Название картины' />
         <TextField source='artType' label='Вид искусства' />
-        <TextField source='theme' label='Тематика' />
         <TextField source='style' label='Стиль' />
+        <TextField source='themes' label='Тематика' />
+        <div>
+          <AttributeField attributes={record?.attributes} type='themesList' />
+        </div>
         <TextField source='materials' label='Материалы' />
+        <div>
+          <AttributeField
+            attributes={record?.attributes}
+            type='materialsList'
+          />
+        </div>
         <TextField source='techniques' label='Техника' />
+        <div>
+          <AttributeField
+            attributes={record?.attributes}
+            type='techniquesList'
+          />
+        </div>
         <NumberField source='width' label='Ширина' />
         <NumberField source='height' label='Высота' />
         <TextField source='yearOfCreation' label='Год создания' />
