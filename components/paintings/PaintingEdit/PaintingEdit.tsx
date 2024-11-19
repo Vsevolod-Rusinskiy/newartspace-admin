@@ -106,7 +106,6 @@ export const PaintingEdit = () => {
           ]}
           label='Стиль искусства'
         />
-        <div>test</div>
         <TextInputComponent source='priority' label='Приоритет' />
         <SelectInputComponent
           source='artistId'
