@@ -81,21 +81,8 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           command_timeout: 360m
           script: |
-            if [ $(docker ps -q -f name=admin) ]; then
-              echo "Stopping existing container..."
-              docker stop admin
-              while [ $(docker ps -q -f name=admin) ]; do
-                sleep 1
-              done
-            fi
-
-            if [ $(docker ps -aq -f status=exited -f name=admin) ]; then
-              echo "Removing existing container..."
-              docker rm admin
-              while [ $(docker ps -aq -f name=admin) ]; do
-                sleep 1
-              done
-            fi
+            docker rm -f admin || true
+            docker image prune -f
 
       - name: Run new container
         uses: appleboy/ssh-action@master
@@ -109,4 +96,16 @@ jobs:
             cd /var/www/newartspace/admin
 
             echo "Running the application container..."
-            docker run --env-file .env -d --name admin --restart unless-stopped -p 3002:4173 ghcr.io/vsevolod-rusinskiy/newartspace-admin:latest
+            docker run --pull always --env-file .env -d --name admin --restart unless-stopped -p 3002:4173 ghcr.io/vsevolod-rusinskiy/newartspace-admin:latest
+
+      - name: Check container status
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            echo "Checking container status..."
+            docker ps -f name=admin
+            echo "Fetching container logs..."
+            docker logs admin
