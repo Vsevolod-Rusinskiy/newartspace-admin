@@ -35,25 +35,29 @@ export const PaintingEdit = () => {
     themesList: [],
     techniquesList: [],
   })
-  useEffect(() => {
-    axios
-      .get(`${apiUrl}/artists?limit=1000`)
-      .then((response) => {
-        setAuthors(response.data.data)
-      })
-      .catch((error) => {
-        console.error('Ошибка при получении списка авторов:', error)
-      })
+  const [loading, setLoading] = useState(true)
 
-    axios
-      .get(`${apiUrl}/attributes`)
-      .then((response) => {
-        setSelectLists(response.data.data)
-      })
-      .catch((error) => {
-        console.error('Ошибка при получении атрибутов:', error)
-      })
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const authorsResponse = await axios.get(`${apiUrl}/artists?limit=1000`)
+        setAuthors(authorsResponse.data.data)
+
+        const attributesResponse = await axios.get(`${apiUrl}/attributes`)
+        setSelectLists(attributesResponse.data.data)
+      } catch (error) {
+        console.error('Ошибка при получении данных:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchData()
   }, [])
+
+  if (loading) {
+    return <div>Загрузка...</div>
+  }
 
   const {
     artTypesList,
@@ -67,12 +71,11 @@ export const PaintingEdit = () => {
 
   // Извлекаем существующие атрибуты
   const existingAttributes = {
-    materials: extractAttributes(record, 'materialsList'),
-    themes: extractAttributes(record, 'themesList'),
-    techniques: extractAttributes(record, 'techniquesList'),
+    materials: extractAttributes(record, 'materialsList') || [],
+    themes: extractAttributes(record, 'themesList') || [],
+    techniques: extractAttributes(record, 'techniquesList') || [],
   }
 
-  // Получаем идентификаторы
   const selectedThemes = getSelectedIds(themesList, existingAttributes.themes)
   const selectedMaterials = getSelectedIds(
     materialsList,
