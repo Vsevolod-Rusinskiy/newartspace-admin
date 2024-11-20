@@ -137,6 +137,11 @@ export const PaintingEdit = () => {
           choices={stylesList}
           label='Стиль'
         />
+        <SelectInputComponent
+          source='theme'
+          choices={themesList}
+          label='Основная тематика'
+        />
         <SelectArrayInput
           source='themes'
           choices={themesList.map((theme) => ({
@@ -146,6 +151,11 @@ export const PaintingEdit = () => {
           label='Тематика'
           defaultValue={selectedThemes}
         />
+        <SelectInputComponent
+          source='material'
+          choices={materialsList}
+          label='Основной материал'
+        />
         <SelectArrayInput
           source='materials'
           choices={materialsList.map((material) => ({
@@ -154,6 +164,11 @@ export const PaintingEdit = () => {
           }))}
           label='Материалы'
           defaultValue={selectedMaterials}
+        />
+        <SelectInputComponent
+          source='technique'
+          choices={techniquesList}
+          label='Основная техника'
         />
         <SelectArrayInput
           source='techniques'
