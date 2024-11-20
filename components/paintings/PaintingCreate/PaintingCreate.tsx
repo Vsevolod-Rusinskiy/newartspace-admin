@@ -117,7 +117,8 @@ export const PaintingCreate = () => {
             id: theme.id,
             name: theme.value,
           }))}
-          label='Тематика'
+          label='Дополнительные тематики'
+          style={{ minWidth: '300px' }}
           defaultValue={[]}
         />
         <SelectInputComponent
@@ -131,7 +132,8 @@ export const PaintingCreate = () => {
             id: material.id,
             name: material.value,
           }))}
-          label='Материалы'
+          label='Дополнительные материалы'
+          style={{ minWidth: '300px' }}
           defaultValue={[]}
         />
         <SelectInputComponent
@@ -145,7 +147,8 @@ export const PaintingCreate = () => {
             id: technique.id,
             name: technique.value,
           }))}
-          label='Техника'
+          label='Дополнительные техники'
+          style={{ minWidth: '300px' }}
           defaultValue={[]}
         />
         <TextInputComponent source='width' label='Ширина' />
