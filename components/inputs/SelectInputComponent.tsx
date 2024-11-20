@@ -17,6 +17,7 @@ const SelectInputComponent: React.FC<SelectInputPropTypes> = React.memo(
         optionValue={optionValue}
         emptyValue={''}
         defaultValue={null}
+        style={{ minWidth: '300px' }}
       />
     )
   }

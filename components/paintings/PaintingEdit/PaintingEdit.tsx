@@ -76,6 +76,8 @@ export const PaintingEdit = () => {
     techniques: extractAttributes(record, 'techniquesList') || [],
   }
 
+  console.log(existingAttributes, 'existingAttributes', 11111)
+
   const selectedThemes = getSelectedIds(themesList, existingAttributes.themes)
   const selectedMaterials = getSelectedIds(
     materialsList,
@@ -85,6 +87,8 @@ export const PaintingEdit = () => {
     techniquesList,
     existingAttributes.techniques
   )
+
+  console.log(selectedThemes, 'selectedThemes', 22222)
 
   return (
     <Edit>
@@ -133,14 +137,25 @@ export const PaintingEdit = () => {
           choices={stylesList}
           label='Стиль'
         />
+        <SelectInputComponent
+          source='theme'
+          choices={themesList}
+          label='Основная тематика'
+        />
         <SelectArrayInput
           source='themes'
           choices={themesList.map((theme) => ({
             id: theme.id,
             name: theme.value,
           }))}
-          label='Тематика'
+          label='Дополнительные тематики'
+          style={{ minWidth: '300px' }}
           defaultValue={selectedThemes}
+        />
+        <SelectInputComponent
+          source='material'
+          choices={materialsList}
+          label='Основной материал'
         />
         <SelectArrayInput
           source='materials'
@@ -148,8 +163,14 @@ export const PaintingEdit = () => {
             id: material.id,
             name: material.value,
           }))}
-          label='Материалы'
+          label='Дополнительные материалы'
+          style={{ minWidth: '300px' }}
           defaultValue={selectedMaterials}
+        />
+        <SelectInputComponent
+          source='technique'
+          choices={techniquesList}
+          label='Основная техника'
         />
         <SelectArrayInput
           source='techniques'
@@ -157,8 +178,9 @@ export const PaintingEdit = () => {
             id: technique.id,
             name: technique.value,
           }))}
-          label='Техника'
+          label='Дополнительные техники'
           defaultValue={selectedTechniques}
+          style={{ minWidth: '300px' }}
         />
         <TextInputComponent source='width' label='Ширина' />
         <TextInputComponent source='height' label='Высота' />

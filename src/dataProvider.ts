@@ -41,14 +41,12 @@ export default {
         : {}),
     }
 
-    console.log('Данные, отправляемые на сервер:', updatedData)
-
     delete updatedData.artist
 
     try {
-      console.log(updatedData, 'send data', 1111)
+      console.log(updatedData, 'send data create', 1111)
       const { data } = await axios.post(`${apiUrl}/${resource}`, updatedData)
-      console.log(data, 'recieved data', 2222)
+      console.log(data, 'recieved data create', 2222)
       return { data: data }
     } catch (error) {
       console.error(`Error creating resource: ${error.message}`)
@@ -94,6 +92,7 @@ export default {
 
     try {
       const { data } = await axios.get(url)
+      console.log(data, 'recieved data getOne', 44444)
       return {
         data: data,
       }
@@ -170,6 +169,7 @@ export default {
       const url = `${apiUrl}/${resource}/${params.id}`
       delete params.data.artist
 
+      console.log(params.data, 'params.data update', 11111)
       const updatedData = {
         ...params.data,
 
@@ -184,7 +184,9 @@ export default {
           : {}),
       }
 
+      console.log(updatedData, 'send data update ', 22222)
       const { data } = await axios.patch(url, updatedData)
+      console.log(data, 'recieved data update', 33333)
       return { data: data }
     } catch (error) {
       console.error('Error in update method:', error.message)

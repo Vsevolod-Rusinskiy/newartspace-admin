@@ -37,18 +37,21 @@ export const PaintingShow = () => {
         <TextField source='title' label='Название картины' />
         <TextField source='artType' label='Вид искусства' />
         <TextField source='style' label='Стиль' />
-        <TextField source='themes' label='Тематика' />
+        <TextField source='theme' label='Основная тематика' />
+        <TextField source='themes' label='Дополнительные тематики' />
         <div>
           <AttributeField attributes={record?.attributes} type='themesList' />
         </div>
-        <TextField source='materials' label='Материалы' />
+        <TextField source='material' label='Основной материал' />
+        <TextField source='materials' label='Дополнительные материалы' />
         <div>
           <AttributeField
             attributes={record?.attributes}
             type='materialsList'
           />
         </div>
-        <TextField source='techniques' label='Техника' />
+        <TextField source='technique' label='Основная техника' />
+        <TextField source='techniques' label='Дополнительные техники' />
         <div>
           <AttributeField
             attributes={record?.attributes}

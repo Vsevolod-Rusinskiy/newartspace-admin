@@ -106,24 +106,40 @@ export const PaintingCreate = () => {
           choices={stylesList}
           label='Стиль'
         />
+        <SelectInputComponent
+          source='theme'
+          choices={themesList}
+          label='Основная тематика'
+        />
         <SelectArrayInput
           source='themes'
           choices={themesList.map((theme) => ({
             id: theme.id,
             name: theme.value,
           }))}
-          label='Тематика'
+          label='Дополнительные тематики'
+          style={{ minWidth: '300px' }}
           defaultValue={[]}
         />
-
+        <SelectInputComponent
+          source='material'
+          choices={materialsList}
+          label='Основной материал'
+        />
         <SelectArrayInput
           source='materials'
           choices={materialsList.map((material) => ({
             id: material.id,
             name: material.value,
           }))}
-          label='Материалы'
+          label='Дополнительные материалы'
+          style={{ minWidth: '300px' }}
           defaultValue={[]}
+        />
+        <SelectInputComponent
+          source='technique'
+          choices={techniquesList}
+          label='Основная техника'
         />
         <SelectArrayInput
           source='techniques'
@@ -131,7 +147,8 @@ export const PaintingCreate = () => {
             id: technique.id,
             name: technique.value,
           }))}
-          label='Техника'
+          label='Дополнительные техники'
+          style={{ minWidth: '300px' }}
           defaultValue={[]}
         />
         <TextInputComponent source='width' label='Ширина' />
