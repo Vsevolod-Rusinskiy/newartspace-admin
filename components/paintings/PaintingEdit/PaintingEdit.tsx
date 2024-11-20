@@ -76,6 +76,8 @@ export const PaintingEdit = () => {
     techniques: extractAttributes(record, 'techniquesList') || [],
   }
 
+  console.log(existingAttributes, 'existingAttributes', 11111)
+
   const selectedThemes = getSelectedIds(themesList, existingAttributes.themes)
   const selectedMaterials = getSelectedIds(
     materialsList,
@@ -85,6 +87,8 @@ export const PaintingEdit = () => {
     techniquesList,
     existingAttributes.techniques
   )
+
+  console.log(selectedThemes, 'selectedThemes', 22222)
 
   return (
     <Edit>
