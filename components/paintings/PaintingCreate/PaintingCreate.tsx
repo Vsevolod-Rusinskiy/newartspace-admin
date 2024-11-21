@@ -44,7 +44,6 @@ export const PaintingCreate = () => {
       .get(`${apiUrl}/attributes`)
       .then((response) => {
         setSelectLists(response.data.data)
-        // console.log('Полученные атрибуты:', response.data.data)
       })
       .catch((error) => {
         console.error('Ошибка при получении атрибутов:', error)
