@@ -178,7 +178,7 @@ export default {
             }
           : {}),
       }
-
+      console.log(updatedData, 'sendupdatedData')
       const { data } = await axios.patch(url, updatedData)
       return { data: data }
     } catch (error) {
