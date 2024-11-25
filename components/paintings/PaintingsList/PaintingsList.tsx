@@ -15,6 +15,12 @@ export const PaintingList = (props) => {
         <TextField source='artStyle' label='Стиль искусства' />
         <NumberField source='priority' label='Приоритет' />
         <ImageField source='imgUrl' label='Картина' sortable={false} />
+        <NumberField
+          source='price'
+          label='Цена'
+          sortable
+          style={{ color: 'red' }}
+        />
         <NumberField source='id' sortable />
         <TextField source='title' label='Название картины' />
         <TextField source='artist.artistName' label='Автор картины' />
