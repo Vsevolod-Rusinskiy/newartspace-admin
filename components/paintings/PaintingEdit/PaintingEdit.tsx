@@ -126,11 +126,6 @@ export const PaintingEdit = () => {
           label='Название картины'
           validate={requiredValidation}
         />
-        <SelectInputComponent
-          source='priceType'
-          choices={priceTypesList}
-          label='Тип цены'
-        />
 
         <SelectInputComponent
           source='artType'
@@ -204,6 +199,11 @@ export const PaintingEdit = () => {
           source='price'
           label='Цена'
           validate={requiredValidation}
+        />
+        <SelectInputComponent
+          source='priceType'
+          choices={priceTypesList}
+          label='Тип цены'
         />
         <TextInputComponent source='discount' label='Скидка в процентах' />
         <RichTextInput
