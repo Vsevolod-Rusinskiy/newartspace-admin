@@ -38,7 +38,7 @@ export const PaintingEdit = () => {
   })
   const [loading, setLoading] = useState(true)
 
-  console.log(selectLists, 'selectLists')
+  // console.log(selectLists, 'selectLists')
   useEffect(() => {
     const fetchData = async () => {
       try {
