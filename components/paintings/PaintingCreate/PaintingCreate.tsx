@@ -28,6 +28,7 @@ export const PaintingCreate = () => {
     stylesList: [],
     themesList: [],
     techniquesList: [],
+    priceTypesList: [],
   })
 
   useEffect(() => {
@@ -58,6 +59,7 @@ export const PaintingCreate = () => {
     stylesList,
     themesList,
     techniquesList,
+    priceTypesList,
   } = selectLists
 
   return (
@@ -94,6 +96,11 @@ export const PaintingCreate = () => {
           source='title'
           label='Название картины'
           validate={requiredValidation}
+        />
+        <SelectInputComponent
+          source='priceType'
+          choices={priceTypesList}
+          label='Тип цены'
         />
         <SelectInputComponent
           source='artType'
@@ -168,6 +175,7 @@ export const PaintingCreate = () => {
           label='Цена'
           validate={requiredValidation}
         />
+        <TextInputComponent source='discount' label='Скидка в процентах' />
         <RichTextInput
           source='description'
           label='Описание картины'

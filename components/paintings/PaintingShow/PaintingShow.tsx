@@ -64,6 +64,7 @@ export const PaintingShow = () => {
         <TextField source='format' label='Формат' />
         <TextField source='color' label='Цвет' />
         <NumberField source='price' label='Цена' />
+        <NumberField source='discount' label='Скидка в процентах' />
         <RichTextField
           source='description'
           label='Описание картины'

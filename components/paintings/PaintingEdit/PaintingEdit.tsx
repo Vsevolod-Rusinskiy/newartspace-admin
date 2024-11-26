@@ -34,9 +34,11 @@ export const PaintingEdit = () => {
     stylesList: [],
     themesList: [],
     techniquesList: [],
+    priceTypesList: [],
   })
   const [loading, setLoading] = useState(true)
 
+  console.log(selectLists, 'selectLists')
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -67,6 +69,7 @@ export const PaintingEdit = () => {
     stylesList,
     themesList,
     techniquesList,
+    priceTypesList,
   } = selectLists
 
   // Извлекаем существующие атрибуты
@@ -123,6 +126,12 @@ export const PaintingEdit = () => {
           label='Название картины'
           validate={requiredValidation}
         />
+        <SelectInputComponent
+          source='priceType'
+          choices={priceTypesList}
+          label='Тип цены'
+        />
+
         <SelectInputComponent
           source='artType'
           choices={artTypesList}
@@ -196,6 +205,7 @@ export const PaintingEdit = () => {
           label='Цена'
           validate={requiredValidation}
         />
+        <TextInputComponent source='discount' label='Скидка в процентах' />
         <RichTextInput
           source='description'
           label='Описание картины'
