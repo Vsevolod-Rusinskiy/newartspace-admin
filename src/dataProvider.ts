@@ -34,6 +34,7 @@ export default {
       ...(resource === 'paintings'
         ? {
             price: Number(params.data.price),
+            discount: Number(params.data.discount),
             width: Number(params.data.width),
             height: Number(params.data.height),
             yearOfCreation: Number(params.data.yearOfCreation),
@@ -44,7 +45,9 @@ export default {
     delete updatedData.artist
 
     try {
+      // console.log(updatedData, 'отправляем на сервер')
       const { data } = await axios.post(`${apiUrl}/${resource}`, updatedData)
+      // console.log(data, 'data получили от сервера create')
       return { data: data }
     } catch (error) {
       console.error(`Error creating resource: ${error.message}`)
@@ -172,13 +175,14 @@ export default {
         ...(resource === 'paintings'
           ? {
               price: Number(params.data.price),
+              discount: Number(params.data.discount),
               width: Number(params.data.width),
               height: Number(params.data.height),
               yearOfCreation: Number(params.data.yearOfCreation),
             }
           : {}),
       }
-      console.log(updatedData, 'sendupdatedData')
+      // console.log(updatedData, 'sendupdatedData')
       const { data } = await axios.patch(url, updatedData)
       return { data: data }
     } catch (error) {
@@ -210,7 +214,7 @@ export default {
 
     try {
       const { data } = await axios.delete(url)
-      console.log(data, 'data получили от сервера delete', 6666)
+      // console.log(data, 'data получили от сервера delete', 6666)
       return {
         data: data,
       }

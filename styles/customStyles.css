@@ -2,7 +2,6 @@
   max-width: 780px;
   min-height: 300px;
 }
-.MuiTypography-root.MuiTypography-body1.RaLabeled-label span{
+.MuiTypography-root.MuiTypography-body1.RaLabeled-label span {
   border-bottom: 1px solid silver;
 }
-
