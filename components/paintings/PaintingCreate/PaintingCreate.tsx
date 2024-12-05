@@ -152,6 +152,21 @@ export const PaintingCreate = () => {
           style={{ minWidth: '300px' }}
           defaultValue={[]}
         />
+        <SelectInputComponent
+          source='color'
+          choices={colorsList}
+          label='Цвет'
+        />
+        <SelectArrayInput
+          source='colors'
+          choices={colorsList.map((color) => ({
+            id: color.id,
+            name: color.value,
+          }))}
+          label='Дополнительные цвета'
+          style={{ minWidth: '300px' }}
+          defaultValue={[]}
+        />
         <TextInputComponent source='width' label='Ширина' />
         <TextInputComponent source='height' label='Высота' />
         <TextInputComponent source='yearOfCreation' label='Год создания' />
@@ -159,11 +174,6 @@ export const PaintingCreate = () => {
           source='format'
           choices={formatsList}
           label='Формат'
-        />
-        <SelectInputComponent
-          source='color'
-          choices={colorsList}
-          label='Цвет'
         />
         <TextInputComponent
           source='price'
