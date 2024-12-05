@@ -77,6 +77,7 @@ export const PaintingEdit = () => {
     materials: extractAttributes(record, 'materialsList') || [],
     themes: extractAttributes(record, 'themesList') || [],
     techniques: extractAttributes(record, 'techniquesList') || [],
+    colors: extractAttributes(record, 'colorsList') || [],
   }
 
   const selectedThemes = getSelectedIds(themesList, existingAttributes.themes)
@@ -88,6 +89,7 @@ export const PaintingEdit = () => {
     techniquesList,
     existingAttributes.techniques
   )
+  const selectedColors = getSelectedIds(colorsList, existingAttributes.colors)
 
   return (
     <Edit>
@@ -182,6 +184,21 @@ export const PaintingEdit = () => {
           defaultValue={selectedTechniques}
           style={{ minWidth: '300px' }}
         />
+        <SelectInputComponent
+          source='color'
+          choices={colorsList}
+          label='Цвет'
+        />
+        <SelectArrayInput
+          source='colors'
+          choices={colorsList.map((color) => ({
+            id: color.id,
+            name: color.value,
+          }))}
+          label='Дополнительные цвета'
+          style={{ minWidth: '300px' }}
+          defaultValue={selectedColors}
+        />
         <TextInputComponent source='width' label='Ширина' />
         <TextInputComponent source='height' label='Высота' />
         <TextInputComponent source='yearOfCreation' label='Год создания' />
@@ -190,11 +207,7 @@ export const PaintingEdit = () => {
           choices={formatsList}
           label='Формат'
         />
-        <SelectInputComponent
-          source='color'
-          choices={colorsList}
-          label='Цвет'
-        />
+
         <TextInputComponent
           source='price'
           label='Цена'

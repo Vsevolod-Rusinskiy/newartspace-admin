@@ -58,11 +58,15 @@ export const PaintingShow = () => {
             type='techniquesList'
           />
         </div>
+        <TextField source='color' label='Цвет' />
+        <TextField source='colors' label='Дополнительные цвета' />
+        <div>
+          <AttributeField attributes={record?.attributes} type='colorsList' />
+        </div>
         <NumberField source='width' label='Ширина' />
         <NumberField source='height' label='Высота' />
         <TextField source='yearOfCreation' label='Год создания' />
         <TextField source='format' label='Формат' />
-        <TextField source='color' label='Цвет' />
         <NumberField source='price' label='Цена' />
         <TextField source='priceType' label='Тип цены' />
         <NumberField source='discount' label='Скидка в процентах' />
