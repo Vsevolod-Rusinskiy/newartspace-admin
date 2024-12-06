@@ -16,6 +16,13 @@ const requiredValidation = required('Это обязательное поле')
 export const EventCreate = () => (
   <Create mutationMode='pessimistic'>
     <SimpleForm>
+      <ImageInput
+        source='pictures'
+        label='Фото или Видео'
+        accept='image/*,video/*'
+      >
+        <ImageField source='src' title='title' />
+      </ImageInput>
       <TextInput
         source='title'
         label='Заголовок'
@@ -24,13 +31,6 @@ export const EventCreate = () => (
       <TextInputComponent source='priority' label='Приоритет' />
       <DateInput source='date' label='Дата' validate={requiredValidation} />
       <RichTextInput source='content' label='Текст' />
-      <ImageInput
-        source='pictures'
-        label='Фото или Видео'
-        accept='image/*,video/*'
-      >
-        <ImageField source='src' title='title' />
-      </ImageInput>
     </SimpleForm>
   </Create>
 )

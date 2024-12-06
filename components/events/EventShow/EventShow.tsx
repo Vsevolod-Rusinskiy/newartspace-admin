@@ -4,17 +4,18 @@ import {
   TextField,
   DateField,
   RichTextField,
-  ImageField,
 } from 'react-admin'
-
-export const EventShow = () => (
-  <Show>
-    <SimpleShowLayout>
-      <TextField source='title' label='Заголовок' />
-      <TextField source='priority' label='Приоритет' />
-      <DateField source='date' label='Дата' />
-      <RichTextField source='content' label='Текст' />
-      <ImageField source='imgUrl' label='Фото или Видео' />
-    </SimpleShowLayout>
-  </Show>
-)
+import EventMedia from '../EventMedia'
+export const EventShow = () => {
+  return (
+    <Show>
+      <SimpleShowLayout>
+        <TextField source='title' label='Заголовок' />
+        <TextField source='priority' label='Приоритет' />
+        <DateField source='date' label='Дата' />
+        <RichTextField source='content' label='Текст' />
+        <EventMedia />
+      </SimpleShowLayout>
+    </Show>
+  )
+}

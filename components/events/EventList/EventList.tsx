@@ -1,12 +1,13 @@
-import { List, Datagrid, TextField, DateField, ImageField } from 'react-admin'
+import { List, Datagrid, TextField, DateField } from 'react-admin'
+import EventMedia from '../EventMedia'
 
-export const EventsList = (props) => {
+export const EventsList = () => {
   return (
-    <List {...props}>
+    <List>
       <Datagrid rowClick='edit'>
         <TextField source='title' label='Заголовок' />
         <DateField source='date' label='Дата' />
-        <ImageField source='imgUrl' label='Фото или Видео' />
+        <EventMedia />
       </Datagrid>
     </List>
   )
