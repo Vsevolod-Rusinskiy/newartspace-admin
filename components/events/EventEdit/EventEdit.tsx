@@ -9,6 +9,7 @@ import {
 } from 'react-admin'
 import { RichTextInput } from 'ra-input-rich-text'
 import '../../../styles/customStyles.css'
+import { TextInputComponent } from '../../inputs'
 
 const requiredValidation = required('Это обязательное поле')
 
@@ -20,6 +21,7 @@ export const EventEdit = () => (
         label='Заголовок'
         validate={requiredValidation}
       />
+      <TextInputComponent source='priority' label='Приоритет' />
       <DateInput source='date' label='Дата' />
       <RichTextInput source='content' label='Текст' />
       <ImageInput

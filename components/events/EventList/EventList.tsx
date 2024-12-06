@@ -6,7 +6,7 @@ export const EventsList = (props) => {
       <Datagrid rowClick='edit'>
         <TextField source='title' label='Заголовок' />
         <DateField source='date' label='Дата' />
-        <ImageField source='media' label='Фото или Видео' />
+        <ImageField source='imgUrl' label='Фото или Видео' />
       </Datagrid>
     </List>
   )

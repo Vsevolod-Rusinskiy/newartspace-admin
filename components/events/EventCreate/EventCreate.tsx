@@ -9,6 +9,7 @@ import {
 } from 'react-admin'
 import { RichTextInput } from 'ra-input-rich-text'
 import '../../../styles/customStyles.css'
+import { TextInputComponent } from '../../inputs'
 
 const requiredValidation = required('Это обязательное поле')
 
@@ -20,10 +21,11 @@ export const EventCreate = () => (
         label='Заголовок'
         validate={requiredValidation}
       />
-      <DateInput source='date' label='Дата' />
+      <TextInputComponent source='priority' label='Приоритет' />
+      <DateInput source='date' label='Дата' validate={requiredValidation} />
       <RichTextInput source='content' label='Текст' />
       <ImageInput
-        source='media'
+        source='pictures'
         label='Фото или Видео'
         accept='image/*,video/*'
       >
