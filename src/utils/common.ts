@@ -1,6 +1,17 @@
-export const validateFileSize = ({ rawFile } = {}) => {
-  if (rawFile?.size > 1048576) {
-    return 'Размер файла должен быть не более 1MB'
+export const validateFileSize = ({ rawFile }: { rawFile: File }) => {
+  const imageMaxSize = 1 * 1024 * 1024
+  const videoMaxSize = 5 * 1024 * 1024
+
+  if (rawFile) {
+    const isImage = rawFile.type.startsWith('image/')
+    const isVideo = rawFile.type.startsWith('video/')
+    if (isImage && rawFile.size > imageMaxSize) {
+      return 'Размер изображения должен быть не более 1MB'
+    }
+
+    if (isVideo && rawFile.size > videoMaxSize) {
+      return 'Размер видео должен быть не более 5MB'
+    }
   }
 }
 
