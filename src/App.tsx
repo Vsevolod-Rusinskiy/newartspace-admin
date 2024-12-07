@@ -11,6 +11,10 @@ import { ArtistEdit } from '../components/artists/ArtistEdit/ArtistEdit'
 import { ArtistList } from '../components/artists/ArtistList/ArtistList'
 import { ArtistShow } from '../components/artists/ArtistShow/ArtistShow'
 import { ArtistCreate } from '../components/artists/ArtistCreate/ArtistCreate'
+import { EventsList } from '../components/events/EventList/EventList'
+import { EventShow } from '../components/events/EventShow/EventShow'
+import { EventCreate } from '../components/events/EventCreate/EventCreate'
+import { EventEdit } from '../components/events/EventEdit/EventEdit'
 
 const i18nProvider = polyglotI18nProvider(() => russianMessages, 'ru')
 
@@ -35,6 +39,13 @@ export const App = () => (
       show={ArtistShow}
       create={ArtistCreate}
       edit={ArtistEdit}
+    />
+    <Resource
+      name='events'
+      list={EventsList}
+      show={EventShow}
+      create={EventCreate}
+      edit={EventEdit}
     />
   </Admin>
 )

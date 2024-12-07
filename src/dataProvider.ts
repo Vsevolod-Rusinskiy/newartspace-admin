@@ -8,6 +8,8 @@ console.log('ApiUrl:', apiUrl)
 
 export default {
   create: async (resource, params) => {
+    console.log(params, 'params')
+    console.log(resource, 'resource')
     const imageFile = params.data.pictures.rawFile
     const file = new FormData()
     file.append('file', imageFile, imageFile.name)
@@ -30,6 +32,12 @@ export default {
     const updatedData = {
       ...params.data,
       imgUrl: image.data.imgUrl,
+
+      // преобразование даты в ISO формат только для events
+      ...(resource === 'events'
+        ? { date: new Date(params.data.date).toISOString() }
+        : {}),
+
       // обновляем поля только если resource равен 'paintings'
       ...(resource === 'paintings'
         ? {
@@ -45,9 +53,11 @@ export default {
     delete updatedData.artist
 
     try {
-      // console.log(updatedData, 'отправляем на сервер')
+      console.log(updatedData, 'отправляем на сервер')
+      console.log(resource, 'resource')
+
       const { data } = await axios.post(`${apiUrl}/${resource}`, updatedData)
-      // console.log(data, 'data получили от сервера create')
+      console.log(data, 'data получили от сервера create')
       return { data: data }
     } catch (error) {
       console.error(`Error creating resource: ${error.message}`)
