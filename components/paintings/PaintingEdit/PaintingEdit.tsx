@@ -111,6 +111,15 @@ export const PaintingEdit = () => {
           ]}
           label='Стиль искусства'
         />
+        <RadioButtonGroupInput
+          source='isReproducible'
+          choices={[
+            { id: 'true', name: 'Да' },
+            { id: 'false', name: 'Нет' },
+          ]}
+          label='Возможность репродукции'
+          defaultValue='false'
+        />
         <TextInputComponent source='priority' label='Приоритет' />
         <SelectInputComponent
           source='artistId'
