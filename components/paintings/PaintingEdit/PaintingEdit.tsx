@@ -38,14 +38,14 @@ export const PaintingEdit = () => {
   })
   const [loading, setLoading] = useState(true)
 
-  // console.log(selectLists, 'selectLists')
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const authorsResponse = await axios.get(`${apiUrl}/artists?limit=1000`)
+        const [authorsResponse, attributesResponse] = await Promise.all([
+          axios.get(`${apiUrl}/artists?limit=1000`),
+          axios.get(`${apiUrl}/attributes`),
+        ])
         setAuthors(authorsResponse.data.data)
-
-        const attributesResponse = await axios.get(`${apiUrl}/attributes`)
         setSelectLists(attributesResponse.data.data)
       } catch (error) {
         console.error('Ошибка при получении данных:', error)
@@ -61,18 +61,6 @@ export const PaintingEdit = () => {
     return <div>Загрузка...</div>
   }
 
-  const {
-    artTypesList,
-    colorsList,
-    formatsList,
-    materialsList,
-    stylesList,
-    themesList,
-    techniquesList,
-    priceTypesList,
-  } = selectLists
-
-  // Извлекаем существующие атрибуты
   const existingAttributes = {
     materials: extractAttributes(record, 'materialsList') || [],
     themes: extractAttributes(record, 'themesList') || [],
@@ -80,22 +68,27 @@ export const PaintingEdit = () => {
     colors: extractAttributes(record, 'colorsList') || [],
   }
 
-  const selectedThemes = getSelectedIds(themesList, existingAttributes.themes)
+  const selectedThemes = getSelectedIds(
+    selectLists.themesList,
+    existingAttributes.themes
+  )
   const selectedMaterials = getSelectedIds(
-    materialsList,
+    selectLists.materialsList,
     existingAttributes.materials
   )
   const selectedTechniques = getSelectedIds(
-    techniquesList,
+    selectLists.techniquesList,
     existingAttributes.techniques
   )
-  const selectedColors = getSelectedIds(colorsList, existingAttributes.colors)
+  const selectedColors = getSelectedIds(
+    selectLists.colorsList,
+    existingAttributes.colors
+  )
 
   return (
     <Edit>
       <SimpleForm>
         <ImageField source='imgUrl' label='Картина' />
-
         <ImageInput
           source='pictures'
           label='Загрузить новую картину'
@@ -111,6 +104,15 @@ export const PaintingEdit = () => {
           ]}
           label='Стиль искусства'
         />
+        <RadioButtonGroupInput
+          source='isReproducible'
+          choices={[
+            { id: 'true', name: 'Да' },
+            { id: 'false', name: 'Нет' },
+          ]}
+          label='Возможность репродукции'
+          defaultValue='false'
+        />
         <TextInputComponent source='priority' label='Приоритет' />
         <SelectInputComponent
           source='artistId'
@@ -122,31 +124,29 @@ export const PaintingEdit = () => {
           label='Автор картины'
           validate={requiredValidation}
         />
-
         <TextInputComponent
           source='title'
           label='Название картины'
           validate={requiredValidation}
         />
-
         <SelectInputComponent
           source='artType'
-          choices={artTypesList}
+          choices={selectLists.artTypesList}
           label='Вид искусства'
         />
         <SelectInputComponent
           source='style'
-          choices={stylesList}
+          choices={selectLists.stylesList}
           label='Стиль'
         />
         <SelectInputComponent
           source='theme'
-          choices={themesList}
+          choices={selectLists.themesList}
           label='Основная тематика'
         />
         <SelectArrayInput
           source='themes'
-          choices={themesList.map((theme) => ({
+          choices={selectLists.themesList.map((theme) => ({
             id: theme.id,
             name: theme.value,
           }))}
@@ -156,12 +156,12 @@ export const PaintingEdit = () => {
         />
         <SelectInputComponent
           source='material'
-          choices={materialsList}
+          choices={selectLists.materialsList}
           label='Основной материал'
         />
         <SelectArrayInput
           source='materials'
-          choices={materialsList.map((material) => ({
+          choices={selectLists.materialsList.map((material) => ({
             id: material.id,
             name: material.value,
           }))}
@@ -171,12 +171,12 @@ export const PaintingEdit = () => {
         />
         <SelectInputComponent
           source='technique'
-          choices={techniquesList}
+          choices={selectLists.techniquesList}
           label='Основная техника'
         />
         <SelectArrayInput
           source='techniques'
-          choices={techniquesList.map((technique) => ({
+          choices={selectLists.techniquesList.map((technique) => ({
             id: technique.id,
             name: technique.value,
           }))}
@@ -186,12 +186,12 @@ export const PaintingEdit = () => {
         />
         <SelectInputComponent
           source='color'
-          choices={colorsList}
+          choices={selectLists.colorsList}
           label='Цвет'
         />
         <SelectArrayInput
           source='colors'
-          choices={colorsList.map((color) => ({
+          choices={selectLists.colorsList.map((color) => ({
             id: color.id,
             name: color.value,
           }))}
@@ -204,10 +204,9 @@ export const PaintingEdit = () => {
         <TextInputComponent source='yearOfCreation' label='Год создания' />
         <SelectInputComponent
           source='format'
-          choices={formatsList}
+          choices={selectLists.formatsList}
           label='Формат'
         />
-
         <TextInputComponent
           source='price'
           label='Цена'
@@ -215,7 +214,7 @@ export const PaintingEdit = () => {
         />
         <SelectInputComponent
           source='priceType'
-          choices={priceTypesList}
+          choices={selectLists.priceTypesList}
           label='Тип цены'
         />
         <TextInputComponent source='discount' label='Скидка в процентах' />

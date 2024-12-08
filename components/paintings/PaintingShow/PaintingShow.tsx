@@ -24,6 +24,8 @@ const AttributeField = ({ attributes, type }) => {
 export const PaintingShow = () => {
   const { record } = useShowController()
 
+  const isReproducibleValue = record?.isReproducible ? 'Да' : 'Нет'
+
   return (
     <Show>
       <SimpleShowLayout>
@@ -34,6 +36,10 @@ export const PaintingShow = () => {
         <NumberField source='id' />
         <TextField source='artist.artistName' label='Автор картины' />
         <TextField source='artStyle' label='Стиль искусства' />
+        <div className='reproducible-container'>
+          <span className='reproducible-label'>Возможность репродукции:</span>
+          <span className='reproducible-value'>{isReproducibleValue}</span>
+        </div>
         <TextField source='title' label='Название картины' />
         <TextField source='artType' label='Вид искусства' />
         <TextField source='style' label='Стиль' />

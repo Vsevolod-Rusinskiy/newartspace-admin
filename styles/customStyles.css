@@ -5,3 +5,15 @@
 .MuiTypography-root.MuiTypography-body1.RaLabeled-label span {
   border-bottom: 1px solid silver;
 }
+.reproducible-label {
+  font-size: 12px;
+  text-decoration: underline;
+  color: rgba(0, 0, 0, 0.6);
+}
+.reproducible-value {
+  display: block;
+  font-size: 14px;
+}
+.reproducible-container {
+  margin-bottom: 8px;
+}
