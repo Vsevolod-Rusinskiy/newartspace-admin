@@ -24,8 +24,6 @@ const AttributeField = ({ attributes, type }) => {
 export const PaintingShow = () => {
   const { record } = useShowController()
 
-  console.log(record, 111)
-
   const isReproducibleValue = record?.isReproducible ? 'Да' : 'Нет'
 
   return (
