@@ -46,6 +46,7 @@ export default {
             width: Number(params.data.width),
             height: Number(params.data.height),
             yearOfCreation: Number(params.data.yearOfCreation),
+            isReproducible: params.data.isReproducible === 'true',
           }
         : {}),
     }
@@ -189,11 +190,14 @@ export default {
               width: Number(params.data.width),
               height: Number(params.data.height),
               yearOfCreation: Number(params.data.yearOfCreation),
+              isReproducible: params.data.isReproducible === 'true',
             }
           : {}),
       }
-      // console.log(updatedData, 'sendupdatedData')
+      console.log(updatedData, 'sendupdatedData')
       const { data } = await axios.patch(url, updatedData)
+      console.log(data, 'data получили от сервера update')
+
       return { data: data }
     } catch (error) {
       console.error('Error in update method:', error.message)
