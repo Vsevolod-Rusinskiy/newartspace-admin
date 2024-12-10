@@ -17,7 +17,7 @@ export const EventEdit = () => (
   <Edit>
     <SimpleForm>
       <ImageInput
-        source='media'
+        source='pictures'
         label='Фото или Видео'
         accept='image/*,video/*'
       >
