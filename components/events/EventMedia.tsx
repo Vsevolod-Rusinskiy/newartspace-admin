@@ -8,7 +8,13 @@ const EventMedia = () => {
   return (
     <>
       {record.imgUrl.endsWith('.mp4') ? (
-        <video controls style={{ maxWidth: '100px' }}>
+        <video
+          controls
+          style={{
+            width: 100,
+            height: 100,
+          }}
+        >
           <source src={record.imgUrl} type='video/mp4' />
           Ваш браузер не поддерживает видео.
         </video>
