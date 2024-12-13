@@ -7,6 +7,7 @@ export const EventsList = () => {
       <Datagrid rowClick='edit'>
         <CloneButton />
         <TextField source='title' label='Заголовок' />
+        <TextField source='id' label='id' />
         <DateField source='date' label='Дата' />
         <EventMedia />
       </Datagrid>
