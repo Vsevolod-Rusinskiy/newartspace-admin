@@ -1,4 +1,3 @@
-import React from 'react'
 import { useRecordContext, ImageField } from 'react-admin'
 
 const EventMedia = () => {
