@@ -23,7 +23,11 @@ export const PaintingList = (props) => {
         />
         <NumberField source='id' sortable />
         <TextField source='title' label='Название картины' />
-        <TextField source='artist.artistName' label='Автор картины' />
+        <TextField
+          source='artist.artistName'
+          label='Автор картины'
+          sortable={false}
+        />
       </Datagrid>
     </List>
   )
