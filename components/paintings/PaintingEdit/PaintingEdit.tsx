@@ -9,6 +9,7 @@ import {
   RadioButtonGroupInput,
   SelectArrayInput,
   useShowController,
+  Button,
 } from 'react-admin'
 import { SelectInputComponent, TextInputComponent } from '../../inputs'
 import { RichTextInput } from 'ra-input-rich-text'
@@ -18,6 +19,7 @@ import {
   extractAttributes,
   getSelectedIds,
 } from '../../../src/utils/common'
+import { LoadingOverlay } from '../../common/LoadingOverlay'
 
 const apiUrl = import.meta.env.VITE_APP_API_URL || 'https://back.newartspace.ru'
 
@@ -37,6 +39,7 @@ export const PaintingEdit = () => {
     priceTypesList: [],
   })
   const [loading, setLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -85,145 +88,156 @@ export const PaintingEdit = () => {
     existingAttributes.colors
   )
 
+  const testLoading = () => {
+    setIsLoading(true)
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 3000)
+  }
+
   return (
-    <Edit>
-      <SimpleForm>
-        <ImageField source='imgUrl' label='Картина' />
-        <ImageInput
-          source='pictures'
-          label='Загрузить новую картину'
-          validate={validateFileSize}
-        >
-          <ImageField source='src' title='title' />
-        </ImageInput>
-        <RadioButtonGroupInput
-          source='artStyle'
-          choices={[
-            { id: 'Классика', name: 'Классика' },
-            { id: 'Современность', name: 'Современность' },
-          ]}
-          label='Стиль искусства'
-        />
-        <RadioButtonGroupInput
-          source='isReproducible'
-          choices={[
-            { id: 'true', name: 'Да' },
-            { id: 'false', name: 'Нет' },
-          ]}
-          label='Возможность репродукции'
-          defaultValue='false'
-        />
-        <TextInputComponent source='priority' label='Приоритет' />
-        <SelectInputComponent
-          source='artistId'
-          choices={authors.map((author) => ({
-            id: author.id,
-            value: author.artistName,
-          }))}
-          optionValue='id'
-          label='Автор картины'
-          validate={requiredValidation}
-        />
-        <TextInputComponent
-          source='title'
-          label='Название картины'
-          validate={requiredValidation}
-        />
-        <SelectInputComponent
-          source='artType'
-          choices={selectLists.artTypesList}
-          label='Вид искусства'
-        />
-        <SelectInputComponent
-          source='style'
-          choices={selectLists.stylesList}
-          label='Стиль'
-        />
-        <SelectInputComponent
-          source='theme'
-          choices={selectLists.themesList}
-          label='Основная тематика'
-        />
-        <SelectArrayInput
-          source='themes'
-          choices={selectLists.themesList.map((theme) => ({
-            id: theme.id,
-            name: theme.value,
-          }))}
-          label='Дополнительные тематики'
-          style={{ minWidth: '300px' }}
-          defaultValue={selectedThemes}
-        />
-        <SelectInputComponent
-          source='material'
-          choices={selectLists.materialsList}
-          label='Основной материал'
-        />
-        <SelectArrayInput
-          source='materials'
-          choices={selectLists.materialsList.map((material) => ({
-            id: material.id,
-            name: material.value,
-          }))}
-          label='Дополнительные материалы'
-          style={{ minWidth: '300px' }}
-          defaultValue={selectedMaterials}
-        />
-        <SelectInputComponent
-          source='technique'
-          choices={selectLists.techniquesList}
-          label='Основная техника'
-        />
-        <SelectArrayInput
-          source='techniques'
-          choices={selectLists.techniquesList.map((technique) => ({
-            id: technique.id,
-            name: technique.value,
-          }))}
-          label='Дополнительные техники'
-          defaultValue={selectedTechniques}
-          style={{ minWidth: '300px' }}
-        />
-        <SelectInputComponent
-          source='color'
-          choices={selectLists.colorsList}
-          label='Цвет'
-        />
-        <SelectArrayInput
-          source='colors'
-          choices={selectLists.colorsList.map((color) => ({
-            id: color.id,
-            name: color.value,
-          }))}
-          label='Дополнительные цвета'
-          style={{ minWidth: '300px' }}
-          defaultValue={selectedColors}
-        />
-        <TextInputComponent source='width' label='Ширина' />
-        <TextInputComponent source='height' label='Высота' />
-        <TextInputComponent source='yearOfCreation' label='Год создания' />
-        <SelectInputComponent
-          source='format'
-          choices={selectLists.formatsList}
-          label='Формат'
-        />
-        <TextInputComponent
-          source='price'
-          label='Цена'
-          validate={requiredValidation}
-        />
-        <SelectInputComponent
-          source='priceType'
-          choices={selectLists.priceTypesList}
-          label='Тип цены'
-        />
-        <TextInputComponent source='discount' label='Скидка в процентах' />
-        <RichTextInput
-          source='description'
-          label='Описание картины'
-          className='custom-richtext-input'
-        />
-      </SimpleForm>
-    </Edit>
+    <>
+      <LoadingOverlay isVisible={isLoading} />
+      <Edit>
+        <SimpleForm>
+          <ImageField source='imgUrl' label='Картина' />
+          <ImageInput
+            source='pictures'
+            label='Загрузить новую картину'
+            validate={validateFileSize}
+          >
+            <ImageField source='src' title='title' />
+          </ImageInput>
+          <RadioButtonGroupInput
+            source='artStyle'
+            choices={[
+              { id: 'Классика', name: 'Классика' },
+              { id: 'Современность', name: 'Современность' },
+            ]}
+            label='Стиль искусства'
+          />
+          <RadioButtonGroupInput
+            source='isReproducible'
+            choices={[
+              { id: 'true', name: 'Да' },
+              { id: 'false', name: 'Нет' },
+            ]}
+            label='Возможность репродукции'
+            defaultValue='false'
+          />
+          <TextInputComponent source='priority' label='Приоритет' />
+          <SelectInputComponent
+            source='artistId'
+            choices={authors.map((author) => ({
+              id: author.id,
+              value: author.artistName,
+            }))}
+            optionValue='id'
+            label='Автор картины'
+            validate={requiredValidation}
+          />
+          <TextInputComponent
+            source='title'
+            label='Название картины'
+            validate={requiredValidation}
+          />
+          <SelectInputComponent
+            source='artType'
+            choices={selectLists.artTypesList}
+            label='Вид искусства'
+          />
+          <SelectInputComponent
+            source='style'
+            choices={selectLists.stylesList}
+            label='Стиль'
+          />
+          <SelectInputComponent
+            source='theme'
+            choices={selectLists.themesList}
+            label='Основная тематика'
+          />
+          <SelectArrayInput
+            source='themes'
+            choices={selectLists.themesList.map((theme) => ({
+              id: theme.id,
+              name: theme.value,
+            }))}
+            label='Дополнительные тематики'
+            style={{ minWidth: '300px' }}
+            defaultValue={selectedThemes}
+          />
+          <SelectInputComponent
+            source='material'
+            choices={selectLists.materialsList}
+            label='Основной материал'
+          />
+          <SelectArrayInput
+            source='materials'
+            choices={selectLists.materialsList.map((material) => ({
+              id: material.id,
+              name: material.value,
+            }))}
+            label='Дополнительные материалы'
+            style={{ minWidth: '300px' }}
+            defaultValue={selectedMaterials}
+          />
+          <SelectInputComponent
+            source='technique'
+            choices={selectLists.techniquesList}
+            label='Основная техника'
+          />
+          <SelectArrayInput
+            source='techniques'
+            choices={selectLists.techniquesList.map((technique) => ({
+              id: technique.id,
+              name: technique.value,
+            }))}
+            label='Дополнительные техники'
+            defaultValue={selectedTechniques}
+            style={{ minWidth: '300px' }}
+          />
+          <SelectInputComponent
+            source='color'
+            choices={selectLists.colorsList}
+            label='Цвет'
+          />
+          <SelectArrayInput
+            source='colors'
+            choices={selectLists.colorsList.map((color) => ({
+              id: color.id,
+              name: color.value,
+            }))}
+            label='Дополнительные цвета'
+            style={{ minWidth: '300px' }}
+            defaultValue={selectedColors}
+          />
+          <TextInputComponent source='width' label='Ширина' />
+          <TextInputComponent source='height' label='Высота' />
+          <TextInputComponent source='yearOfCreation' label='Год создания' />
+          <SelectInputComponent
+            source='format'
+            choices={selectLists.formatsList}
+            label='Формат'
+          />
+          <TextInputComponent
+            source='price'
+            label='Цена'
+            validate={requiredValidation}
+          />
+          <SelectInputComponent
+            source='priceType'
+            choices={selectLists.priceTypesList}
+            label='Тип цены'
+          />
+          <TextInputComponent source='discount' label='Скидка в процентах' />
+          <RichTextInput
+            source='description'
+            label='Описание картины'
+            className='custom-richtext-input'
+          />
+          <Button label='Test Loading' onClick={testLoading} />
+        </SimpleForm>
+      </Edit>
+    </>
   )
 }

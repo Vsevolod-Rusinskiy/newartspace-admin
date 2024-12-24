@@ -1,6 +1,6 @@
 import React from 'react'
 import { createPortal } from 'react-dom'
-import { Loading } from 'react-admin'
+import { CircularProgress } from '@mui/material'
 import './LoadingOverlay.css'
 
 interface LoadingOverlayProps {
@@ -15,7 +15,18 @@ export const LoadingOverlay: React.FC<LoadingOverlayProps> = ({
   return createPortal(
     <div className='container'>
       <div className='spinner'>
-        <Loading />
+        <div
+          style={{
+            color: 'white',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '8px',
+          }}
+        >
+          <CircularProgress style={{ color: 'white' }} />
+          <span>Загрузка...</span>
+        </div>
       </div>
     </div>,
     document.body
