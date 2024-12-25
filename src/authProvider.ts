@@ -1,36 +1,34 @@
 import { AuthProvider } from 'react-admin'
-
-const apiUrl = import.meta.env.VITE_APP_API_URL || 'https://back.newartspace.ru'
+import axiosInstance from './api/axiosInstance/axiosInstance'
 
 export const authProvider: AuthProvider = {
   login: async ({ username, password }) => {
     try {
-      const response = await fetch(`${apiUrl}/auth/login`, {
-        method: 'POST',
-        body: JSON.stringify({
-          email: username,
-          userPassword: password,
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
+      const { data } = await axiosInstance.post('/auth/login', {
+        email: username,
+        userPassword: password,
       })
-
-      if (response.status === 401) {
-        throw new Error('Неверный email или пароль')
-      }
-
-      const data = await response.json()
 
       // Проверяем права администратора
       if (!data.isAdmin) {
-        throw new Error('Доступ запрещен. Только для администратора.')
+        throw new Error('Доступ запрещен. Только для администраторов.')
       }
 
-      // Сохраняем токены и данные пользователя
-      localStorage.setItem('accessToken', data.accessToken)
-      localStorage.setItem('refreshToken', data.refreshToken)
-      localStorage.setItem('userName', data.userName)
+      // Сохраняем данные в localStorage
+      localStorage.setItem(
+        'auth',
+        JSON.stringify({
+          accessToken: data.accessToken,
+          refreshToken: data.refreshToken,
+          userName: data.userName,
+          isAdmin: data.isAdmin,
+        })
+      )
+
+      // Добавляем токен в заголовки axios для последующих запросов
+      axiosInstance.defaults.headers.common[
+        'Authorization'
+      ] = `Bearer ${data.accessToken}`
 
       return Promise.resolve()
     } catch (error) {
@@ -38,33 +36,72 @@ export const authProvider: AuthProvider = {
     }
   },
 
-  logout: () => {
-    localStorage.removeItem('accessToken')
-    localStorage.removeItem('refreshToken')
-    localStorage.removeItem('userName')
-    return Promise.resolve()
+  logout: async () => {
+    try {
+      // Удаляем токен из заголовков
+      delete axiosInstance.defaults.headers.common['Authorization']
+
+      // Очищаем localStorage
+      localStorage.removeItem('auth')
+
+      return Promise.resolve()
+    } catch (error) {
+      console.error('Ошибка при выходе:', error)
+      localStorage.removeItem('auth')
+      return Promise.resolve()
+    }
   },
 
   checkError: (error) => {
     const status = error.status
-    if (status === 401) {
-      localStorage.removeItem('accessToken')
-      return Promise.reject()
+    if (status === 401 || status === 403) {
+      return authProvider.logout()
     }
     return Promise.resolve()
   },
 
   checkAuth: () => {
-    return localStorage.getItem('accessToken')
-      ? Promise.resolve()
-      : Promise.reject()
+    const authData = localStorage.getItem('auth')
+    if (!authData) {
+      return Promise.reject()
+    }
+
+    try {
+      const { accessToken, isAdmin } = JSON.parse(authData)
+
+      // Проверяем наличие токена и прав админа
+      if (!accessToken || !isAdmin) {
+        return authProvider.logout()
+      }
+
+      // Обновляем токен в заголовках axios
+      axiosInstance.defaults.headers.common[
+        'Authorization'
+      ] = `Bearer ${accessToken}`
+
+      return Promise.resolve()
+    } catch {
+      return authProvider.logout()
+    }
   },
 
-  getPermissions: () => Promise.resolve(),
+  getPermissions: () => {
+    const authData = localStorage.getItem('auth')
+    if (!authData) return Promise.reject()
+
+    try {
+      const { isAdmin } = JSON.parse(authData)
+      return Promise.resolve(isAdmin ? 'admin' : 'user')
+    } catch {
+      return Promise.reject()
+    }
+  },
 
   getIdentity: () => {
-    const userName = localStorage.getItem('userName')
+    const authData = localStorage.getItem('auth')
+    if (!authData) return Promise.reject()
 
+    const { userName } = JSON.parse(authData)
     return Promise.resolve({
       id: 'admin',
       fullName: userName,
