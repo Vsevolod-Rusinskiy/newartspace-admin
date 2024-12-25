@@ -8,15 +8,19 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
+    console.log('Interceptor caught error:', error.response?.data)
+
     if (error.response.data.message === 'jwt expired') {
+      console.log('Token expired, attempting refresh...')
       const originalRequest = error.config
       const newToken = await refreshJwt()
 
       if (newToken) {
+        console.log('Token refreshed successfully')
         originalRequest.headers['Authorization'] = `Bearer ${newToken}`
         return axiosInstance(originalRequest)
       } else {
-        console.error('Не удалось обновить токен')
+        console.error('Token refresh failed')
       }
     } else {
       console.error('Ошибка сети:', error.message)

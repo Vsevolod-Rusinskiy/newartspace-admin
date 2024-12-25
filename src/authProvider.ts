@@ -4,10 +4,12 @@ import axiosInstance from './api/axiosInstance/axiosInstance'
 export const authProvider: AuthProvider = {
   login: async ({ username, password }) => {
     try {
+      console.log('Attempting login...')
       const { data } = await axiosInstance.post('/auth/login', {
         email: username,
         userPassword: password,
       })
+      console.log('Login successful:', data)
 
       // Проверяем права администратора
       if (!data.isAdmin) {
@@ -32,6 +34,7 @@ export const authProvider: AuthProvider = {
 
       return Promise.resolve()
     } catch (error) {
+      console.error('Login failed:', error.message)
       return Promise.reject(error.message)
     }
   },
