@@ -1,6 +1,6 @@
 import { DataProvider } from 'react-admin'
 import { stringify } from 'query-string'
-import axios from 'axios'
+import axiosInstance from './api/axiosInstance/axiosInstance'
 
 const apiUrl = import.meta.env.VITE_APP_API_URL || 'https://back.newartspace.ru'
 console.log('ApiUrl:', apiUrl)
@@ -16,7 +16,7 @@ export default {
 
     let image
     try {
-      image = await axios({
+      image = await axiosInstance({
         method: 'post',
         url: `${apiUrl}/${resource}/upload-image`,
         data: file,
@@ -57,14 +57,17 @@ export default {
       console.log(updatedData, 'отправляем на сервер')
       console.log(resource, 'resource')
 
-      const { data } = await axios.post(`${apiUrl}/${resource}`, updatedData)
+      const { data } = await axiosInstance.post(
+        `${apiUrl}/${resource}`,
+        updatedData
+      )
       console.log(data, 'data получили от сервера create')
       return { data: data }
     } catch (error) {
       console.error(`Error creating resource: ${error.message}`)
       //  удаляем картинку если карточка не создалась
       try {
-        await axios({
+        await axiosInstance({
           method: 'delete',
           url: `${apiUrl}/${resource}/delete-image`,
           data: { fileName: image.data.imgUrl.split('/').pop() },
@@ -88,7 +91,7 @@ export default {
     const url = `${apiUrl}/${resource}?${stringify(query)}`
 
     try {
-      const { data } = await axios.get(url)
+      const { data } = await axiosInstance.get(url)
       return {
         data: data.data,
         total: data.total,
@@ -103,7 +106,7 @@ export default {
     const url = `${apiUrl}/${resource}/${params.id}`
 
     try {
-      const { data } = await axios.get(url)
+      const { data } = await axiosInstance.get(url)
       return {
         data: data,
       }
@@ -120,7 +123,7 @@ export default {
     const url = `${apiUrl}/${resource}?${stringify(query)}`
 
     try {
-      const { data } = await axios.get(url)
+      const { data } = await axiosInstance.get(url)
       return { data: data }
     } catch (error) {
       console.error(`Failed to fetch multiple resources: ${error.message}`)
@@ -142,7 +145,7 @@ export default {
     const url = `${apiUrl}/${resource}?${stringify(query)}`
 
     try {
-      const { data, headers } = await axios.get(url)
+      const { data, headers } = await axiosInstance.get(url)
       return {
         data: data,
         total: parseInt(headers['content-range'].split('/').pop(), 10),
@@ -160,7 +163,7 @@ export default {
         const imageFile = params.data.pictures.rawFile
         const file = new FormData()
         file.append('file', imageFile, imageFile.name)
-        image = await axios({
+        image = await axiosInstance({
           method: 'post',
           url: `${apiUrl}/${resource}/upload-image`,
           data: file,
@@ -195,7 +198,7 @@ export default {
           : {}),
       }
       console.log(updatedData, 'sendupdatedData')
-      const { data } = await axios.patch(url, updatedData)
+      const { data } = await axiosInstance.patch(url, updatedData)
       console.log(data, 'data получили от сервера update')
 
       return { data: data }
@@ -205,7 +208,7 @@ export default {
       // Если ошибка при обновлении ресурса и изображение было загружено, удаляем изображение
       if (image) {
         try {
-          await axios({
+          await axiosInstance({
             method: 'delete',
             url: `${apiUrl}/${resource}/delete-image`,
             data: { fileName: image.data.imgUrl.split('/').pop() },
@@ -227,7 +230,7 @@ export default {
     const url = `${apiUrl}/${resource}/${params.id}`
 
     try {
-      const { data } = await axios.delete(url)
+      const { data } = await axiosInstance.delete(url)
       // console.log(data, 'data получили от сервера delete', 6666)
       return {
         data: data,
@@ -242,7 +245,7 @@ export default {
     const url = `${apiUrl}/${resource}/deleteMany/${JSON.stringify(params.ids)}`
 
     try {
-      await axios.delete(url)
+      await axiosInstance.delete(url)
       return {
         data: [],
       }

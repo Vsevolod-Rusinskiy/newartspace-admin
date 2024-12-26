@@ -1,43 +1,114 @@
-import { AuthProvider, HttpError } from 'react-admin'
-import data from './users.json'
+import { AuthProvider } from 'react-admin'
+import axiosInstance from './api/axiosInstance/axiosInstance'
 
-/**
- * This authProvider is only for test purposes. Don't use it in production.
- */
 export const authProvider: AuthProvider = {
-  login: ({ username, password }) => {
-    const user = data.users.find(
-      (u) => u.username === username && u.password === password
-    )
+  login: async ({ username, password }) => {
+    try {
+      console.log('Attempting login...')
+      const { data } = await axiosInstance.post('/auth/login', {
+        email: username,
+        userPassword: password,
+      })
+      console.log('Login successful:', data)
 
-    if (user) {
-      // eslint-disable-next-line no-unused-vars
-      let { password, ...userToPersist } = user
-      localStorage.setItem('user', JSON.stringify(userToPersist))
+      // Проверяем права администратора
+      if (!data.isAdmin) {
+        throw new Error('Доступ запрещен. Только для администраторов.')
+      }
+
+      // Сохраняем данные в localStorage
+      localStorage.setItem(
+        'auth',
+        JSON.stringify({
+          accessToken: data.accessToken,
+          refreshToken: data.refreshToken,
+          userName: data.userName,
+          isAdmin: data.isAdmin,
+        })
+      )
+
+      // Добавляем токен в заголовки axios для последующих запросов
+      axiosInstance.defaults.headers.common[
+        'Authorization'
+      ] = `Bearer ${data.accessToken}`
+
+      return Promise.resolve()
+    } catch (error) {
+      console.error('Login failed:', error.message)
+      return Promise.reject(error.message)
+    }
+  },
+
+  logout: async () => {
+    try {
+      // Удаляем токен из заголовков
+      delete axiosInstance.defaults.headers.common['Authorization']
+
+      // Очищаем localStorage
+      localStorage.removeItem('auth')
+
+      return Promise.resolve()
+    } catch (error) {
+      console.error('Ошибка при выходе:', error)
+      localStorage.removeItem('auth')
       return Promise.resolve()
     }
-
-    return Promise.reject(
-      new HttpError('Unauthorized', 401, {
-        message: 'Invalid username or password',
-      })
-    )
   },
-  logout: () => {
-    localStorage.removeItem('user')
+
+  checkError: (error) => {
+    const status = error.status
+    if (status === 401 || status === 403) {
+      return authProvider.logout()
+    }
     return Promise.resolve()
   },
-  checkError: () => Promise.resolve(),
-  checkAuth: () =>
-    localStorage.getItem('user') ? Promise.resolve() : Promise.reject(),
-  getPermissions: () => {
-    return Promise.resolve(undefined)
-  },
-  getIdentity: () => {
-    const persistedUser = localStorage.getItem('user')
-    const user = persistedUser ? JSON.parse(persistedUser) : null
 
-    return Promise.resolve(user)
+  checkAuth: () => {
+    const authData = localStorage.getItem('auth')
+    if (!authData) {
+      return Promise.reject()
+    }
+
+    try {
+      const { accessToken, isAdmin } = JSON.parse(authData)
+
+      // Проверяем наличие токена и прав админа
+      if (!accessToken || !isAdmin) {
+        return authProvider.logout()
+      }
+
+      // Обновляем токен в заголовках axios
+      axiosInstance.defaults.headers.common[
+        'Authorization'
+      ] = `Bearer ${accessToken}`
+
+      return Promise.resolve()
+    } catch {
+      return authProvider.logout()
+    }
+  },
+
+  getPermissions: () => {
+    const authData = localStorage.getItem('auth')
+    if (!authData) return Promise.reject()
+
+    try {
+      const { isAdmin } = JSON.parse(authData)
+      return Promise.resolve(isAdmin ? 'admin' : 'user')
+    } catch {
+      return Promise.reject()
+    }
+  },
+
+  getIdentity: () => {
+    const authData = localStorage.getItem('auth')
+    if (!authData) return Promise.reject()
+
+    const { userName } = JSON.parse(authData)
+    return Promise.resolve({
+      id: 'admin',
+      fullName: userName,
+    })
   },
 }
 
