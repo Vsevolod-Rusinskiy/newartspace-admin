@@ -75,11 +75,11 @@ export const PaintingCreate = () => {
         <RadioButtonGroupInput
           source='artStyle'
           choices={[
-            { id: 'Классика', name: 'Классика' },
+            { id: 'Традиции', name: 'Традиции' },
             { id: 'Современность', name: 'Современность' },
           ]}
           label='Стиль искусства'
-          defaultValue='Классика'
+          defaultValue='Традиции'
         />
         <RadioButtonGroupInput
           source='isReproducible'

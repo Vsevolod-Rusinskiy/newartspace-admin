@@ -99,7 +99,7 @@ export const PaintingEdit = () => {
         <RadioButtonGroupInput
           source='artStyle'
           choices={[
-            { id: 'Классика', name: 'Классика' },
+            { id: 'Традиции', name: 'Традиции' },
             { id: 'Современность', name: 'Современность' },
           ]}
           label='Стиль искусства'
