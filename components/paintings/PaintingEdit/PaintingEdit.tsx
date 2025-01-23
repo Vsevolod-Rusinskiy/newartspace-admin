@@ -18,6 +18,7 @@ import {
   extractAttributes,
   getSelectedIds,
 } from '../../../src/utils/common'
+import { IsReprodusibleSpan } from '../../../src/utils/isReprodusibleSpan'
 
 const apiUrl = import.meta.env.VITE_APP_API_URL || 'https://back.newartspace.ru'
 
@@ -113,6 +114,7 @@ export const PaintingEdit = () => {
           label='Возможность репродукции'
           defaultValue='false'
         />
+        <IsReprodusibleSpan />
         <TextInputComponent
           source='price'
           label='Цена'

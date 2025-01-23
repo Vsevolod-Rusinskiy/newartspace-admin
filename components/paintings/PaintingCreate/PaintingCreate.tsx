@@ -13,6 +13,7 @@ import { RichTextInput } from 'ra-input-rich-text'
 import { SelectInputComponent, TextInputComponent } from '../../inputs'
 import { validateFileSize } from '../../../src/utils/common'
 import '../../../styles/customStyles.css'
+import { IsReprodusibleSpan } from '../../../src/utils/isReprodusibleSpan'
 
 const requiredValidation = required('Это обязательное поле')
 
@@ -90,15 +91,16 @@ export const PaintingCreate = () => {
           label='Возможность репродукции'
           defaultValue='false'
         />
-        <TextInputComponent
-          source='price'
-          label='Цена'
-          validate={requiredValidation}
-        />
+        <IsReprodusibleSpan />
         <SelectInputComponent
           source='priceType'
           choices={priceTypesList}
           label='Тип цены'
+        />
+        <TextInputComponent
+          source='price'
+          label='Цена'
+          validate={requiredValidation}
         />
         <TextInputComponent source='discount' label='Скидка в процентах' />
         <TextInputComponent source='priority' label='Приоритет' />
