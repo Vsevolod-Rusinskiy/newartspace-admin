@@ -113,6 +113,17 @@ export const PaintingEdit = () => {
           label='Возможность репродукции'
           defaultValue='false'
         />
+        <TextInputComponent
+          source='price'
+          label='Цена'
+          validate={requiredValidation}
+        />
+        <SelectInputComponent
+          source='priceType'
+          choices={selectLists.priceTypesList}
+          label='Тип цены'
+        />
+        <TextInputComponent source='discount' label='Скидка в процентах' />
         <TextInputComponent source='priority' label='Приоритет' />
         <SelectInputComponent
           source='artistId'
@@ -207,17 +218,6 @@ export const PaintingEdit = () => {
           choices={selectLists.formatsList}
           label='Формат'
         />
-        <TextInputComponent
-          source='price'
-          label='Цена'
-          validate={requiredValidation}
-        />
-        <SelectInputComponent
-          source='priceType'
-          choices={selectLists.priceTypesList}
-          label='Тип цены'
-        />
-        <TextInputComponent source='discount' label='Скидка в процентах' />
         <RichTextInput
           source='description'
           label='Описание картины'

@@ -40,6 +40,9 @@ export const PaintingShow = () => {
           <span className='reproducible-label'>Возможность репродукции:</span>
           <span className='reproducible-value'>{isReproducibleValue}</span>
         </div>
+        <NumberField source='price' label='Цена' />
+        <TextField source='priceType' label='Тип цены' />
+        <NumberField source='discount' label='Скидка в процентах' />
         <TextField source='title' label='Название картины' />
         <TextField source='artType' label='Вид искусства' />
         <TextField source='style' label='Стиль' />
@@ -73,9 +76,6 @@ export const PaintingShow = () => {
         <NumberField source='height' label='Высота' />
         <TextField source='yearOfCreation' label='Год создания' />
         <TextField source='format' label='Формат' />
-        <NumberField source='price' label='Цена' />
-        <TextField source='priceType' label='Тип цены' />
-        <NumberField source='discount' label='Скидка в процентах' />
         <RichTextField
           source='description'
           label='Описание картины'
