@@ -18,6 +18,7 @@ import {
   extractAttributes,
   getSelectedIds,
 } from '../../../src/utils/common'
+import { IsReprodusibleSpan } from '../../../src/utils/isReprodusibleSpan'
 
 const apiUrl = import.meta.env.VITE_APP_API_URL || 'https://back.newartspace.ru'
 
@@ -88,10 +89,10 @@ export const PaintingEdit = () => {
   return (
     <Edit>
       <SimpleForm>
-        <ImageField source='imgUrl' label='Картина' />
+        <ImageField source='imgUrl' label='🖼️ Картина' />
         <ImageInput
           source='pictures'
-          label='Загрузить новую картину'
+          label='🖼️ Загрузить новую картину'
           validate={validateFileSize}
         >
           <ImageField source='src' title='title' />
@@ -102,7 +103,7 @@ export const PaintingEdit = () => {
             { id: 'Традиции', name: 'Традиции' },
             { id: 'Современность', name: 'Современность' },
           ]}
-          label='Стиль искусства'
+          label='🎭 Стиль искусства'
         />
         <RadioButtonGroupInput
           source='isReproducible'
@@ -110,10 +111,22 @@ export const PaintingEdit = () => {
             { id: 'true', name: 'Да' },
             { id: 'false', name: 'Нет' },
           ]}
-          label='Возможность репродукции'
+          label='🔄 Возможность репродукции'
           defaultValue='false'
         />
-        <TextInputComponent source='priority' label='Приоритет' />
+        <IsReprodusibleSpan />
+        <TextInputComponent
+          source='price'
+          label='💰 Цена'
+          validate={requiredValidation}
+        />
+        <SelectInputComponent
+          source='priceType'
+          choices={selectLists.priceTypesList}
+          label='💳 Тип цены'
+        />
+        <TextInputComponent source='discount' label='🏷️ Скидка в процентах' />
+        <TextInputComponent source='priority' label='⭐ Приоритет' />
         <SelectInputComponent
           source='artistId'
           choices={authors.map((author) => ({
@@ -121,28 +134,28 @@ export const PaintingEdit = () => {
             value: author.artistName,
           }))}
           optionValue='id'
-          label='Автор картины'
+          label='👨‍🎨 Автор картины'
           validate={requiredValidation}
         />
         <TextInputComponent
           source='title'
-          label='Название картины'
+          label='📝 Название картины'
           validate={requiredValidation}
         />
         <SelectInputComponent
           source='artType'
           choices={selectLists.artTypesList}
-          label='Вид искусства'
+          label='🎨 Вид искусства'
         />
         <SelectInputComponent
           source='style'
           choices={selectLists.stylesList}
-          label='Стиль'
+          label='✨ Стиль'
         />
         <SelectInputComponent
           source='theme'
           choices={selectLists.themesList}
-          label='Основная тематика'
+          label='🎯 Основная тематика'
         />
         <SelectArrayInput
           source='themes'
@@ -150,14 +163,14 @@ export const PaintingEdit = () => {
             id: theme.id,
             name: theme.value,
           }))}
-          label='Дополнительные тематики'
+          label='📋 Дополнительные тематики'
           style={{ minWidth: '300px' }}
           defaultValue={selectedThemes}
         />
         <SelectInputComponent
           source='material'
           choices={selectLists.materialsList}
-          label='Основной материал'
+          label='🛠️ Основной материал'
         />
         <SelectArrayInput
           source='materials'
@@ -165,14 +178,14 @@ export const PaintingEdit = () => {
             id: material.id,
             name: material.value,
           }))}
-          label='Дополнительные материалы'
+          label='🧰 Дополнительные материалы'
           style={{ minWidth: '300px' }}
           defaultValue={selectedMaterials}
         />
         <SelectInputComponent
           source='technique'
           choices={selectLists.techniquesList}
-          label='Основная техника'
+          label='🔧 Основная техника'
         />
         <SelectArrayInput
           source='techniques'
@@ -180,14 +193,14 @@ export const PaintingEdit = () => {
             id: technique.id,
             name: technique.value,
           }))}
-          label='Дополнительные техники'
+          label='⚙️ Дополнительные техники'
           defaultValue={selectedTechniques}
           style={{ minWidth: '300px' }}
         />
         <SelectInputComponent
           source='color'
           choices={selectLists.colorsList}
-          label='Цвет'
+          label='🎨 Цвет'
         />
         <SelectArrayInput
           source='colors'
@@ -195,32 +208,21 @@ export const PaintingEdit = () => {
             id: color.id,
             name: color.value,
           }))}
-          label='Дополнительные цвета'
+          label='🌈 Дополнительные цвета'
           style={{ minWidth: '300px' }}
           defaultValue={selectedColors}
         />
-        <TextInputComponent source='width' label='Ширина' />
-        <TextInputComponent source='height' label='Высота' />
-        <TextInputComponent source='yearOfCreation' label='Год создания' />
+        <TextInputComponent source='width' label='↔️ Ширина' />
+        <TextInputComponent source='height' label='↕️ Высота' />
+        <TextInputComponent source='yearOfCreation' label='📅 Год создания' />
         <SelectInputComponent
           source='format'
           choices={selectLists.formatsList}
-          label='Формат'
+          label='📐 Формат'
         />
-        <TextInputComponent
-          source='price'
-          label='Цена'
-          validate={requiredValidation}
-        />
-        <SelectInputComponent
-          source='priceType'
-          choices={selectLists.priceTypesList}
-          label='Тип цены'
-        />
-        <TextInputComponent source='discount' label='Скидка в процентах' />
         <RichTextInput
           source='description'
-          label='Описание картины'
+          label='📝 Описание картины'
           className='custom-richtext-input'
         />
       </SimpleForm>
