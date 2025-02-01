@@ -1,5 +1,12 @@
 import axiosInstance from './axiosInstance'
 
+// TODO: Требуется доработка механизма обновления токена
+// Текущая реализация может вызывать циклические запросы
+// Возможные решения:
+// 1. Использовать отдельный инстанс axios для обновления токена
+// 2. Добавить флаг isRefreshing для предотвращения повторных запросов
+// 3. Реализовать очередь запросов во время обновления токена
+
 const getAuthDataFromLS = () => {
   const data = localStorage.getItem('auth')
   return data ? JSON.parse(data) : null
@@ -13,13 +20,11 @@ export const refreshJwt = async () => {
   }
 
   try {
-    console.log('Attempting to refresh token...')
     const response = await axiosInstance.post(`/auth/refresh`, {
       refreshToken: authData.refreshToken,
     })
 
     if (response.status === 200) {
-      console.log('Token refresh successful')
       localStorage.setItem(
         'auth',
         JSON.stringify({
@@ -28,10 +33,10 @@ export const refreshJwt = async () => {
       )
       return response.data.accessToken
     } else {
-      console.error('Token refresh failed with status:', response.status)
       localStorage.removeItem('auth')
     }
   } catch (error) {
     console.error('Error refreshing token:', error)
+    localStorage.removeItem('auth')
   }
 }
