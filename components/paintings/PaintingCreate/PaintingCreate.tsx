@@ -103,7 +103,11 @@ export const PaintingCreate = () => {
           validate={requiredValidation}
         />
         <TextInputComponent source='discount' label='🏷️ Скидка в процентах' />
-        <TextInputComponent source='priority' label='⭐ Приоритет' />
+        <TextInputComponent
+          source='priority'
+          label='⭐ Приоритет'
+          validate={requiredValidation}
+        />
         <SelectInputComponent
           source='artistId'
           choices={authors.map((author) => ({

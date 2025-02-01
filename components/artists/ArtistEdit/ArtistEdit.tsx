@@ -17,7 +17,11 @@ export const ArtistEdit = () => (
       >
         <ImageField source='src' title='title' />
       </ImageInput>
-      <TextInputComponent source='priority' label='Приоритет' />
+      <TextInputComponent
+        source='priority'
+        label='Приоритет'
+        validate={requiredValidation}
+      />
       <TextInputComponent
         source='artistName'
         label='Имя художника'
