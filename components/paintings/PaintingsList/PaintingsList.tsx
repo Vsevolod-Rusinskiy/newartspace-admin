@@ -4,12 +4,28 @@ import {
   List,
   NumberField,
   TextField,
+  SearchInput,
 } from 'react-admin'
 import { ImageField } from 'react-admin'
 
+const PaintingFilters = [
+  <SearchInput
+    key='title'
+    source='title'
+    placeholder='🔍 Поиск по названию'
+    alwaysOn
+  />,
+  <SearchInput
+    key='artist'
+    source='artist.artistName'
+    placeholder='👨‍🎨 Поиск по автору'
+    alwaysOn
+  />,
+]
+
 export const PaintingList = (props) => {
   return (
-    <List {...props}>
+    <List {...props} filters={PaintingFilters}>
       <Datagrid rowClick='show'>
         <CloneButton />
         <TextField source='artStyle' label='Стиль искусства' />

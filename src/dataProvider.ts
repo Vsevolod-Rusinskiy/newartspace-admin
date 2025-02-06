@@ -82,6 +82,7 @@ export default {
   getList: async (resource, params) => {
     const { page, perPage: limit } = params.pagination
     const { field, order } = params.sort
+
     const query = {
       sort: JSON.stringify([field, order]),
       limit: limit,
