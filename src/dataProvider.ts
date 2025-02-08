@@ -6,6 +6,14 @@ const apiUrl = import.meta.env.VITE_APP_API_URL || 'https://back.newartspace.ru'
 console.log('ApiUrl:', apiUrl)
 // test flag = true
 
+interface CustomDataProvider extends DataProvider {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
+  deleteOrderItems: (
+    orderId: number,
+    itemIds: number[]
+  ) => Promise<{ data: any }>
+}
+
 export default {
   create: async (resource, params) => {
     console.log(params, 'params')
@@ -255,4 +263,30 @@ export default {
       return { error: `Failed to delete multiple resources: ${error.message}` }
     }
   },
-} as DataProvider
+
+  deleteOrderItems: async (orderId: number, itemIds: number[]) => {
+    console.log('=== Удаление позиций из заказа ===')
+    console.log('URL:', `${apiUrl}/orders/${orderId}/items`)
+    console.log('Данные запроса:', { orderId, itemIds })
+    console.log('Тело запроса:', { itemIds: itemIds })
+
+    try {
+      const { data } = await axiosInstance.delete(
+        `${apiUrl}/orders/${orderId}/items`,
+        {
+          data: { itemIds: itemIds },
+        }
+      )
+      console.log('Ответ сервера:', data)
+      return { data }
+    } catch (error) {
+      console.error('Ошибка при удалении позиций заказа:', error)
+      console.error('Детали запроса:', {
+        url: `${apiUrl}/orders/${orderId}/items`,
+        orderId,
+        itemIds,
+      })
+      throw error
+    }
+  },
+} as CustomDataProvider

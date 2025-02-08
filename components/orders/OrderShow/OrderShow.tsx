@@ -7,11 +7,63 @@ import {
   ArrayField,
   Datagrid,
   useShowController,
+  useDataProvider,
+  useNotify,
+  useRefresh,
+  useListContext,
+  Button,
 } from 'react-admin'
 
-export const OrderShow = () => {
+const OrderItemsBulkDeleteButton = () => {
   const { record } = useShowController()
+  const dataProvider = useDataProvider()
+  const notify = useNotify()
+  const refresh = useRefresh()
+  const { selectedIds } = useListContext()
 
+  const handleDelete = async () => {
+    if (!selectedIds || selectedIds.length === 0) {
+      notify('Выберите позиции для удаления', { type: 'warning' })
+      return
+    }
+
+    if (!window.confirm('Вы уверены, что хотите удалить выбранные позиции?')) {
+      return
+    }
+
+    try {
+      console.log('=== Начало удаления позиций ===')
+      console.log('ID заказа:', record?.id)
+      console.log('Тип ID заказа:', typeof record?.id)
+      console.log('Выбранные позиции:', selectedIds)
+      console.log('Тип выбранных позиций:', typeof selectedIds)
+
+      await dataProvider.deleteOrderItems(
+        Number(record.id),
+        selectedIds.map(Number)
+      )
+
+      notify('ra.notification.deleted', {
+        type: 'success',
+        messageArgs: { smart_count: selectedIds.length },
+      })
+      refresh()
+    } catch (error) {
+      console.error('Ошибка при удалении:', error)
+      notify('ra.notification.http_error', { type: 'error' })
+    }
+  }
+
+  return (
+    <Button
+      label='🗑️ Удалить выбранные позиции'
+      onClick={handleDelete}
+      disabled={!selectedIds || selectedIds.length === 0}
+    />
+  )
+}
+
+export const OrderShow = () => {
   return (
     <Show>
       <SimpleShowLayout>
@@ -27,7 +79,8 @@ export const OrderShow = () => {
         <DateField source='updatedAt' label='🔄 Дата обновления' showTime />
 
         <ArrayField source='orderItems' label='📦 Позиции заказа'>
-          <Datagrid>
+          <Datagrid bulkActionButtons={<OrderItemsBulkDeleteButton />}>
+            <TextField source='id' label='ID позиции' />
             <TextField source='paintingId' label='ID картины' />
             <NumberField source='quantity' label='📊 Количество' />
             <NumberField source='price' label='💰 Цена' />
