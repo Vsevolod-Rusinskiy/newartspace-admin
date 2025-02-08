@@ -15,6 +15,9 @@ import { EventsList } from '../components/events/EventList/EventList'
 import { EventShow } from '../components/events/EventShow/EventShow'
 import { EventCreate } from '../components/events/EventCreate/EventCreate'
 import { EventEdit } from '../components/events/EventEdit/EventEdit'
+import { OrderList } from '../components/orders/OrderList/OrderList'
+import { OrderShow } from '../components/orders/OrderShow/OrderShow'
+import { OrderEdit } from '../components/orders/OrderEdit/OrderEdit'
 
 const i18nProvider = polyglotI18nProvider(() => russianMessages, 'ru')
 
@@ -46,6 +49,12 @@ export const App = () => (
       show={EventShow}
       create={EventCreate}
       edit={EventEdit}
+    />
+    <Resource
+      name='orders'
+      list={OrderList}
+      show={OrderShow}
+      edit={OrderEdit}
     />
   </Admin>
 )
