@@ -6,12 +6,13 @@ const apiUrl = import.meta.env.VITE_APP_API_URL || 'https://back.newartspace.ru'
 console.log('ApiUrl:', apiUrl)
 // test flag = true
 
+interface DeleteOrderItemsParams {
+  orderId: number
+  itemIds: number[]
+}
+
 interface CustomDataProvider extends DataProvider {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
-  deleteOrderItems: (
-    orderId: number,
-    itemIds: number[]
-  ) => Promise<{ data: any }>
+  deleteOrderItems: (params: DeleteOrderItemsParams) => Promise<{ data: any }>
 }
 
 export default {
@@ -264,17 +265,20 @@ export default {
     }
   },
 
-  deleteOrderItems: async (orderId: number, itemIds: number[]) => {
+  deleteOrderItems: async (params: DeleteOrderItemsParams) => {
     console.log('=== Удаление позиций из заказа ===')
-    console.log('URL:', `${apiUrl}/orders/${orderId}/items`)
-    console.log('Данные запроса:', { orderId, itemIds })
-    console.log('Тело запроса:', { itemIds: itemIds })
+    console.log('URL:', `${apiUrl}/orders/${params.orderId}/items`)
+    console.log('Данные запроса:', {
+      orderId: params.orderId,
+      itemIds: params.itemIds,
+    })
+    console.log('Тело запроса:', { itemIds: params.itemIds })
 
     try {
       const { data } = await axiosInstance.delete(
-        `${apiUrl}/orders/${orderId}/items`,
+        `${apiUrl}/orders/${params.orderId}/items`,
         {
-          data: { itemIds: itemIds },
+          data: { itemIds: params.itemIds },
         }
       )
       console.log('Ответ сервера:', data)
@@ -282,9 +286,9 @@ export default {
     } catch (error) {
       console.error('Ошибка при удалении позиций заказа:', error)
       console.error('Детали запроса:', {
-        url: `${apiUrl}/orders/${orderId}/items`,
-        orderId,
-        itemIds,
+        url: `${apiUrl}/orders/${params.orderId}/items`,
+        orderId: params.orderId,
+        itemIds: params.itemIds,
       })
       throw error
     }

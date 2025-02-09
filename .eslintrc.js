@@ -19,5 +19,13 @@ module.exports = {
   },
   rules: {
     'react/prop-types': 'off',
+    // добавляем только одно правило для решения нашей проблемы
+    '@typescript-eslint/no-unused-vars': [
+      'warn',
+      {
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
+      },
+    ],
   },
 }

@@ -1,6 +1,12 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-import { Edit, SimpleForm, SelectInput, useShowController } from 'react-admin'
+import {
+  Edit,
+  SimpleForm,
+  SelectInput,
+  TextInput,
+  useShowController,
+} from 'react-admin'
 
 const apiUrl = import.meta.env.VITE_APP_API_URL || 'https://back.newartspace.ru'
 
@@ -32,6 +38,18 @@ export const OrderEdit = () => {
           source='statusId'
           choices={statuses}
           label='📊 Статус заказа'
+        />
+        <TextInput
+          source='shippingAddress'
+          label='🏠 Адрес доставки'
+          fullWidth
+        />
+        <TextInput
+          source='description'
+          label='📝 Комментарий к заказу'
+          multiline
+          rows={4}
+          fullWidth
         />
       </SimpleForm>
     </Edit>
