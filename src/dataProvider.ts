@@ -6,13 +6,34 @@ const apiUrl = import.meta.env.VITE_APP_API_URL || 'https://back.newartspace.ru'
 console.log('ApiUrl:', apiUrl)
 // test flag = true
 
+interface DeleteOrderItemsParams {
+  orderId: number
+  itemIds: number[]
+}
+
+interface CustomDataProvider extends DataProvider {
+  deleteOrderItems: (params: DeleteOrderItemsParams) => Promise<{ data: any }>
+}
+
+const cleanArtistData = (data: any) => {
+  const { paintings, ...cleanedData } = data
+  return cleanedData
+}
+
 export default {
   create: async (resource, params) => {
     console.log(params, 'params')
     console.log(resource, 'resource')
-    const imageFile = params.data.pictures.rawFile
+
+    // Очищаем данные если это artist
+    const dataToSend =
+      resource === 'artists' ? cleanArtistData(params.data) : params.data
+
+    const imageFile = dataToSend.pictures?.rawFile
     const file = new FormData()
-    file.append('file', imageFile, imageFile.name)
+    if (imageFile) {
+      file.append('file', imageFile, imageFile.name)
+    }
 
     let image
     try {
@@ -30,23 +51,23 @@ export default {
     }
 
     const updatedData = {
-      ...params.data,
+      ...dataToSend,
       imgUrl: image.data.imgUrl,
 
       // преобразование даты в ISO формат только для events
       ...(resource === 'events'
-        ? { date: new Date(params.data.date).toISOString() }
+        ? { date: new Date(dataToSend.date).toISOString() }
         : {}),
 
       // обновляем поля только если resource равен 'paintings'
       ...(resource === 'paintings'
         ? {
-            price: Number(params.data.price),
-            discount: Number(params.data.discount),
-            width: Number(params.data.width),
-            height: Number(params.data.height),
-            yearOfCreation: Number(params.data.yearOfCreation),
-            isReproducible: params.data.isReproducible === 'true',
+            price: Number(dataToSend.price),
+            discount: Number(dataToSend.discount),
+            width: Number(dataToSend.width),
+            height: Number(dataToSend.height),
+            yearOfCreation: Number(dataToSend.yearOfCreation),
+            isReproducible: dataToSend.isReproducible === 'true',
           }
         : {}),
     }
@@ -160,8 +181,12 @@ export default {
   update: async (resource, params) => {
     let image
     try {
-      if (params.data.pictures && params.data.pictures.rawFile) {
-        const imageFile = params.data.pictures.rawFile
+      // Очищаем данные если это artist
+      const dataToSend =
+        resource === 'artists' ? cleanArtistData(params.data) : params.data
+
+      if (dataToSend.pictures && dataToSend.pictures.rawFile) {
+        const imageFile = dataToSend.pictures.rawFile
         const file = new FormData()
         file.append('file', imageFile, imageFile.name)
         image = await axiosInstance({
@@ -173,28 +198,28 @@ export default {
           },
         })
 
-        params.data.imgUrl = image.data.imgUrl
+        dataToSend.imgUrl = image.data.imgUrl
       } else {
         // Если картинка не предоставлена, сохраняем предыдущий URL
-        params.data.imgUrl = params.previousData.imgUrl
-        params.data.pictures = null
+        dataToSend.imgUrl = params.previousData.imgUrl
+        dataToSend.pictures = null
       }
 
       const url = `${apiUrl}/${resource}/${params.id}`
-      delete params.data.artist
+      delete dataToSend.artist
 
       const updatedData = {
-        ...params.data,
+        ...dataToSend,
 
         // обновляем поля только если resource равен 'paintings'
         ...(resource === 'paintings'
           ? {
-              price: Number(params.data.price),
-              discount: Number(params.data.discount),
-              width: Number(params.data.width),
-              height: Number(params.data.height),
-              yearOfCreation: Number(params.data.yearOfCreation),
-              isReproducible: params.data.isReproducible === 'true',
+              price: Number(dataToSend.price),
+              discount: Number(dataToSend.discount),
+              width: Number(dataToSend.width),
+              height: Number(dataToSend.height),
+              yearOfCreation: Number(dataToSend.yearOfCreation),
+              isReproducible: dataToSend.isReproducible === 'true',
             }
           : {}),
       }
@@ -255,4 +280,33 @@ export default {
       return { error: `Failed to delete multiple resources: ${error.message}` }
     }
   },
-} as DataProvider
+
+  deleteOrderItems: async (params: DeleteOrderItemsParams) => {
+    console.log('=== Удаление позиций из заказа ===')
+    console.log('URL:', `${apiUrl}/orders/${params.orderId}/items`)
+    console.log('Данные запроса:', {
+      orderId: params.orderId,
+      itemIds: params.itemIds,
+    })
+    console.log('Тело запроса:', { itemIds: params.itemIds })
+
+    try {
+      const { data } = await axiosInstance.delete(
+        `${apiUrl}/orders/${params.orderId}/items`,
+        {
+          data: { itemIds: params.itemIds },
+        }
+      )
+      console.log('Ответ сервера:', data)
+      return { data }
+    } catch (error) {
+      console.error('Ошибка при удалении позиций заказа:', error)
+      console.error('Детали запроса:', {
+        url: `${apiUrl}/orders/${params.orderId}/items`,
+        orderId: params.orderId,
+        itemIds: params.itemIds,
+      })
+      throw error
+    }
+  },
+} as CustomDataProvider
