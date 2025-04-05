@@ -12,6 +12,7 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
+    // Проверяем наличие объекта response и data
     if (error.response?.data?.message === 'jwt expired') {
       const originalRequest = error.config
       const newToken = await refreshJwt()
@@ -20,8 +21,18 @@ axiosInstance.interceptors.response.use(
         originalRequest.headers['Authorization'] = `Bearer ${newToken}`
         return axiosInstance(originalRequest)
       } else {
-        console.error('Не удалось обновить токен')
+        // Если не удалось обновить токен, выполняем выход
+        localStorage.removeItem('auth')
+        delete axiosInstance.defaults.headers.common['Authorization']
+        window.location.href = '/#/login'
       }
+    }
+    // Добавим дополнительно обработку 401 статуса
+    else if (error.response?.status === 401) {
+      // Выход из системы при 401 ошибке
+      localStorage.removeItem('auth')
+      delete axiosInstance.defaults.headers.common['Authorization']
+      window.location.href = '/#/login'
     } else {
       console.error('Ошибка сети:', error.message)
     }
