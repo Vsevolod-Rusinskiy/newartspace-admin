@@ -17,10 +17,19 @@ axiosInstance.interceptors.response.use(
 
     // Проверяем наличие объекта response и data
     if (error.response?.data?.message === 'jwt expired') {
+      console.log(
+        '🔄 [Interceptor] JWT expired, attempting to refresh token',
+        error.config.url
+      )
+
       const originalRequest = error.config
 
       // Предотвращаем повторные попытки обновления токена для того же запроса
       if (originalRequest._retry) {
+        console.log(
+          '🛑 [Interceptor] Retry attempt failed, logging out user',
+          error.config.url
+        )
         // Если это повторная попытка, выполняем выход
         localStorage.removeItem('auth')
         delete axiosInstance.defaults.headers.common['Authorization']
@@ -31,12 +40,21 @@ axiosInstance.interceptors.response.use(
       originalRequest._retry = true
 
       try {
+        console.log('🔑 [Interceptor] Calling refreshJwt()', error.config.url)
         const newToken = await refreshJwt()
 
         if (newToken) {
+          console.log(
+            '✅ [Interceptor] Token refreshed successfully, retrying original request',
+            error.config.url
+          )
           originalRequest.headers['Authorization'] = `Bearer ${newToken}`
           return axiosInstance(originalRequest)
         } else {
+          console.log(
+            '❌ [Interceptor] Failed to get new token, logging out user',
+            error.config.url
+          )
           // Если не удалось обновить токен, выполняем выход
           localStorage.removeItem('auth')
           delete axiosInstance.defaults.headers.common['Authorization']
@@ -44,6 +62,10 @@ axiosInstance.interceptors.response.use(
           return Promise.reject(error)
         }
       } catch (refreshError) {
+        console.log(
+          '💥 [Interceptor] Error during token refresh, logging out user',
+          refreshError
+        )
         // Если произошла ошибка при обновлении токена
         localStorage.removeItem('auth')
         delete axiosInstance.defaults.headers.common['Authorization']
@@ -53,12 +75,15 @@ axiosInstance.interceptors.response.use(
     }
     // Добавим дополнительно обработку 401 статуса
     else if (error.response?.status === 401) {
+      console.log(
+        '🚫 [Interceptor] 401 Unauthorized response, logging out user'
+      )
       // Выход из системы при 401 ошибке
       localStorage.removeItem('auth')
       delete axiosInstance.defaults.headers.common['Authorization']
       window.location.href = '/#/login'
     } else {
-      console.error('Ошибка сети:', error.message)
+      console.error('❌ [Interceptor] Network error:', error.message)
     }
     return Promise.reject(error)
   }
