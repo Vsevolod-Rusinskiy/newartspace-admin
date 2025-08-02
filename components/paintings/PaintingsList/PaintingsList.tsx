@@ -5,6 +5,7 @@ import {
   NumberField,
   TextField,
   SearchInput,
+  BooleanField,
 } from 'react-admin'
 import { ImageField } from 'react-admin'
 
@@ -44,15 +45,11 @@ export const PaintingList = (props) => {
           label='Автор картины'
           sortable={false}
         />
-        <TextField
+        <BooleanField
           source='isAdult'
           label='🔞 +18'
-          render={(record) => {
-            const value = record?.isAdult
-            if (value === true || value === 'true') return 'Да'
-            if (value === false || value === 'false') return 'Нет'
-            return 'Нет'
-          }}
+          valueLabelTrue='Да'
+          valueLabelFalse='Нет'
         />
       </Datagrid>
     </List>
