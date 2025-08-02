@@ -92,6 +92,15 @@ export const PaintingCreate = () => {
           defaultValue='false'
         />
         <IsReprodusibleSpan />
+        <RadioButtonGroupInput
+          source='isAdult'
+          choices={[
+            { id: 'true', name: 'Да' },
+            { id: 'false', name: 'Нет' },
+          ]}
+          label='🔞 +18'
+          defaultValue='false'
+        />
         <SelectInputComponent
           source='priceType'
           choices={priceTypesList}

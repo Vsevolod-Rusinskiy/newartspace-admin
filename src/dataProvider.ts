@@ -68,6 +68,7 @@ export default {
             height: Number(dataToSend.height),
             yearOfCreation: Number(dataToSend.yearOfCreation),
             isReproducible: dataToSend.isReproducible === 'true',
+            isAdult: dataToSend.isAdult === 'true',
           }
         : {}),
     }
@@ -220,6 +221,7 @@ export default {
               height: Number(dataToSend.height),
               yearOfCreation: Number(dataToSend.yearOfCreation),
               isReproducible: dataToSend.isReproducible === 'true',
+              isAdult: dataToSend.isAdult === 'true',
             }
           : {}),
       }

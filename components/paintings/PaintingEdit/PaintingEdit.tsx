@@ -115,6 +115,15 @@ export const PaintingEdit = () => {
           defaultValue='false'
         />
         <IsReprodusibleSpan />
+        <RadioButtonGroupInput
+          source='isAdult'
+          choices={[
+            { id: 'true', name: 'Да' },
+            { id: 'false', name: 'Нет' },
+          ]}
+          label='🔞 +18'
+          defaultValue='false'
+        />
         <TextInputComponent
           source='price'
           label='💰 Цена'

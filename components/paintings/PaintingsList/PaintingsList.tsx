@@ -44,6 +44,16 @@ export const PaintingList = (props) => {
           label='Автор картины'
           sortable={false}
         />
+        <TextField
+          source='isAdult'
+          label='🔞 +18'
+          render={(record) => {
+            const value = record?.isAdult
+            if (value === true || value === 'true') return 'Да'
+            if (value === false || value === 'false') return 'Нет'
+            return 'Нет'
+          }}
+        />
       </Datagrid>
     </List>
   )
