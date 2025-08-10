@@ -25,6 +25,7 @@ export const PaintingShow = () => {
   const { record } = useShowController()
 
   const isReproducibleValue = record?.isReproducible ? 'Да' : 'Нет'
+  const isAdultValue = record?.isAdult ? 'Да' : 'Нет'
 
   return (
     <Show>
@@ -41,6 +42,10 @@ export const PaintingShow = () => {
             🔄 Возможность репродукции:
           </span>
           <span className='reproducible-value'>{isReproducibleValue}</span>
+        </div>
+        <div className='reproducible-container'>
+          <span className='reproducible-label'>🔞 +18:</span>
+          <span className='reproducible-value'>{isAdultValue}</span>
         </div>
         <NumberField source='price' label='💰 Цена' />
         <TextField source='priceType' label='💳 Тип цены' />
