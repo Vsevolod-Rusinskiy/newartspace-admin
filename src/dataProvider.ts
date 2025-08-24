@@ -25,6 +25,20 @@ export default {
     console.log(params, 'params')
     console.log(resource, 'resource')
 
+    // Если это welcome-modal, пропускаем логику с картинками
+    if (resource === 'welcome') {
+      try {
+        const { data } = await axiosInstance.post(
+          `${apiUrl}/${resource}`,
+          params.data
+        )
+        return { data: data }
+      } catch (error) {
+        console.error(`Error creating resource: ${error.message}`)
+        return { error: `Error creating resource: ${error.message}` }
+      }
+    }
+
     // Очищаем данные если это artist
     const dataToSend =
       resource === 'artists' ? cleanArtistData(params.data) : params.data
@@ -180,6 +194,18 @@ export default {
   },
 
   update: async (resource, params) => {
+    // Если это welcome-modal, пропускаем логику с картинками
+    if (resource === 'welcome') {
+      try {
+        const url = `${apiUrl}/${resource}/${params.id}`
+        const { data } = await axiosInstance.patch(url, params.data)
+        return { data: data }
+      } catch (error) {
+        console.error('Error in update method:', error.message)
+        return { error: `Error in update method: ${error.message}` }
+      }
+    }
+
     let image
     try {
       // Очищаем данные если это artist
