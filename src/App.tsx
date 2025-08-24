@@ -61,7 +61,7 @@ export const App = () => (
       edit={OrderEdit}
     />
     <Resource
-      name='welcome-modal'
+      name='welcome'
       list={WelcomeModalList}
       show={WelcomeModalShow}
       create={WelcomeModalCreate}
