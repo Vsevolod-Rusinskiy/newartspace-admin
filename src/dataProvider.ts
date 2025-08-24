@@ -116,6 +116,8 @@ export default {
   },
 
   getList: async (resource, params) => {
+    console.log(params, 'params')
+    console.log(resource, 'resource')
     const { page, perPage: limit } = params.pagination
     const { field, order } = params.sort
 
@@ -128,6 +130,7 @@ export default {
     const url = `${apiUrl}/${resource}?${stringify(query)}`
 
     try {
+      console.log(await axiosInstance.get(url), 'getList')
       const { data } = await axiosInstance.get(url)
       return {
         data: data.data,
