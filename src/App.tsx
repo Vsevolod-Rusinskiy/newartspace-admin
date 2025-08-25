@@ -18,6 +18,10 @@ import { EventEdit } from '../components/events/EventEdit/EventEdit'
 import { OrderList } from '../components/orders/OrderList/OrderList'
 import { OrderShow } from '../components/orders/OrderShow/OrderShow'
 import { OrderEdit } from '../components/orders/OrderEdit/OrderEdit'
+import { WelcomeModalList } from '../components/welcomeModal/WelcomeModalList/WelcomeModalList'
+import { WelcomeModalShow } from '../components/welcomeModal/WelcomeModalShow/WelcomeModalShow'
+import { WelcomeModalCreate } from '../components/welcomeModal/WelcomeModalCreate/WelcomeModalCreate'
+import { WelcomeModalEdit } from '../components/welcomeModal/WelcomeModalEdit/WelcomeModalEdit'
 
 const i18nProvider = polyglotI18nProvider(() => russianMessages, 'ru')
 
@@ -55,6 +59,13 @@ export const App = () => (
       list={OrderList}
       show={OrderShow}
       edit={OrderEdit}
+    />
+    <Resource
+      name='welcome'
+      list={WelcomeModalList}
+      show={WelcomeModalShow}
+      create={WelcomeModalCreate}
+      edit={WelcomeModalEdit}
     />
   </Admin>
 )

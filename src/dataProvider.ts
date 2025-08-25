@@ -25,6 +25,20 @@ export default {
     console.log(params, 'params')
     console.log(resource, 'resource')
 
+    // Если это welcome-modal, пропускаем логику с картинками
+    if (resource === 'welcome') {
+      try {
+        const { data } = await axiosInstance.post(
+          `${apiUrl}/${resource}`,
+          params.data
+        )
+        return { data: data }
+      } catch (error) {
+        console.error(`Error creating resource: ${error.message}`)
+        return { error: `Error creating resource: ${error.message}` }
+      }
+    }
+
     // Очищаем данные если это artist
     const dataToSend =
       resource === 'artists' ? cleanArtistData(params.data) : params.data
@@ -102,6 +116,8 @@ export default {
   },
 
   getList: async (resource, params) => {
+    console.log(params, 'params')
+    console.log(resource, 'resource')
     const { page, perPage: limit } = params.pagination
     const { field, order } = params.sort
 
@@ -114,6 +130,7 @@ export default {
     const url = `${apiUrl}/${resource}?${stringify(query)}`
 
     try {
+      console.log(await axiosInstance.get(url), 'getList')
       const { data } = await axiosInstance.get(url)
       return {
         data: data.data,
@@ -180,6 +197,18 @@ export default {
   },
 
   update: async (resource, params) => {
+    // Если это welcome-modal, пропускаем логику с картинками
+    if (resource === 'welcome') {
+      try {
+        const url = `${apiUrl}/${resource}/${params.id}`
+        const { data } = await axiosInstance.patch(url, params.data)
+        return { data: data }
+      } catch (error) {
+        console.error('Error in update method:', error.message)
+        return { error: `Error in update method: ${error.message}` }
+      }
+    }
+
     let image
     try {
       // Очищаем данные если это artist
