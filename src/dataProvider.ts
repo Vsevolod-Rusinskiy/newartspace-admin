@@ -28,6 +28,7 @@ export default {
     // Если это welcome-modal, пропускаем логику с картинками
     if (resource === 'welcome') {
       try {
+        console.log('Welcome Modal - данные для отправки:', params.data)
         const { data } = await axiosInstance.post(
           `${apiUrl}/${resource}`,
           params.data
@@ -90,14 +91,15 @@ export default {
     delete updatedData.artist
 
     try {
-      console.log(updatedData, 'отправляем на сервер')
-      console.log(resource, 'resource')
+      console.log('=== Создание картины ===')
+      console.log('Данные для отправки:', updatedData)
+      console.log('Тип ресурса:', resource)
 
       const { data } = await axiosInstance.post(
         `${apiUrl}/${resource}`,
         updatedData
       )
-      console.log(data, 'data получили от сервера create')
+      console.log('Ответ сервера:', data)
       return { data: data }
     } catch (error) {
       console.error(`Error creating resource: ${error.message}`)
