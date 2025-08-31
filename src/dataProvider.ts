@@ -149,10 +149,17 @@ export default {
   },
 
   getOne: async (resource, params) => {
+    console.log('=== GetOne Request ===')
+    console.log('Resource:', resource)
+    console.log('Params:', params)
+
     const url = `${apiUrl}/${resource}/${params.id}`
+    console.log('Request URL:', url)
 
     try {
       const { data } = await axiosInstance.get(url)
+      console.log('=== GetOne Response ===')
+      console.log('Response data:', data)
       return {
         data: data,
       }
