@@ -28,9 +28,14 @@ export default {
     // Если это welcome-modal, пропускаем логику с картинками
     if (resource === 'welcome') {
       try {
+        const updatedWelcomeData = {
+          ...params.data,
+          isActive: params.data.isActive === 'true',
+        }
+        console.log('Welcome Modal - данные для отправки:', updatedWelcomeData)
         const { data } = await axiosInstance.post(
           `${apiUrl}/${resource}`,
-          params.data
+          updatedWelcomeData
         )
         return { data: data }
       } catch (error) {
@@ -90,14 +95,15 @@ export default {
     delete updatedData.artist
 
     try {
-      console.log(updatedData, 'отправляем на сервер')
-      console.log(resource, 'resource')
+      console.log('=== Создание картины ===')
+      console.log('Данные для отправки:', updatedData)
+      console.log('Тип ресурса:', resource)
 
       const { data } = await axiosInstance.post(
         `${apiUrl}/${resource}`,
         updatedData
       )
-      console.log(data, 'data получили от сервера create')
+      console.log('Ответ сервера:', data)
       return { data: data }
     } catch (error) {
       console.error(`Error creating resource: ${error.message}`)
@@ -200,8 +206,12 @@ export default {
     // Если это welcome-modal, пропускаем логику с картинками
     if (resource === 'welcome') {
       try {
+        const updatedWelcomeData = {
+          ...params.data,
+          isActive: params.data.isActive === 'true',
+        }
         const url = `${apiUrl}/${resource}/${params.id}`
-        const { data } = await axiosInstance.patch(url, params.data)
+        const { data } = await axiosInstance.patch(url, updatedWelcomeData)
         return { data: data }
       } catch (error) {
         console.error('Error in update method:', error.message)
