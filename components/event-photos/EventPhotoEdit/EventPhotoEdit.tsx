@@ -11,6 +11,7 @@ import { TextInputComponent } from '../../inputs'
 export const EventPhotoEdit = () => (
   <Edit mutationMode='pessimistic'>
     <SimpleForm>
+      <ImageField source='imgUrl' label='Текущее изображение' />
       <ImageInput
         source='pictures'
         label='Фото или Видео'
