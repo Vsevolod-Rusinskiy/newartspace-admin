@@ -28,11 +28,13 @@ export default {
     // Если это welcome-modal, пропускаем логику с картинками
     if (resource === 'welcome') {
       try {
+        console.log('params.data при create:', params.data)
         const updatedWelcomeData = {
           ...params.data,
-          isActive: params.data.isActive === 'true',
+          isActive:
+            params.data.isActive === true || params.data.isActive === 'true',
         }
-        console.log('Welcome Modal - данные для отправки:', updatedWelcomeData)
+        console.log('updatedWelcomeData для отправки:', updatedWelcomeData)
         const { data } = await axiosInstance.post(
           `${apiUrl}/${resource}`,
           updatedWelcomeData
@@ -213,10 +215,13 @@ export default {
     // Если это welcome-modal, пропускаем логику с картинками
     if (resource === 'welcome') {
       try {
+        console.log('params.data при update:', params.data)
         const updatedWelcomeData = {
           ...params.data,
-          isActive: params.data.isActive === 'true',
+          isActive:
+            params.data.isActive === true || params.data.isActive === 'true',
         }
+        console.log('updatedWelcomeData для отправки:', updatedWelcomeData)
         const url = `${apiUrl}/${resource}/${params.id}`
         const { data } = await axiosInstance.patch(url, updatedWelcomeData)
         return { data: data }
