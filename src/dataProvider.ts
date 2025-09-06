@@ -28,11 +28,13 @@ export default {
     // Если это welcome-modal, пропускаем логику с картинками
     if (resource === 'welcome') {
       try {
+        console.log('params.data при create:', params.data)
         const updatedWelcomeData = {
           ...params.data,
-          isActive: params.data.isActive === 'true',
+          isActive:
+            params.data.isActive === true || params.data.isActive === 'true',
         }
-        console.log('Welcome Modal - данные для отправки:', updatedWelcomeData)
+        console.log('updatedWelcomeData для отправки:', updatedWelcomeData)
         const { data } = await axiosInstance.post(
           `${apiUrl}/${resource}`,
           updatedWelcomeData
@@ -149,10 +151,17 @@ export default {
   },
 
   getOne: async (resource, params) => {
+    console.log('=== GetOne Request ===')
+    console.log('Resource:', resource)
+    console.log('Params:', params)
+
     const url = `${apiUrl}/${resource}/${params.id}`
+    console.log('Request URL:', url)
 
     try {
       const { data } = await axiosInstance.get(url)
+      console.log('=== GetOne Response ===')
+      console.log('Response data:', data)
       return {
         data: data,
       }
@@ -206,10 +215,13 @@ export default {
     // Если это welcome-modal, пропускаем логику с картинками
     if (resource === 'welcome') {
       try {
+        console.log('params.data при update:', params.data)
         const updatedWelcomeData = {
           ...params.data,
-          isActive: params.data.isActive === 'true',
+          isActive:
+            params.data.isActive === true || params.data.isActive === 'true',
         }
+        console.log('updatedWelcomeData для отправки:', updatedWelcomeData)
         const url = `${apiUrl}/${resource}/${params.id}`
         const { data } = await axiosInstance.patch(url, updatedWelcomeData)
         return { data: data }

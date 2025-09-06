@@ -14,6 +14,7 @@ export const WelcomeModalEdit = () => (
           { id: 'false', name: 'Нет' },
         ]}
         label='🔔 Активное объявление'
+        validate={required('Это обязательное поле')}
       />
       <RichTextInput
         source='content'

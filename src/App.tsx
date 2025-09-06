@@ -22,6 +22,10 @@ import { WelcomeModalList } from '../components/welcomeModal/WelcomeModalList/We
 import { WelcomeModalShow } from '../components/welcomeModal/WelcomeModalShow/WelcomeModalShow'
 import { WelcomeModalCreate } from '../components/welcomeModal/WelcomeModalCreate/WelcomeModalCreate'
 import { WelcomeModalEdit } from '../components/welcomeModal/WelcomeModalEdit/WelcomeModalEdit'
+import { EventPhotoList } from '../components/event-photos/EventPhotoList/EventPhotoList'
+import { EventPhotoShow } from '../components/event-photos/EventPhotoShow/EventPhotoShow'
+import { EventPhotoCreate } from '../components/event-photos/EventPhotoCreate/EventPhotoCreate'
+import { EventPhotoEdit } from '../components/event-photos/EventPhotoEdit/EventPhotoEdit'
 
 const i18nProvider = polyglotI18nProvider(() => russianMessages, 'ru')
 
@@ -66,6 +70,13 @@ export const App = () => (
       show={WelcomeModalShow}
       create={WelcomeModalCreate}
       edit={WelcomeModalEdit}
+    />
+    <Resource
+      name='event-photos'
+      list={EventPhotoList}
+      show={EventPhotoShow}
+      create={EventPhotoCreate}
+      edit={EventPhotoEdit}
     />
   </Admin>
 )
