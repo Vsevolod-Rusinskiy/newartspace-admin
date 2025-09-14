@@ -233,8 +233,17 @@ export default {
     let image
     try {
       // Очищаем данные если это artist
-      const dataToSend =
+      let dataToSend =
         resource === 'artists' ? cleanArtistData(params.data) : params.data
+
+      // Преобразование eventPhotos -> eventPhotoIds для событий
+      if (resource === 'events' && Array.isArray(dataToSend.eventPhotos)) {
+        dataToSend = {
+          ...dataToSend,
+          eventPhotoIds: dataToSend.eventPhotos,
+        }
+        delete dataToSend.eventPhotos
+      }
 
       if (dataToSend.pictures && dataToSend.pictures.rawFile) {
         const imageFile = dataToSend.pictures.rawFile
