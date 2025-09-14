@@ -97,7 +97,6 @@ export default {
     delete updatedData.artist
 
     try {
-      console.log('=== Создание картины ===')
       console.log('Данные для отправки:', updatedData)
       console.log('Тип ресурса:', resource)
 
