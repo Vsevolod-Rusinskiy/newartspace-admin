@@ -25,6 +25,7 @@ export const EventCreate = () => {
       .get(`${apiUrl}/event-photos?limit=1000`)
       .then((response) => {
         setEventPhotos(response.data.data)
+        console.log('eventPhotos:', response.data.data)
       })
       .catch((error) => {
         console.error('Ошибка при получении event-photos:', error)
@@ -44,27 +45,26 @@ export const EventCreate = () => {
         <SelectArrayInput
           source='eventPhotoIds'
           label='Дополнительные фото из event-photos'
-          choices={eventPhotos.map((photo) => ({
-            id: photo.id,
-            name: photo.title || photo.imgUrl,
-          }))}
-          optionText={(choice) => (
-            <span style={{ display: 'flex', alignItems: 'center' }}>
-              {choice.imgUrl && (
-                <img
-                  src={choice.imgUrl}
-                  alt=''
-                  style={{
-                    width: 40,
-                    height: 40,
-                    objectFit: 'cover',
-                    marginRight: 8,
-                  }}
-                />
-              )}
-              {choice.title || choice.imgUrl}
-            </span>
-          )}
+          choices={eventPhotos}
+          optionText={(choice) =>
+            choice ? (
+              <span style={{ display: 'flex', alignItems: 'center' }}>
+                {choice.imgUrl && (
+                  <img
+                    src={choice.imgUrl}
+                    alt='preview'
+                    style={{
+                      width: 40,
+                      height: 40,
+                      objectFit: 'cover',
+                      marginRight: 8,
+                    }}
+                  />
+                )}
+                {choice.title}
+              </span>
+            ) : null
+          }
           optionValue='id'
           style={{ minWidth: '300px' }}
         />

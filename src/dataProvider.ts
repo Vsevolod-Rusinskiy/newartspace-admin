@@ -22,8 +22,8 @@ const cleanArtistData = (data: any) => {
 
 export default {
   create: async (resource, params) => {
-    console.log(params, 'params')
-    console.log(resource, 'resource')
+    console.log('create resource:', resource)
+    console.log('create params:', params)
 
     // Если это welcome-modal, пропускаем логику с картинками
     if (resource === 'welcome') {
@@ -124,8 +124,8 @@ export default {
   },
 
   getList: async (resource, params) => {
-    console.log(params, 'params')
-    console.log(resource, 'resource')
+    console.log('getList resource:', resource)
+    console.log('getList params:', params)
     const { page, perPage: limit } = params.pagination
     const { field, order } = params.sort
 
