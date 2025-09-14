@@ -54,8 +54,8 @@ export const EventCreate = () => {
                     src={choice.imgUrl}
                     alt='preview'
                     style={{
-                      width: 40,
-                      height: 40,
+                      width: 20,
+                      height: 20,
                       objectFit: 'cover',
                       marginRight: 8,
                     }}
