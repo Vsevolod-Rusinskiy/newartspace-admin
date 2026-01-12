@@ -79,7 +79,7 @@ jobs:
               --restart unless-stopped \
               --network newartspace-net \
               --env-file /var/www/newartspace/admin/.env \
-              -p 127.0.0.1:3002:4173 \
+              -p 127.0.0.1:3002:80 \
               "$IMAGE"
 
             docker ps -f name=admin
