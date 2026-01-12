@@ -9,14 +9,21 @@ RUN yarn install --frozen-lockfile
 COPY . .
 RUN yarn build
 
-FROM node:20.9.0-alpine AS runner
-WORKDIR /app
-ENV NODE_ENV=production
+FROM nginx:alpine
+COPY --from=builder /app/dist /usr/share/nginx/html
 
-COPY --from=builder /app/package.json /app/yarn.lock ./
-COPY --from=builder /app/dist ./dist
+# SPA fallback: все маршруты -> index.html
+RUN cat > /etc/nginx/conf.d/default.conf <<'EOF'
+server {
+  listen 80;
+  server_name _;
+  root /usr/share/nginx/html;
+  index index.html;
 
-RUN yarn install --frozen-lockfile --production
+  location / {
+    try_files $uri $uri/ /index.html;
+  }
+}
+EOF
 
-EXPOSE 4173
-CMD ["node_modules/.bin/http-server", "./dist", "-p", "4173"]
+EXPOSE 80
