@@ -13,13 +13,6 @@ updates:
     labels:
       - "dependencies"
       - "security"
-    # Group security updates together
-    groups:
-      security-updates:
-        patterns:
-          - "*"
-        update-types:
-          - "security"
     # Ignore major version updates for now to avoid breaking changes
     ignore:
       - dependency-name: "react"
