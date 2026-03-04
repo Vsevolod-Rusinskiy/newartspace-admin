@@ -12,7 +12,7 @@
     "install-hooks": "husky install"
   },
   "dependencies": {
-    "axios": "^1.13.2",
+    "axios": "^1.13.5",
     "dotenv": "^16.4.5",
     "esbuild": "^0.27.2",
     "http-server": "^14.1.1",
