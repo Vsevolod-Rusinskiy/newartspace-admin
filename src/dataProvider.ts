@@ -3,7 +3,6 @@ import { stringify } from 'query-string'
 import axiosInstance from './api/axiosInstance/axiosInstance'
 
 const apiUrl = import.meta.env.VITE_APP_API_URL || 'https://back.newartspace.ru'
-console.log('ApiUrl:', apiUrl)
 // test flag = true
 
 interface DeleteOrderItemsParams {
@@ -16,32 +15,26 @@ interface CustomDataProvider extends DataProvider {
 }
 
 const cleanArtistData = (data: any) => {
-  const { paintings, ...cleanedData } = data
+  const { paintings: _paintings, ...cleanedData } = data
   return cleanedData
 }
 
 export default {
   create: async (resource, params) => {
-    console.log('create resource:', resource)
-    console.log('create params:', params)
-
     // Если это welcome-modal, пропускаем логику с картинками
     if (resource === 'welcome') {
       try {
-        console.log('params.data при create:', params.data)
         const updatedWelcomeData = {
           ...params.data,
           isActive:
             params.data.isActive === true || params.data.isActive === 'true',
         }
-        console.log('updatedWelcomeData для отправки:', updatedWelcomeData)
         const { data } = await axiosInstance.post(
           `${apiUrl}/${resource}`,
           updatedWelcomeData
         )
         return { data: data }
       } catch (error) {
-        console.error(`Error creating resource: ${error.message}`)
         return { error: `Error creating resource: ${error.message}` }
       }
     }
@@ -67,7 +60,6 @@ export default {
         },
       })
     } catch (error) {
-      console.error(`Error uploading image: ${error.message}`)
       return { error: `Error uploading image: ${error.message}` }
     }
 
@@ -97,17 +89,12 @@ export default {
     delete updatedData.artist
 
     try {
-      console.log('Данные для отправки:', updatedData)
-      console.log('Тип ресурса:', resource)
-
       const { data } = await axiosInstance.post(
         `${apiUrl}/${resource}`,
         updatedData
       )
-      console.log('Ответ сервера:', data)
       return { data: data }
     } catch (error) {
-      console.error(`Error creating resource: ${error.message}`)
       //  удаляем картинку если карточка не создалась
       try {
         await axiosInstance({
@@ -116,15 +103,13 @@ export default {
           data: { fileName: image.data.imgUrl.split('/').pop() },
         })
       } catch (deleteError) {
-        console.error(`Error deleting image: ${deleteError.message}`)
+        void deleteError
       }
       return { error: `Error creating resource: ${error.message}` }
     }
   },
 
   getList: async (resource, params) => {
-    console.log('getList resource:', resource)
-    console.log('getList params:', params)
     const { page, perPage: limit } = params.pagination
     const { field, order } = params.sort
 
@@ -137,35 +122,25 @@ export default {
     const url = `${apiUrl}/${resource}?${stringify(query)}`
 
     try {
-      console.log(await axiosInstance.get(url), 'getList')
       const { data } = await axiosInstance.get(url)
       return {
         data: data.data,
         total: data.total,
       }
     } catch (error) {
-      console.error(`Failed to fetch data: ${error.message}`)
       return { error: `Failed to fetch data: ${error.message}` }
     }
   },
 
   getOne: async (resource, params) => {
-    console.log('=== GetOne Request ===')
-    console.log('Resource:', resource)
-    console.log('Params:', params)
-
     const url = `${apiUrl}/${resource}/${params.id}`
-    console.log('Request URL:', url)
 
     try {
       const { data } = await axiosInstance.get(url)
-      console.log('=== GetOne Response ===')
-      console.log('Response data:', data)
       return {
         data: data,
       }
     } catch (error) {
-      console.error(`Failed to fetch resource: ${error.message}`)
       return { error: `Failed to fetch resource: ${error.message}` }
     }
   },
@@ -180,7 +155,6 @@ export default {
       const { data } = await axiosInstance.get(url)
       return { data: data }
     } catch (error) {
-      console.error(`Failed to fetch multiple resources: ${error.message}`)
       return { error: `Failed to fetch multiple resources: ${error.message}` }
     }
   },
@@ -205,7 +179,6 @@ export default {
         total: parseInt(headers['content-range'].split('/').pop(), 10),
       }
     } catch (error) {
-      console.error(`Failed to fetch reference data: ${error.message}`)
       return { error: `Failed to fetch reference data: ${error.message}` }
     }
   },
@@ -214,18 +187,15 @@ export default {
     // Если это welcome-modal, пропускаем логику с картинками
     if (resource === 'welcome') {
       try {
-        console.log('params.data при update:', params.data)
         const updatedWelcomeData = {
           ...params.data,
           isActive:
             params.data.isActive === true || params.data.isActive === 'true',
         }
-        console.log('updatedWelcomeData для отправки:', updatedWelcomeData)
         const url = `${apiUrl}/${resource}/${params.id}`
         const { data } = await axiosInstance.patch(url, updatedWelcomeData)
         return { data: data }
       } catch (error) {
-        console.error('Error in update method:', error.message)
         return { error: `Error in update method: ${error.message}` }
       }
     }
@@ -284,14 +254,10 @@ export default {
             }
           : {}),
       }
-      console.log(updatedData, 'sendupdatedData')
       const { data } = await axiosInstance.patch(url, updatedData)
-      console.log(data, 'data получили от сервера update')
 
       return { data: data }
     } catch (error) {
-      console.error('Error in update method:', error.message)
-
       // Если ошибка при обновлении ресурса и изображение было загружено, удаляем изображение
       if (image) {
         try {
@@ -301,15 +267,14 @@ export default {
             data: { fileName: image.data.imgUrl.split('/').pop() },
           })
         } catch (deleteError) {
-          console.error(`Error deleting image: ${deleteError.message}`)
+          void deleteError
         }
       }
       return { error: `Error in update method: ${error.message}` }
     }
   },
 
-  updateMany: async (_, params) => {
-    console.log(params)
+  updateMany: async () => {
     return { data: [] }
   },
 
@@ -318,12 +283,10 @@ export default {
 
     try {
       const { data } = await axiosInstance.delete(url)
-      // console.log(data, 'data получили от сервера delete', 6666)
       return {
         data: data,
       }
     } catch (error) {
-      console.error(`Failed to delete resource: ${error.message}`)
       return { error: `Failed to delete resource: ${error.message}` }
     }
   },
@@ -337,37 +300,17 @@ export default {
         data: [],
       }
     } catch (error) {
-      console.error(`Failed to delete multiple resources: ${error.message}`)
       return { error: `Failed to delete multiple resources: ${error.message}` }
     }
   },
 
   deleteOrderItems: async (params: DeleteOrderItemsParams) => {
-    console.log('=== Удаление позиций из заказа ===')
-    console.log('URL:', `${apiUrl}/orders/${params.orderId}/items`)
-    console.log('Данные запроса:', {
-      orderId: params.orderId,
-      itemIds: params.itemIds,
-    })
-    console.log('Тело запроса:', { itemIds: params.itemIds })
-
-    try {
-      const { data } = await axiosInstance.delete(
-        `${apiUrl}/orders/${params.orderId}/items`,
-        {
-          data: { itemIds: params.itemIds },
-        }
-      )
-      console.log('Ответ сервера:', data)
-      return { data }
-    } catch (error) {
-      console.error('Ошибка при удалении позиций заказа:', error)
-      console.error('Детали запроса:', {
-        url: `${apiUrl}/orders/${params.orderId}/items`,
-        orderId: params.orderId,
-        itemIds: params.itemIds,
-      })
-      throw error
-    }
+    const { data } = await axiosInstance.delete(
+      `${apiUrl}/orders/${params.orderId}/items`,
+      {
+        data: { itemIds: params.itemIds },
+      }
+    )
+    return { data }
   },
 } as CustomDataProvider

@@ -6,6 +6,7 @@ import {
   NumberField,
   ArrayField,
   Datagrid,
+  ImageField,
   useShowController,
   useDataProvider,
   useNotify,
@@ -32,12 +33,6 @@ const OrderItemsBulkDeleteButton = () => {
     }
 
     try {
-      console.log('=== Начало удаления позиций ===')
-      console.log('ID заказа:', record?.id)
-      console.log('Тип ID заказа:', typeof record?.id)
-      console.log('Выбранные позиции:', selectedIds)
-      console.log('Тип выбранных позиций:', typeof selectedIds)
-
       await dataProvider.deleteOrderItems(
         Number(record.id),
         selectedIds.map(Number)
@@ -49,7 +44,6 @@ const OrderItemsBulkDeleteButton = () => {
       })
       refresh()
     } catch (error) {
-      console.error('Ошибка при удалении:', error)
       notify('ra.notification.http_error', { type: 'error' })
     }
   }
@@ -81,6 +75,16 @@ export const OrderShow = () => {
         <ArrayField source='orderItems' label='📦 Позиции заказа'>
           <Datagrid bulkActionButtons={<OrderItemsBulkDeleteButton />}>
             <TextField source='id' label='ID позиции' />
+            <ImageField
+              source='painting.imgUrl'
+              label='🖼️ Картина'
+              sortable={false}
+            />
+            <TextField
+              source='painting.title'
+              label='Название картины'
+              sortable={false}
+            />
             <TextField source='paintingId' label='ID картины' />
             <NumberField source='quantity' label='📊 Количество' />
             <NumberField source='price' label='💰 Цена' />

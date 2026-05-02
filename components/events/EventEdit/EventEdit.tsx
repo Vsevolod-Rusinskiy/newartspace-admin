@@ -21,17 +21,13 @@ const apiUrl = import.meta.env.VITE_APP_API_URL || 'https://back.newartspace.ru'
 export const EventEdit = () => {
   const [eventPhotos, setEventPhotos] = useState([])
   const { record } = useEditController()
-  // console.log('EventEdit record:', record)
-
   useEffect(() => {
     axios
       .get(`${apiUrl}/event-photos?limit=1000`)
       .then((response) => {
         setEventPhotos(response.data.data)
       })
-      .catch((error) => {
-        console.error('Ошибка при получении event-photos:', error)
-      })
+      .catch((error) => {})
   }, [])
 
   return (

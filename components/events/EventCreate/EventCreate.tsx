@@ -25,11 +25,8 @@ export const EventCreate = () => {
       .get(`${apiUrl}/event-photos?limit=1000`)
       .then((response) => {
         setEventPhotos(response.data.data)
-        console.log('eventPhotos:', response.data.data)
       })
-      .catch((error) => {
-        console.error('Ошибка при получении event-photos:', error)
-      })
+      .catch((error) => {})
   }, [])
 
   return (

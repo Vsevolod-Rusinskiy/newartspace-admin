@@ -23,9 +23,7 @@ export const OrderEdit = () => {
           name: status.displayName,
         }))
         setStatuses(formattedStatuses)
-      } catch (error) {
-        console.error('Ошибка при получении статусов:', error)
-      }
+      } catch (error) {}
     }
 
     fetchStatuses()
