@@ -49,7 +49,6 @@ export const PaintingEdit = () => {
         setAuthors(authorsResponse.data.data)
         setSelectLists(attributesResponse.data.data)
       } catch (error) {
-        console.error('Ошибка при получении данных:', error)
       } finally {
         setLoading(false)
       }

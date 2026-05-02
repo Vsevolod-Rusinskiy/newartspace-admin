@@ -32,7 +32,6 @@ export const authProvider: AuthProvider = {
 
       return Promise.resolve()
     } catch (error) {
-      console.error('Login failed:', error.message)
       return Promise.reject(error.message)
     }
   },
@@ -47,7 +46,6 @@ export const authProvider: AuthProvider = {
 
       return Promise.resolve()
     } catch (error) {
-      console.error('Ошибка при выходе:', error)
       localStorage.removeItem('auth')
       return Promise.resolve()
     }

@@ -10,6 +10,7 @@ import {
 import { ImageField } from 'react-admin'
 
 const PaintingFilters = [
+  <SearchInput key='id' source='id' placeholder='🔍 Поиск по ID' alwaysOn />,
   <SearchInput
     key='title'
     source='title'

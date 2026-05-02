@@ -38,18 +38,14 @@ export const PaintingCreate = () => {
       .then((response) => {
         setAuthors(response.data.data)
       })
-      .catch((error) => {
-        console.error('Ошибка при получении списка авторов:', error)
-      })
+      .catch((error) => {})
 
     axios
       .get(`${apiUrl}/attributes`)
       .then((response) => {
         setSelectLists(response.data.data)
       })
-      .catch((error) => {
-        console.error('Ошибка при получении атрибутов:', error)
-      })
+      .catch((error) => {})
   }, [])
 
   const {
