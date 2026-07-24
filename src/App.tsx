@@ -26,6 +26,14 @@ import { EventPhotoList } from '../components/event-photos/EventPhotoList/EventP
 import { EventPhotoShow } from '../components/event-photos/EventPhotoShow/EventPhotoShow'
 import { EventPhotoCreate } from '../components/event-photos/EventPhotoCreate/EventPhotoCreate'
 import { EventPhotoEdit } from '../components/event-photos/EventPhotoEdit/EventPhotoEdit'
+import { AboutList } from '../components/about/AboutList/AboutList'
+import { AboutShow } from '../components/about/AboutShow/AboutShow'
+import { AboutCreate } from '../components/about/AboutCreate/AboutCreate'
+import { AboutEdit } from '../components/about/AboutEdit/AboutEdit'
+import { WorkingHoursList } from '../components/working-hours/WorkingHoursList/WorkingHoursList'
+import { WorkingHoursShow } from '../components/working-hours/WorkingHoursShow/WorkingHoursShow'
+import { WorkingHoursCreate } from '../components/working-hours/WorkingHoursCreate/WorkingHoursCreate'
+import { WorkingHoursEdit } from '../components/working-hours/WorkingHoursEdit/WorkingHoursEdit'
 
 const i18nProvider = polyglotI18nProvider(() => russianMessages, 'ru')
 
@@ -77,6 +85,21 @@ export const App = () => (
       show={EventPhotoShow}
       create={EventPhotoCreate}
       edit={EventPhotoEdit}
+    />
+    <Resource
+      name='about'
+      list={AboutList}
+      show={AboutShow}
+      create={AboutCreate}
+      edit={AboutEdit}
+    />
+    <Resource
+      name='working-hours'
+      options={{ label: 'Working Hours' }}
+      list={WorkingHoursList}
+      show={WorkingHoursShow}
+      create={WorkingHoursCreate}
+      edit={WorkingHoursEdit}
     />
   </Admin>
 )
