@@ -14,6 +14,7 @@ import {
   useListContext,
   Button,
 } from 'react-admin'
+import { useState } from 'react'
 
 const OrderItemsBulkDeleteButton = () => {
   const { record } = useShowController()
@@ -57,10 +58,57 @@ const OrderItemsBulkDeleteButton = () => {
   )
 }
 
+const SendCustomerEmailButton = () => {
+  const { record } = useShowController()
+  const dataProvider = useDataProvider()
+  const notify = useNotify()
+  const [isSending, setIsSending] = useState(false)
+
+  const handleSend = async () => {
+    if (!record?.id) {
+      notify('Заказ не найден', { type: 'warning' })
+      return
+    }
+
+    if (!record.customerEmail) {
+      notify('У заказа нет email клиента', { type: 'warning' })
+      return
+    }
+
+    if (
+      !window.confirm(
+        `Отправить письмо клиенту на адрес ${record.customerEmail}?`
+      )
+    ) {
+      return
+    }
+
+    setIsSending(true)
+
+    try {
+      await dataProvider.sendOrderCustomerEmail(Number(record.id))
+      notify('Письмо клиенту отправлено', { type: 'success' })
+    } catch (error) {
+      notify('Не удалось отправить письмо клиенту', { type: 'error' })
+    } finally {
+      setIsSending(false)
+    }
+  }
+
+  return (
+    <Button
+      label={isSending ? 'Отправка письма...' : '✉️ Отправить письмо клиенту'}
+      onClick={handleSend}
+      disabled={isSending}
+    />
+  )
+}
+
 export const OrderShow = () => {
   return (
     <Show>
       <SimpleShowLayout>
+        <SendCustomerEmailButton />
         <TextField source='id' />
         <TextField source='customerName' label='👤 Имя клиента' />
         <TextField source='customerEmail' label='✉️ Email' />

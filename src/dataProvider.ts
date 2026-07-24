@@ -12,6 +12,7 @@ interface DeleteOrderItemsParams {
 
 interface CustomDataProvider extends DataProvider {
   deleteOrderItems: (params: DeleteOrderItemsParams) => Promise<{ data: any }>
+  sendOrderCustomerEmail: (orderId: number) => Promise<{ data: any }>
 }
 
 const cleanArtistData = (data: any) => {
@@ -32,6 +33,19 @@ export default {
         const { data } = await axiosInstance.post(
           `${apiUrl}/${resource}`,
           updatedWelcomeData
+        )
+        return { data: data }
+      } catch (error) {
+        return { error: `Error creating resource: ${error.message}` }
+      }
+    }
+
+    // working-hours не работает с картинками — пропускаем логику загрузки
+    if (resource === 'working-hours') {
+      try {
+        const { data } = await axiosInstance.post(
+          `${apiUrl}/${resource}`,
+          params.data
         )
         return { data: data }
       } catch (error) {
@@ -200,6 +214,17 @@ export default {
       }
     }
 
+    // working-hours не работает с картинками — пропускаем логику загрузки
+    if (resource === 'working-hours') {
+      try {
+        const url = `${apiUrl}/${resource}/${params.id}`
+        const { data } = await axiosInstance.patch(url, params.data)
+        return { data: data }
+      } catch (error) {
+        return { error: `Error in update method: ${error.message}` }
+      }
+    }
+
     let image
     try {
       // Очищаем данные если это artist
@@ -310,6 +335,13 @@ export default {
       {
         data: { itemIds: params.itemIds },
       }
+    )
+    return { data }
+  },
+
+  sendOrderCustomerEmail: async (orderId: number) => {
+    const { data } = await axiosInstance.post(
+      `${apiUrl}/orders/${orderId}/send-customer-email`
     )
     return { data }
   },
