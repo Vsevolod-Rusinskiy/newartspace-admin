@@ -15,6 +15,9 @@ import { RichTextInput } from 'ra-input-rich-text'
 import '../../../styles/customStyles.css'
 import {
   validateFileSize,
+  validatePaintingTitle,
+  validateYearOfCreation,
+  validatePositiveDimension,
   extractAttributes,
   getSelectedIds,
 } from '../../../src/utils/common'
@@ -152,7 +155,7 @@ export const PaintingEdit = () => {
         <TextInputComponent
           source='title'
           label='📝 Название картины'
-          validate={requiredValidation}
+          validate={validatePaintingTitle}
         />
         <SelectInputComponent
           source='artType'
@@ -224,9 +227,21 @@ export const PaintingEdit = () => {
           style={{ minWidth: '300px' }}
           defaultValue={selectedColors}
         />
-        <TextInputComponent source='width' label='↔️ Ширина' />
-        <TextInputComponent source='height' label='↕️ Высота' />
-        <TextInputComponent source='yearOfCreation' label='📅 Год создания' />
+        <TextInputComponent
+          source='width'
+          label='↔️ Ширина'
+          validate={validatePositiveDimension}
+        />
+        <TextInputComponent
+          source='height'
+          label='↕️ Высота'
+          validate={validatePositiveDimension}
+        />
+        <TextInputComponent
+          source='yearOfCreation'
+          label='📅 Год создания'
+          validate={validateYearOfCreation}
+        />
         <SelectInputComponent
           source='format'
           choices={selectLists.formatsList}

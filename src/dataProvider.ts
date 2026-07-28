@@ -20,6 +20,14 @@ const cleanArtistData = (data: any) => {
   return cleanedData
 }
 
+/** Empty optional numeric fields must not become NaN (JSON → null) or accidental 0. */
+const toOptionalNumber = (value: unknown): number | null => {
+  if (value === '' || value === null || value === undefined) return null
+  const n = Number(value)
+  if (!Number.isFinite(n) || n === 0) return null
+  return n
+}
+
 export default {
   create: async (resource, params) => {
     // Если это welcome-modal, пропускаем логику с картинками
@@ -91,9 +99,9 @@ export default {
         ? {
             price: Number(dataToSend.price),
             discount: Number(dataToSend.discount),
-            width: Number(dataToSend.width),
-            height: Number(dataToSend.height),
-            yearOfCreation: Number(dataToSend.yearOfCreation),
+            width: toOptionalNumber(dataToSend.width),
+            height: toOptionalNumber(dataToSend.height),
+            yearOfCreation: toOptionalNumber(dataToSend.yearOfCreation),
             isReproducible: dataToSend.isReproducible === 'true',
             isAdult: dataToSend.isAdult === 'true',
           }
@@ -271,9 +279,9 @@ export default {
           ? {
               price: Number(dataToSend.price),
               discount: Number(dataToSend.discount),
-              width: Number(dataToSend.width),
-              height: Number(dataToSend.height),
-              yearOfCreation: Number(dataToSend.yearOfCreation),
+              width: toOptionalNumber(dataToSend.width),
+              height: toOptionalNumber(dataToSend.height),
+              yearOfCreation: toOptionalNumber(dataToSend.yearOfCreation),
               isReproducible: dataToSend.isReproducible === 'true',
               isAdult: dataToSend.isAdult === 'true',
             }

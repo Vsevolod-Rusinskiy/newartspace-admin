@@ -11,7 +11,12 @@ import {
 } from 'react-admin'
 import { RichTextInput } from 'ra-input-rich-text'
 import { SelectInputComponent, TextInputComponent } from '../../inputs'
-import { validateFileSize } from '../../../src/utils/common'
+import {
+  validateFileSize,
+  validatePaintingTitle,
+  validateYearOfCreation,
+  validatePositiveDimension,
+} from '../../../src/utils/common'
 import '../../../styles/customStyles.css'
 import { IsReprodusibleSpan } from '../../../src/utils/isReprodusibleSpan'
 
@@ -126,7 +131,7 @@ export const PaintingCreate = () => {
         <TextInputComponent
           source='title'
           label='📝 Название картины'
-          validate={requiredValidation}
+          validate={validatePaintingTitle}
         />
         <SelectInputComponent
           source='artType'
@@ -198,9 +203,21 @@ export const PaintingCreate = () => {
           style={{ minWidth: '300px' }}
           defaultValue={[]}
         />
-        <TextInputComponent source='width' label='↔️ Ширина' />
-        <TextInputComponent source='height' label='↕️ Высота' />
-        <TextInputComponent source='yearOfCreation' label='📅 Год создания' />
+        <TextInputComponent
+          source='width'
+          label='↔️ Ширина'
+          validate={validatePositiveDimension}
+        />
+        <TextInputComponent
+          source='height'
+          label='↕️ Высота'
+          validate={validatePositiveDimension}
+        />
+        <TextInputComponent
+          source='yearOfCreation'
+          label='📅 Год создания'
+          validate={validateYearOfCreation}
+        />
         <SelectInputComponent
           source='format'
           choices={formatsList}
